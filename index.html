@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Ledgerline</title>
+<style>
+:root{--paper:#F1F4F1;--card:#fff;--ink:#16221E;--muted:#5C6A64;--line:#D8DFDA;--soft:#E7ECE8;--accent:#2848A8;--on-accent:#fff;--pos:#1B7548;--neg:#B0392D;--pos-bg:#DDF0E5;--neg-bg:#F7DEDA;--acc-bg:#DFE6F7;--warn-bg:#F6E8C8;--warn:#8F6209}
+@media (prefers-color-scheme:dark){:root{--paper:#111916;--card:#19231F;--ink:#E6EEE9;--muted:#93A29B;--line:#2A3732;--soft:#222E29;--accent:#8AA4F2;--on-accent:#0E1A3A;--pos:#5CC48E;--neg:#F28576;--pos-bg:#1B3A2B;--neg-bg:#42231F;--acc-bg:#1F2A4A;--warn-bg:#3F3216;--warn:#E3B650}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font:16px/1.45 -apple-system,'Segoe UI',Roboto,'IBM Plex Sans Arabic',Tahoma,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.brand{font-weight:600;font-size:18px;color:var(--accent)}
+.lnk{background:none;border:0;color:var(--accent);font:inherit;font-size:14px;font-weight:500;padding:6px 0;margin-inline-start:14px}
+h1{font-size:24px;margin:6px 0 14px;letter-spacing:-.01em}
+h2{font-size:16px;margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+label{display:block;margin-bottom:12px;font-size:14px;color:var(--muted)}
+input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:13px;margin-top:4px}
+button.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font:inherit;font-size:17px;font-weight:600}
+button.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+button.btn.sm{width:auto;min-height:40px;padding:0 14px;font-size:15px}
+button:disabled{opacity:.5}
+.note{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:15px}
+.note.bad{background:var(--neg-bg);color:var(--neg)}.note.ok{background:var(--pos-bg);color:var(--pos)}.note.info{background:var(--acc-bg);color:var(--accent)}
+.muted{color:var(--muted)}.sub{font-size:13px;color:var(--muted)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--soft)}
+.row:last-child{border-bottom:0}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--soft);color:var(--muted)}
+.badge.owner{background:var(--acc-bg);color:var(--accent)}.badge.ok{background:var(--pos-bg);color:var(--pos)}.badge.wait{background:var(--warn-bg);color:var(--warn)}
+.chk{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--soft)}.chk:last-child{border-bottom:0}
+.pass{color:var(--pos);font-weight:700}.fail{color:var(--neg);font-weight:700}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<noscript>This app needs JavaScript.</noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+'use strict';
+/* The project address and the PUBLIC key. Both are meant to be public. Never put a secret key here. */
+var SUPABASE_URL='https://zxmrzbtoflibnkavqjlm.supabase.co';
+var SUPABASE_KEY='sb_publishable_FyUAzUIW4Q_Ao8MSH9Ahpg_mGZkUIME';
+
+var L='en';try{L=localStorage.getItem('ll_lang')||'en'}catch(e){}
+var AR={
+'Sign in':'تسجيل الدخول','Create an account':'إنشاء حساب','Create account':'إنشاء الحساب','Email':'البريد الإلكتروني','Password':'كلمة المرور','Full name':'الاسم الكامل','Phone':'الهاتف',
+'Sign out':'تسجيل الخروج','Loading...':'جارٍ التحميل...','I already have an account':'لدي حساب بالفعل',
+'Waiting for owner approval':'بانتظار موافقة المالك','The owner must approve your account before you can use the app. Ask the owner, then tap Check again.':'يجب أن يوافق المالك على حسابك قبل أن تتمكن من استخدام التطبيق. اسأل المالك ثم اضغط «تحقق مرة أخرى».',
+'Check again':'تحقق مرة أخرى','Account created. If you were asked to confirm your email, do that first. Then wait for the owner to approve you.':'تم إنشاء الحساب. إذا طُلب منك تأكيد بريدك الإلكتروني فافعل ذلك أولًا، ثم انتظر موافقة المالك.',
+'Use at least 8 characters for the password.':'استخدم 8 أحرف على الأقل لكلمة المرور.','Enter your name, phone and email.':'أدخل اسمك وهاتفك وبريدك الإلكتروني.',
+'Owner':'المالك','Salesperson':'مندوب مبيعات','Signed in':'تم تسجيل الدخول','Approvals':'الموافقات','Nobody is waiting for approval.':'لا أحد بانتظار الموافقة.','Approve':'موافقة',
+'Team':'الفريق','Active':'نشط','Waiting':'بانتظار الموافقة','Turn off':'إيقاف','Turn on':'تفعيل','You':'أنت',
+'Security check':'فحص الأمان','Runs real tests on your cloud database to prove the rules work for the account you are signed in with.':'يُجري اختبارات حقيقية على قاعدة البيانات السحابية لإثبات أن القواعد تعمل مع الحساب الذي سجّلت به.',
+'Run the check':'تشغيل الفحص','Your own profile can be read':'يمكن قراءة ملفك الشخصي','Owner-only data is visible to the owner only':'بيانات المالك ظاهرة للمالك فقط','Shared team data is visible to approved members':'بيانات الفريق المشتركة ظاهرة للأعضاء المعتمدين',
+'You cannot edit your own record (so nobody can make themselves owner)':'لا يمكنك تعديل سجلك بنفسك (فلا يستطيع أحد أن يجعل نفسه مالكًا)','Someone who is not signed in cannot read anything':'من لم يسجّل الدخول لا يستطيع قراءة أي شيء',
+'Everything passed.':'نجحت كل الفحوصات.','Something failed. Do not use this for real data yet, and send me a screenshot.':'فشل شيء ما. لا تستخدمه لبيانات حقيقية بعد، وأرسل لي لقطة شاشة.',
+'No profile was found for this login. Ask the owner to check the setup.':'لم يُعثر على ملف لهذا الحساب. اطلب من المالك مراجعة الإعداد.','Could not load the app. Check your internet connection and refresh.':'تعذّر تحميل التطبيق. تحقق من الإنترنت وحدّث الصفحة.',
+'Approved':'تمت الموافقة','Updated':'تم التحديث','Stage 1 test version. Business data comes in the next stages.':'نسخة اختبار المرحلة الأولى. بيانات العمل تأتي في المراحل التالية.'
+};
+function t(k){return (L==='ar'&&AR[k])||k}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+var app=document.getElementById('app');
+var S={view:'boot',session:null,profile:null,team:[],checks:null,msg:'',err:'',busy:false,draft:{}};
+var sb=null;
+
+function top(){
+  return '<div class="top"><div class="brand">Ledgerline</div><div><button class="lnk" data-a="lang">'+(L==='ar'?'English':'العربية')+'</button>'+(S.session?'<button class="lnk" data-a="signout">'+t('Sign out')+'</button>':'')+'</div></div>';
+}
+function note(){return (S.err?'<div class="note bad">'+esc(S.err)+'</div>':'')+(S.msg?'<div class="note ok">'+esc(S.msg)+'</div>':'')}
+function field(label,name,type,extra){return '<label>'+t(label)+'<input name="'+name+'" type="'+type+'" '+(type==='password'?'':'value="'+esc(S.draft[name]||'')+'" ')+(extra||'')+' required></label>'}
+
+function viewLogin(){
+  return '<h1>'+t('Sign in')+'</h1><form class="card" data-form="login">'+field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="current-password"')+
+    '<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Sign in')+'</button></form><button class="btn alt" data-a="to-signup">'+t('Create an account')+'</button>';
+}
+function viewSignup(){
+  return '<h1>'+t('Create an account')+'</h1><form class="card" data-form="signup">'+field('Full name','full_name','text','autocomplete="name"')+field('Phone','phone','tel','autocomplete="tel"')+
+    field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="new-password"')+
+    '<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Create account')+'</button></form><button class="btn alt" data-a="to-login">'+t('I already have an account')+'</button>';
+}
+function viewPending(){
+  var p=S.profile||{};
+  return '<h1>'+t('Waiting for owner approval')+'</h1><div class="card"><p>'+t('The owner must approve your account before you can use the app. Ask the owner, then tap Check again.')+'</p><p class="sub">'+esc(p.full_name||'')+' '+esc(p.email||'')+'</p><button class="btn" data-a="refresh">'+t('Check again')+'</button></div>';
+}
+function viewNoProfile(){return '<h1>'+t('Sign in')+'</h1><div class="note bad">'+t('No profile was found for this login. Ask the owner to check the setup.')+'</div>'}
+function personRow(p,withActions){
+  var me=S.profile&&p.id===S.profile.id;
+  return '<div class="row"><div><b>'+esc(p.full_name||p.email)+'</b>'+(me?' <span class="sub">('+t('You')+')</span>':'')+'<div class="sub">'+esc(p.email||'')+(p.phone?' &nbsp; '+esc(p.phone):'')+'</div></div><div>'+
+    (p.role==='owner'?'<span class="badge owner">'+t('Owner')+'</span>':(p.active?'<span class="badge ok">'+t('Active')+'</span>':'<span class="badge wait">'+t('Waiting')+'</span>'))+
+    (withActions&&!me?' <button class="btn sm '+(p.active?'alt':'')+'" data-a="toggle" data-id="'+esc(p.id)+'" data-on="'+(p.active?'0':'1')+'">'+(p.active?t('Turn off'):t('Approve'))+'</button>':'')+'</div></div>';
+}
+function viewHome(){
+  var p=S.profile,owner=p.role==='owner',h='<h1>'+esc(p.full_name||p.email)+'</h1><p><span class="badge '+(owner?'owner':'ok')+'">'+t(owner?'Owner':'Salesperson')+'</span> <span class="sub">'+t('Signed in')+'</span></p>';
+  if(owner){
+    var pend=S.team.filter(function(x){return !x.active});
+    h+='<div class="card"><h2>'+t('Approvals')+'</h2>'+(pend.length?pend.map(function(x){return personRow(x,true)}).join(''):'<p class="muted">'+t('Nobody is waiting for approval.')+'</p>')+'</div>';
+    h+='<div class="card"><h2>'+t('Team')+'</h2>'+S.team.filter(function(x){return x.active}).map(function(x){return personRow(x,true)}).join('')+'</div>';
+  }
+  h+='<div class="card"><h2>'+t('Security check')+'</h2><p class="sub">'+t('Runs real tests on your cloud database to prove the rules work for the account you are signed in with.')+'</p>'+
+    (S.checks?S.checks.list.map(function(c){return '<div class="chk"><span class="'+(c.ok?'pass':'fail')+'">'+(c.ok?'\u2713':'\u2717')+'</span><span>'+t(c.name)+'</span></div>'}).join('')+'<div class="note '+(S.checks.ok?'ok':'bad')+'" style="margin-top:10px">'+t(S.checks.ok?'Everything passed.':'Something failed. Do not use this for real data yet, and send me a screenshot.')+'</div>':'')+
+    '<button class="btn" data-a="check"'+(S.busy?' disabled':'')+'>'+t('Run the check')+'</button></div><p class="sub">'+t('Stage 1 test version. Business data comes in the next stages.')+'</p>';
+  return h;
+}
+function render(){
+  document.documentElement.lang=L;document.documentElement.dir=L==='ar'?'rtl':'ltr';
+  var v=S.view,body=v==='boot'?'<p class="muted">'+t('Loading...')+'</p>':v==='login'?viewLogin():v==='signup'?viewSignup():v==='pending'?viewPending():v==='noprofile'?viewNoProfile():viewHome();
+  app.innerHTML='<div class="wrap">'+top()+note()+body+'</div>';
+}
+
+async function loadTeam(){
+  if(!S.profile||S.profile.role!=='owner'){S.team=[];return}
+  var r=await sb.from('profiles').select('*').order('created_at');
+  S.team=r.error?[]:(r.data||[]);
+  if(r.error)S.err=r.error.message;
+}
+async function refresh(){
+  try{
+    var r=await sb.auth.getSession();S.session=r.data&&r.data.session;
+    if(!S.session){S.profile=null;S.team=[];S.checks=null;if(S.view!=='signup')S.view='login';render();return}
+    var p=await sb.from('profiles').select('*').eq('id',S.session.user.id).maybeSingle();
+    if(p.error){S.err=p.error.message;S.view='noprofile';render();return}
+    S.profile=p.data;
+    if(!S.profile)S.view='noprofile';
+    else if(!S.profile.active)S.view='pending';
+    else{S.view='home';await loadTeam()}
+  }catch(e){S.err=String(e&&e.message||e)}
+  render();
+}
+var rt;function queue(){clearTimeout(rt);rt=setTimeout(refresh,60)}
+
+async function runChecks(){
+  S.busy=true;S.checks=null;render();
+  var list=[],owner=S.profile.role==='owner';
+  function add(name,ok){list.push({name:name,ok:!!ok})}
+  var own=await sb.from('profiles').select('*').eq('id',S.profile.id).maybeSingle();
+  add('Your own profile can be read',!own.error&&own.data&&own.data.id===S.profile.id);
+  var oo=await sb.from('owner_only_test').select('*');var ooN=oo.error?0:(oo.data||[]).length;
+  add('Owner-only data is visible to the owner only',owner?ooN>=1:ooN===0);
+  var tt=await sb.from('team_test').select('*');add('Shared team data is visible to approved members',!tt.error&&(tt.data||[]).length>=1);
+  if(!owner){
+    var up=await sb.from('profiles').update({full_name:S.profile.full_name}).eq('id',S.profile.id).select();
+    add('You cannot edit your own record (so nobody can make themselves owner)',!!up.error||(up.data||[]).length===0);
+  }
+  var anon=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  var a1=await anon.from('owner_only_test').select('*'),a2=await anon.from('team_test').select('*'),a3=await anon.from('profiles').select('*');
+  var none=function(r){return !!r.error||(r.data||[]).length===0};
+  add('Someone who is not signed in cannot read anything',none(a1)&&none(a2)&&none(a3));
+  S.checks={list:list,ok:list.every(function(c){return c.ok})};S.busy=false;render();
+}
+
+document.addEventListener('submit',async function(e){
+  e.preventDefault();var f=e.target,k=f.dataset.form,fd=new FormData(f);S.err='';S.msg='';
+  S.draft={};['full_name','phone','email'].forEach(function(n){if(fd.get(n)!=null)S.draft[n]=String(fd.get(n))});
+  try{
+    if(k==='login'){
+      S.busy=true;render();
+      var r=await sb.auth.signInWithPassword({email:String(fd.get('email')).trim(),password:String(fd.get('password'))});
+      S.busy=false;if(r.error){S.err=r.error.message;render();return}
+      S.draft={};await refresh();
+    }else if(k==='signup'){
+      var name=String(fd.get('full_name')).trim(),phone=String(fd.get('phone')).trim(),email=String(fd.get('email')).trim(),pw=String(fd.get('password'));
+      if(!name||!phone||!email){S.err=t('Enter your name, phone and email.');render();return}
+      if(pw.length<8){S.err=t('Use at least 8 characters for the password.');render();return}
+      S.busy=true;render();
+      var s=await sb.auth.signUp({email:email,password:pw,options:{data:{full_name:name,phone:phone}}});
+      S.busy=false;if(s.error){S.err=s.error.message;render();return}
+      S.draft={};if(s.data&&s.data.session){await refresh()}else{S.msg=t('Account created. If you were asked to confirm your email, do that first. Then wait for the owner to approve you.');S.view='login';render()}
+    }
+  }catch(x){S.busy=false;S.err=String(x&&x.message||x);render()}
+});
+document.addEventListener('click',async function(e){
+  var b=e.target.closest('[data-a]');if(!b)return;var a=b.dataset.a;S.err='';S.msg='';
+  try{
+    if(a==='lang'){L=L==='ar'?'en':'ar';try{localStorage.setItem('ll_lang',L)}catch(x){}render()}
+    else if(a==='to-signup'){S.view='signup';S.draft={};render()}
+    else if(a==='to-login'){S.view='login';S.draft={};render()}
+    else if(a==='signout'){await sb.auth.signOut();S.view='login';S.profile=null;S.session=null;S.team=[];S.checks=null;render()}
+    else if(a==='refresh'){await refresh()}
+    else if(a==='check'){await runChecks()}
+    else if(a==='toggle'){
+      var on=b.dataset.on==='1',r=await sb.from('profiles').update({active:on}).eq('id',b.dataset.id).select();
+      if(r.error){S.err=r.error.message}else{S.msg=t(on?'Approved':'Updated')}
+      await loadTeam();render();
+    }
+  }catch(x){S.err=String(x&&x.message||x);render()}
+});
+
+if(!window.supabase||!window.supabase.createClient){S.view='login';S.err=t('Could not load the app. Check your internet connection and refresh.');render();return}
+sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+sb.auth.onAuthStateChange(function(){queue()});
+render();refresh();
+})();
+</script>
+</body>
+</html>
