@@ -6,33 +6,60 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Ledgerline</title>
 <style>
-:root{--paper:#F1F4F1;--card:#fff;--ink:#16221E;--muted:#5C6A64;--line:#D8DFDA;--soft:#E7ECE8;--accent:#2848A8;--on-accent:#fff;--pos:#1B7548;--neg:#B0392D;--pos-bg:#DDF0E5;--neg-bg:#F7DEDA;--acc-bg:#DFE6F7;--warn-bg:#F6E8C8;--warn:#8F6209}
-@media (prefers-color-scheme:dark){:root{--paper:#111916;--card:#19231F;--ink:#E6EEE9;--muted:#93A29B;--line:#2A3732;--soft:#222E29;--accent:#8AA4F2;--on-accent:#0E1A3A;--pos:#5CC48E;--neg:#F28576;--pos-bg:#1B3A2B;--neg-bg:#42231F;--acc-bg:#1F2A4A;--warn-bg:#3F3216;--warn:#E3B650}}
+:root{--paper:#F1F4F1;--card:#fff;--ink:#16221E;--muted:#5C6A64;--line:#D8DFDA;--soft:#E7ECE8;--accent:#2848A8;--on-accent:#fff;--pos:#1B7548;--on-pos:#fff;--neg:#B0392D;--pos-bg:#DDF0E5;--neg-bg:#F7DEDA;--acc-bg:#DFE6F7;--warn-bg:#F6E8C8;--warn:#8F6209;--r1:#2848A8;--r2:#1F7A6B;--r3:#A35A12;--r4:#8A3F8F;--r5:#5E7F1D}
+@media (prefers-color-scheme:dark){:root{--paper:#111916;--card:#19231F;--ink:#E6EEE9;--muted:#93A29B;--line:#2A3732;--soft:#222E29;--accent:#8AA4F2;--on-accent:#0E1A3A;--pos:#5CC48E;--on-pos:#0B2217;--neg:#F28576;--pos-bg:#1B3A2B;--neg-bg:#42231F;--acc-bg:#1F2A4A;--warn-bg:#3F3216;--warn:#E3B650;--r1:#8AA4F2;--r2:#5FC1AE;--r3:#E3A55C;--r4:#D08AD6;--r5:#A3C760}}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--paper);color:var(--ink);font:16px/1.45 -apple-system,'Segoe UI',Roboto,'IBM Plex Sans Arabic',Tahoma,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-.wrap{max-width:480px;margin:0 auto;padding:16px 16px 40px}
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+body{background:var(--paper);color:var(--ink);font:16px/1.45 -apple-system,'Segoe UI',Roboto,'IBM Plex Sans Arabic',Tahoma,sans-serif;padding-top:env(safe-area-inset-top)}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .brand{font-weight:600;font-size:18px;color:var(--accent)}
 .lnk{background:none;border:0;color:var(--accent);font:inherit;font-size:14px;font-weight:500;padding:6px 0;margin-inline-start:14px}
-h1{font-size:24px;margin:6px 0 14px;letter-spacing:-.01em}
+h1{font-size:24px;margin:6px 0 12px;letter-spacing:-.01em}
 h2{font-size:16px;margin:0 0 10px}
+h3{font-size:16px;margin:18px 0 8px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
 label{display:block;margin-bottom:12px;font-size:14px;color:var(--muted)}
-input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:13px;margin-top:4px}
+input,select,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:4px}
+input[type=checkbox]{width:22px;height:22px;margin:0}
 button.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font:inherit;font-size:17px;font-weight:600}
 button.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+button.btn.go{background:var(--pos);color:var(--on-pos)}
 button.btn.sm{width:auto;min-height:40px;padding:0 14px;font-size:15px}
 button:disabled{opacity:.5}
 .note{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:15px}
-.note.bad{background:var(--neg-bg);color:var(--neg)}.note.ok{background:var(--pos-bg);color:var(--pos)}.note.info{background:var(--acc-bg);color:var(--accent)}
+.note.bad{background:var(--neg-bg);color:var(--neg)}.note.ok{background:var(--pos-bg);color:var(--pos)}
 .muted{color:var(--muted)}.sub{font-size:13px;color:var(--muted)}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--soft)}
 .row:last-child{border-bottom:0}
+.grow{flex:1;min-width:0}
 .badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--soft);color:var(--muted)}
-.badge.owner{background:var(--acc-bg);color:var(--accent)}.badge.ok{background:var(--pos-bg);color:var(--pos)}.badge.wait{background:var(--warn-bg);color:var(--warn)}
+.badge.owner{background:var(--acc-bg);color:var(--accent)}.badge.ok{background:var(--pos-bg);color:var(--pos)}.badge.wait{background:var(--warn-bg);color:var(--warn)}.badge.bad{background:var(--neg-bg);color:var(--neg)}
 .chk{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--soft)}.chk:last-child{border-bottom:0}
 .pass{color:var(--pos);font-weight:700}.fail{color:var(--neg);font-weight:700}
+.goal{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.gnum{font-size:46px;font-weight:600;line-height:1;letter-spacing:-.03em}.gof{color:var(--muted)}
+.pbar{display:flex;height:22px;border-radius:5px;overflow:hidden;background:var(--soft);margin:12px 0 8px}
+.pbar i{display:block;height:100%;border-inline-end:2px solid var(--card)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-inline-end:6px}
+.ccard{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;padding-inline-start:16px;margin-bottom:10px}
+.ccard .go{flex:none;min-width:116px;min-height:54px;border-radius:12px;border:0;background:var(--pos);color:var(--on-pos);font:inherit;font-size:17px;font-weight:600;padding:0 14px}
+.ccard.prog{border:2px solid var(--accent)}.ccard.done{background:var(--soft)}
+.tabs{position:fixed;inset-inline:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:20}
+.tabs button{flex:1;background:none;border:0;font:inherit;font-size:13px;color:var(--muted);padding:10px 4px;border-radius:8px}
+.tabs button[aria-current=page]{color:var(--accent);font-weight:600}
+.shade{position:fixed;inset:0;background:rgba(10,18,15,.5);z-index:40}
+.sheet{position:fixed;inset-inline:0;bottom:0;z-index:50;max-height:92%;overflow:auto;background:var(--card);border-radius:16px 16px 0 0;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
+.sheet h2{font-size:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.selbar{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:10px;margin-top:12px;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.selbar select{flex:1;min-width:120px;margin:0}
+.arow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--soft)}
+.arow:last-child{border-bottom:0}
+.arow input[type=checkbox]{flex:none}
+.arow .nm{flex:1;min-width:0;background:none;border:0;text-align:start;font:inherit;color:inherit;padding:6px 0}
+.perf{padding:10px 0;border-bottom:1px solid var(--soft)}.perf:last-child{border-bottom:0}
+.pb{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;margin:6px 0}.pb i{display:block;height:100%}
 </style>
 </head>
 <body>
@@ -45,132 +72,283 @@ button:disabled{opacity:.5}
 /* The project address and the PUBLIC key. Both are meant to be public. Never put a secret key here. */
 var SUPABASE_URL='https://zxmrzbtoflibnkavqjlm.supabase.co';
 var SUPABASE_KEY='sb_publishable_FyUAzUIW4Q_Ao8MSH9Ahpg_mGZkUIME';
+var COLORS=['var(--r1)','var(--r2)','var(--r3)','var(--r4)','var(--r5)'];
 
 var L='en';try{L=localStorage.getItem('ll_lang')||'en'}catch(e){}
 var AR={
-'Sign in':'تسجيل الدخول','Create an account':'إنشاء حساب','Create account':'إنشاء الحساب','Email':'البريد الإلكتروني','Password':'كلمة المرور','Full name':'الاسم الكامل','Phone':'الهاتف',
-'Sign out':'تسجيل الخروج','Loading...':'جارٍ التحميل...','I already have an account':'لدي حساب بالفعل',
+'Sign in':'تسجيل الدخول','Create an account':'إنشاء حساب','Create account':'إنشاء الحساب','Email':'البريد الإلكتروني','Password':'كلمة المرور','Full name':'الاسم الكامل','Phone':'الهاتف','Address':'العنوان','Name':'الاسم',
+'Sign out':'تسجيل الخروج','Loading...':'جارٍ التحميل...','I already have an account':'لدي حساب بالفعل','Save':'حفظ','Cancel':'إلغاء',
 'Waiting for owner approval':'بانتظار موافقة المالك','The owner must approve your account before you can use the app. Ask the owner, then tap Check again.':'يجب أن يوافق المالك على حسابك قبل أن تتمكن من استخدام التطبيق. اسأل المالك ثم اضغط «تحقق مرة أخرى».',
-'Check again':'تحقق مرة أخرى','Account created. If you were asked to confirm your email, do that first. Then wait for the owner to approve you.':'تم إنشاء الحساب. إذا طُلب منك تأكيد بريدك الإلكتروني فافعل ذلك أولًا، ثم انتظر موافقة المالك.',
+'Check again':'تحقق مرة أخرى','Account created, but you cannot sign in yet. Ask the owner to finish the setup.':'تم إنشاء الحساب، لكن لا يمكنك تسجيل الدخول بعد. اطلب من المالك إكمال الإعداد.',
 'Use at least 8 characters for the password.':'استخدم 8 أحرف على الأقل لكلمة المرور.','Enter your name, phone and email.':'أدخل اسمك وهاتفك وبريدك الإلكتروني.',
-'Owner':'المالك','Salesperson':'مندوب مبيعات','Signed in':'تم تسجيل الدخول','Approvals':'الموافقات','Nobody is waiting for approval.':'لا أحد بانتظار الموافقة.','Approve':'موافقة',
-'Team':'الفريق','Active':'نشط','Waiting':'بانتظار الموافقة','Turn off':'إيقاف','Turn on':'تفعيل','You':'أنت',
-'Security check':'فحص الأمان','Runs real tests on your cloud database to prove the rules work for the account you are signed in with.':'يُجري اختبارات حقيقية على قاعدة البيانات السحابية لإثبات أن القواعد تعمل مع الحساب الذي سجّلت به.',
-'Run the check':'تشغيل الفحص','Your own profile can be read':'يمكن قراءة ملفك الشخصي','Owner-only data is visible to the owner only':'بيانات المالك ظاهرة للمالك فقط','Shared team data is visible to approved members':'بيانات الفريق المشتركة ظاهرة للأعضاء المعتمدين',
-'You cannot edit your own record (so nobody can make themselves owner)':'لا يمكنك تعديل سجلك بنفسك (فلا يستطيع أحد أن يجعل نفسه مالكًا)','Someone who is not signed in cannot read anything':'من لم يسجّل الدخول لا يستطيع قراءة أي شيء',
+'Owner':'المالك','Salesperson':'مندوب مبيعات','Approvals':'الموافقات','Nobody is waiting for approval.':'لا أحد بانتظار الموافقة.','Approve':'موافقة','Team':'الفريق','Active':'نشط','Waiting':'بانتظار الموافقة','Turn off':'إيقاف','You':'أنت','Approved':'تمت الموافقة','Updated':'تم التحديث',
+'Home':'الرئيسية','Customers':'العملاء','Today':'اليوم','Check':'فحص',
+'Company target today':'هدف الشركة اليوم','of {0} unique customers visited':'من أصل {0} عميل مختلف تمت زيارتهم','{0} more needed to reach {1}':'يلزم {0} أخرى للوصول إلى {1}','Target of {0} reached':'تم تحقيق هدف {0}','Change target':'تغيير الهدف','Unique customers per day':'عدد العملاء المختلفين يوميًا','Effective from':'ساري اعتبارًا من',
+'The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.':'الهدف للشركة كلها. لا توجد حصة شخصية. تحتفظ الأيام السابقة بالهدف الذي كان ساريًا.','Target saved':'تم حفظ الهدف','The new target must start today or later.':'يجب أن يبدأ الهدف الجديد من اليوم أو بعده.','Enter a target between 1 and 1000.':'أدخل هدفًا بين 1 و1000.',
+'Salespeople today':'المندوبون اليوم','{0} visits':'{0} زيارات','{0} counted':'{0} محتسبة','Not visited yet':'لم تتم زيارتهم بعد','No visits yet today.':'لا توجد زيارات اليوم بعد.','Everyone assigned has been visited.':'تمت زيارة كل العملاء المخصصين.','Unassigned':'غير مخصص',
+'Your visits':'زياراتك','My customers':'عملائي','No customers are assigned to you yet. Ask the owner, or add your own customer.':'لا يوجد عملاء مخصصون لك بعد. اسأل المالك أو أضف عميلًا.','Add customer':'إضافة عميل','Edit customer':'تعديل العميل','Search customers':'ابحث عن العملاء',
+'Check in':'تسجيل الوصول','Getting location...':'جارٍ تحديد الموقع...','Continue':'متابعة','Visit in progress':'زيارة جارية','Checked in at {0}':'تم تسجيل الوصول عند {0}','GPS location saved':'تم حفظ موقع GPS','{0} m from the saved location':'على بعد {0} م من الموقع المحفوظ',
+'Note (optional)':'ملاحظة (اختياري)','Finish visit':'إنهاء الزيارة','Visit finished':'تم إنهاء الزيارة','Back':'رجوع',
+'GPS is not available on this device.':'GPS غير متاح على هذا الجهاز.','GPS signal is weak. Move to open sky and try again.':'إشارة GPS ضعيفة. انتقل إلى مكان مكشوف وحاول مرة أخرى.','Location access is blocked. Allow location for this website in Safari settings, then try again.':'الوصول إلى الموقع محظور. اسمح بالموقع لهذا الموقع من إعدادات Safari ثم حاول مرة أخرى.','Your location could not be determined. Try again.':'تعذّر تحديد موقعك. حاول مرة أخرى.',
+'Assigned to':'مخصص لـ','Assign to':'تخصيص إلى','Assign':'تخصيص','Clear':'مسح','selected':'محدد','All customers':'كل العملاء','Select at least one customer.':'حدّد عميلًا واحدًا على الأقل.','Customer saved':'تم حفظ العميل','Assigned':'تم التخصيص','Active customer':'عميل نشط','Inactive':'غير نشط','No customers yet.':'لا يوجد عملاء بعد.','Tick customers, choose a salesperson, then tap Assign.':'حدّد العملاء واختر مندوبًا ثم اضغط «تخصيص».',
+'Security check':'فحص الأمان','Runs real tests on your cloud database to prove the rules work for the account you are signed in with.':'يُجري اختبارات حقيقية على قاعدة البيانات السحابية لإثبات أن القواعد تعمل مع الحساب الذي سجّلت به.','Run the check':'تشغيل الفحص',
+'Your own profile can be read':'يمكن قراءة ملفك الشخصي','Owner-only data is visible to the owner only':'بيانات المالك ظاهرة للمالك فقط','Shared team data is visible to approved members':'بيانات الفريق المشتركة ظاهرة للأعضاء المعتمدين','You cannot edit your own record (so nobody can make themselves owner)':'لا يمكنك تعديل سجلك بنفسك (فلا يستطيع أحد أن يجعل نفسه مالكًا)','Someone who is not signed in cannot read anything':'من لم يسجّل الدخول لا يستطيع قراءة أي شيء',
+'Customers: you only see what the rules allow':'العملاء: ترى فقط ما تسمح به القواعد','Visits cannot be written directly, only by checking in':'لا يمكن كتابة الزيارات مباشرة، فقط بتسجيل الوصول','Only the owner can change the company target':'المالك وحده يستطيع تغيير هدف الشركة','You cannot edit customers owned by the owner':'لا يمكنك تعديل بيانات العملاء','The company progress totals can be read':'يمكن قراءة إجماليات تقدم الشركة',
 'Everything passed.':'نجحت كل الفحوصات.','Something failed. Do not use this for real data yet, and send me a screenshot.':'فشل شيء ما. لا تستخدمه لبيانات حقيقية بعد، وأرسل لي لقطة شاشة.',
 'No profile was found for this login. Ask the owner to check the setup.':'لم يُعثر على ملف لهذا الحساب. اطلب من المالك مراجعة الإعداد.','Could not load the app. Check your internet connection and refresh.':'تعذّر تحميل التطبيق. تحقق من الإنترنت وحدّث الصفحة.',
-'Approved':'تمت الموافقة','Updated':'تم التحديث','Stage 1 test version. Business data comes in the next stages.':'نسخة اختبار المرحلة الأولى. بيانات العمل تأتي في المراحل التالية.'
+'The Stage 2 database setup has not been run yet. Run ledgerline-cloud-setup-2 in Supabase.':'لم يتم تشغيل إعداد قاعدة البيانات للمرحلة الثانية بعد. شغّل ledgerline-cloud-setup-2 في Supabase.',
+'Stage 2 test version. Sales, stock and money come in the next stages.':'نسخة اختبار المرحلة الثانية. المبيعات والمخزون والمال في المراحل التالية.','Name is required.':'الاسم مطلوب.'
 };
-function t(k){return (L==='ar'&&AR[k])||k}
+function t(k){var s=(L==='ar'&&AR[k])||k;for(var i=1;i<arguments.length;i++)s=s.replace('{'+(i-1)+'}',arguments[i]);return s}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function $(id){return document.getElementById(id)}
+function cairoToday(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo'}).format(new Date())}
+function fmtTime(iso){return new Date(iso).toLocaleTimeString(L==='ar'?'ar-u-nu-latn':'en-US',{timeZone:'Africa/Cairo',hour:'numeric',minute:'2-digit'})}
 
-var app=document.getElementById('app');
-var S={view:'boot',session:null,profile:null,team:[],checks:null,msg:'',err:'',busy:false,draft:{}};
-var sb=null;
+var app=$('app'),sb=null;
+var S={view:'boot',tab:'home',session:null,profile:null,team:[],customers:[],visits:[],progress:null,checks:null,msg:'',err:'',busy:false,draft:{},sheet:null,visit:null,sel:{},q:'',filter:'all',arep:''};
 
-function top(){
-  return '<div class="top"><div class="brand">Ledgerline</div><div><button class="lnk" data-a="lang">'+(L==='ar'?'English':'العربية')+'</button>'+(S.session?'<button class="lnk" data-a="signout">'+t('Sign out')+'</button>':'')+'</div></div>';
-}
+function isOwner(){return !!(S.profile&&S.profile.role==='owner')}
+function teamMap(){var m={};S.team.forEach(function(p){m[p.id]=p});return m}
+function custMap(){var m={};S.customers.forEach(function(c){m[c.id]=c});return m}
+function staff(){return S.team.filter(function(p){return p.active})}
+function nameOf(p){return p?(p.full_name||p.email||'?'):''}
+
+/* ---------- pieces ---------- */
+function top(){return '<div class="top"><div class="brand">Ledgerline</div><div><button class="lnk" data-a="lang">'+(L==='ar'?'English':'العربية')+'</button>'+(S.session?'<button class="lnk" data-a="signout">'+t('Sign out')+'</button>':'')+'</div></div>'}
 function note(){return (S.err?'<div class="note bad">'+esc(S.err)+'</div>':'')+(S.msg?'<div class="note ok">'+esc(S.msg)+'</div>':'')}
 function field(label,name,type,extra){return '<label>'+t(label)+'<input name="'+name+'" type="'+type+'" '+(type==='password'?'':'value="'+esc(S.draft[name]||'')+'" ')+(extra||'')+' required></label>'}
+function bar(parts,total){var tot=Math.max(total,parts.reduce(function(a,p){return a+p.n},0),1);return '<div class="pbar">'+parts.filter(function(p){return p.n>0}).map(function(p){return '<i style="width:'+(p.n/tot*100).toFixed(1)+'%;background:'+p.c+'"></i>'}).join('')+'</div>'}
 
-function viewLogin(){
-  return '<h1>'+t('Sign in')+'</h1><form class="card" data-form="login">'+field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="current-password"')+
-    '<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Sign in')+'</button></form><button class="btn alt" data-a="to-signup">'+t('Create an account')+'</button>';
+/* ---------- sign in / up ---------- */
+function viewLogin(){return '<h1>'+t('Sign in')+'</h1><form class="card" data-form="login">'+field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="current-password"')+'<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Sign in')+'</button></form><button class="btn alt" data-a="to-signup">'+t('Create an account')+'</button>'}
+function viewSignup(){return '<h1>'+t('Create an account')+'</h1><form class="card" data-form="signup">'+field('Full name','full_name','text','autocomplete="name"')+field('Phone','phone','tel','autocomplete="tel"')+field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="new-password"')+'<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Create account')+'</button></form><button class="btn alt" data-a="to-login">'+t('I already have an account')+'</button>'}
+function viewPending(){var p=S.profile||{};return '<h1>'+t('Waiting for owner approval')+'</h1><div class="card"><p>'+t('The owner must approve your account before you can use the app. Ask the owner, then tap Check again.')+'</p><p class="sub">'+esc(p.full_name||'')+' '+esc(p.email||'')+'</p><button class="btn" data-a="refresh">'+t('Check again')+'</button></div>'}
+
+/* ---------- shared: progress ---------- */
+function progressCard(){
+  var p=S.progress;if(!p)return '';
+  var rem=Math.max(0,p.target-p.unique_visited),parts;
+  if(isOwner())parts=ownerStats().reps.map(function(r,i){return {n:r.credited,c:COLORS[i%5]}});else parts=[{n:p.unique_visited,c:'var(--accent)'}];
+  return '<div class="card"><h2>'+t('Company target today')+'</h2><div class="goal"><span class="gnum">'+p.unique_visited+'</span><span class="gof">'+t('of {0} unique customers visited',p.target)+'</span></div>'+bar(parts,p.target)+
+    '<div><b>'+(rem>0?t('{0} more needed to reach {1}',rem,p.target):t('Target of {0} reached',p.target))+'</b></div>'+
+    (isOwner()?'<p class="sub" style="margin:8px 0 10px">'+t('The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.')+'</p><button class="btn sm alt" data-a="open-target">'+t('Change target')+'</button>':'')+'</div>';
 }
-function viewSignup(){
-  return '<h1>'+t('Create an account')+'</h1><form class="card" data-form="signup">'+field('Full name','full_name','text','autocomplete="name"')+field('Phone','phone','tel','autocomplete="tel"')+
-    field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="new-password"')+
-    '<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Create account')+'</button></form><button class="btn alt" data-a="to-login">'+t('I already have an account')+'</button>';
+
+/* ---------- owner ---------- */
+function ownerStats(){
+  var tm=teamMap(),by={},first={},reps=[];
+  S.visits.forEach(function(v){if(!first[v.customer_id])first[v.customer_id]=v.id;(by[v.rep_id]=by[v.rep_id]||[]).push(v)});
+  Object.keys(by).forEach(function(rid){var vs=by[rid];reps.push({id:rid,name:nameOf(tm[rid]),visits:vs.length,credited:vs.filter(function(v){return first[v.customer_id]===v.id}).length})});
+  reps.sort(function(a,b){return a.name<b.name?-1:1});
+  var visited={};S.visits.forEach(function(v){visited[v.customer_id]=1});
+  return {reps:reps,missed:S.customers.filter(function(c){return c.active&&c.assigned_to&&!visited[c.id]})};
 }
-function viewPending(){
-  var p=S.profile||{};
-  return '<h1>'+t('Waiting for owner approval')+'</h1><div class="card"><p>'+t('The owner must approve your account before you can use the app. Ask the owner, then tap Check again.')+'</p><p class="sub">'+esc(p.full_name||'')+' '+esc(p.email||'')+'</p><button class="btn" data-a="refresh">'+t('Check again')+'</button></div>';
-}
-function viewNoProfile(){return '<h1>'+t('Sign in')+'</h1><div class="note bad">'+t('No profile was found for this login. Ask the owner to check the setup.')+'</div>'}
-function personRow(p,withActions){
-  var me=S.profile&&p.id===S.profile.id;
-  return '<div class="row"><div><b>'+esc(p.full_name||p.email)+'</b>'+(me?' <span class="sub">('+t('You')+')</span>':'')+'<div class="sub">'+esc(p.email||'')+(p.phone?' &nbsp; '+esc(p.phone):'')+'</div></div><div>'+
-    (p.role==='owner'?'<span class="badge owner">'+t('Owner')+'</span>':(p.active?'<span class="badge ok">'+t('Active')+'</span>':'<span class="badge wait">'+t('Waiting')+'</span>'))+
-    (withActions&&!me?' <button class="btn sm '+(p.active?'alt':'')+'" data-a="toggle" data-id="'+esc(p.id)+'" data-on="'+(p.active?'0':'1')+'">'+(p.active?t('Turn off'):t('Approve'))+'</button>':'')+'</div></div>';
-}
-function viewHome(){
-  var p=S.profile,owner=p.role==='owner',h='<h1>'+esc(p.full_name||p.email)+'</h1><p><span class="badge '+(owner?'owner':'ok')+'">'+t(owner?'Owner':'Salesperson')+'</span> <span class="sub">'+t('Signed in')+'</span></p>';
-  if(owner){
-    var pend=S.team.filter(function(x){return !x.active});
-    h+='<div class="card"><h2>'+t('Approvals')+'</h2>'+(pend.length?pend.map(function(x){return personRow(x,true)}).join(''):'<p class="muted">'+t('Nobody is waiting for approval.')+'</p>')+'</div>';
-    h+='<div class="card"><h2>'+t('Team')+'</h2>'+S.team.filter(function(x){return x.active}).map(function(x){return personRow(x,true)}).join('')+'</div>';
-  }
-  h+='<div class="card"><h2>'+t('Security check')+'</h2><p class="sub">'+t('Runs real tests on your cloud database to prove the rules work for the account you are signed in with.')+'</p>'+
-    (S.checks?S.checks.list.map(function(c){return '<div class="chk"><span class="'+(c.ok?'pass':'fail')+'">'+(c.ok?'\u2713':'\u2717')+'</span><span>'+t(c.name)+'</span></div>'}).join('')+'<div class="note '+(S.checks.ok?'ok':'bad')+'" style="margin-top:10px">'+t(S.checks.ok?'Everything passed.':'Something failed. Do not use this for real data yet, and send me a screenshot.')+'</div>':'')+
-    '<button class="btn" data-a="check"'+(S.busy?' disabled':'')+'>'+t('Run the check')+'</button></div><p class="sub">'+t('Stage 1 test version. Business data comes in the next stages.')+'</p>';
+function viewOwnerHome(){
+  var st=ownerStats(),tm=teamMap(),pend=S.team.filter(function(p){return !p.active});
+  var mx=Math.max.apply(null,st.reps.map(function(x){return x.visits}).concat([1]));
+  var h=progressCard();
+  h+='<div class="card"><h2>'+t('Salespeople today')+'</h2>'+(st.reps.length?st.reps.map(function(r,i){
+    return '<div class="perf"><div class="row" style="border:0;padding:0"><b><i class="dot" style="background:'+COLORS[i%5]+'"></i>'+esc(r.name)+'</b><span>'+t('{0} visits',r.visits)+' <span class="sub">'+t('{0} counted',r.credited)+'</span></span></div><div class="pb"><i style="width:'+(r.visits/mx*100)+'%;background:'+COLORS[i%5]+'"></i></div></div>'}).join(''):'<p class="muted">'+t('No visits yet today.')+'</p>')+'</div>';
+  h+='<div class="card"><h2>'+t('Not visited yet')+' <span class="badge '+(st.missed.length?'wait':'ok')+'">'+st.missed.length+'</span></h2>'+(st.missed.length?st.missed.slice(0,12).map(function(c){return '<div class="row"><b>'+esc(c.name)+'</b><span class="sub">'+esc(nameOf(tm[c.assigned_to]))+'</span></div>'}).join('')+(st.missed.length>12?'<p class="sub">+'+(st.missed.length-12)+'</p>':''):'<p class="muted">'+t('Everyone assigned has been visited.')+'</p>')+'</div>';
+  if(pend.length)h+='<div class="card"><h2>'+t('Approvals')+' <span class="badge wait">'+pend.length+'</span></h2>'+pend.map(personRow).join('')+'</div>';
   return h;
+}
+function personRow(p){
+  var me=S.profile&&p.id===S.profile.id;
+  return '<div class="row"><div class="grow"><b>'+esc(nameOf(p))+'</b>'+(me?' <span class="sub">('+t('You')+')</span>':'')+'<div class="sub">'+esc(p.email||'')+(p.phone?' &nbsp; '+esc(p.phone):'')+'</div></div><div>'+
+    (p.role==='owner'?'<span class="badge owner">'+t('Owner')+'</span>':(p.active?'<span class="badge ok">'+t('Active')+'</span>':'<span class="badge wait">'+t('Waiting')+'</span>'))+
+    (!me?' <button class="btn sm '+(p.active?'alt':'')+'" data-a="toggle" data-id="'+esc(p.id)+'" data-on="'+(p.active?'0':'1')+'">'+(p.active?t('Turn off'):t('Approve'))+'</button>':'')+'</div></div>';
+}
+function viewOwnerTeam(){
+  var pend=S.team.filter(function(x){return !x.active}),act=S.team.filter(function(x){return x.active});
+  return '<h1>'+t('Team')+'</h1><div class="card"><h2>'+t('Approvals')+'</h2>'+(pend.length?pend.map(personRow).join(''):'<p class="muted">'+t('Nobody is waiting for approval.')+'</p>')+'</div><div class="card"><h2>'+t('Team')+'</h2>'+act.map(personRow).join('')+'</div>';
+}
+function custList(){
+  var q=S.q.trim().toLowerCase();
+  return S.customers.filter(function(c){
+    if(q&&c.name.toLowerCase().indexOf(q)<0&&(c.phone||'').indexOf(q)<0)return false;
+    if(S.filter==='all')return true;if(S.filter==='none')return !c.assigned_to;return c.assigned_to===S.filter;
+  });
+}
+function custRows(){
+  var tm=teamMap(),list=custList();
+  if(!list.length)return '<p class="muted">'+t('No customers yet.')+'</p>';
+  return list.map(function(c){var a=c.assigned_to&&tm[c.assigned_to];
+    return '<div class="arow"><input type="checkbox" data-k="sel" data-id="'+c.id+'"'+(S.sel[c.id]?' checked':'')+' aria-label="select"><button class="nm" data-a="edit-cust" data-id="'+c.id+'"><b>'+esc(c.name)+'</b>'+(c.active?'':' <span class="badge">'+t('Inactive')+'</span>')+'<div class="sub">'+esc(c.phone||'')+'</div></button><span class="sub">'+(a?esc(nameOf(a)):'<span class="badge wait">'+t('Unassigned')+'</span>')+'</span></div>'}).join('');
+}
+function selbar(){
+  var n=Object.keys(S.sel).filter(function(k){return S.sel[k]}).length;if(!n)return '';
+  return '<div class="selbar"><span><b>'+n+'</b> '+t('selected')+'</span><select id="arep" aria-label="'+t('Assign to')+'"><option value="">'+t('Unassigned')+'</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(S.arep===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select><button class="btn sm" data-a="assign-apply">'+t('Assign')+'</button><button class="btn sm alt" data-a="assign-clear">'+t('Clear')+'</button></div>';
+}
+function viewOwnerCustomers(){
+  return '<h1>'+t('Customers')+'</h1><button class="btn" data-a="add-cust" style="margin-bottom:12px">'+t('Add customer')+'</button>'+
+    '<div class="two"><input id="q" type="search" placeholder="'+t('Search customers')+'" value="'+esc(S.q)+'"><select id="fil"><option value="all">'+t('All customers')+'</option><option value="none"'+(S.filter==='none'?' selected':'')+'>'+t('Unassigned')+'</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(S.filter===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select></div>'+
+    '<p class="sub" style="margin:10px 0">'+t('Tick customers, choose a salesperson, then tap Assign.')+'</p><div class="card" id="clist">'+custRows()+'</div><div id="selbar">'+selbar()+'</div>';
+}
+
+/* ---------- salesperson ---------- */
+function viewRepHome(){
+  var vm={};S.visits.forEach(function(v){vm[v.customer_id]=v});
+  var list=S.customers.filter(function(c){return c.active}),p=S.progress,h=progressCard();
+  if(p)h+='<div class="card"><div class="row" style="border:0;padding:0"><span>'+t('Your visits')+'</span><b>'+p.my_visits+'</b></div></div>';
+  h+='<h3>'+t('My customers')+'</h3><button class="btn alt" data-a="add-cust" style="margin-bottom:12px">'+t('Add customer')+'</button>';
+  if(!list.length)return h+'<p class="muted">'+t('No customers are assigned to you yet. Ask the owner, or add your own customer.')+'</p>';
+  var order=function(c){var v=vm[c.id];return !v?0:(v.finished?2:1)};
+  list.sort(function(a,b){return order(a)-order(b)||(a.name<b.name?-1:1)});
+  return h+list.map(function(c){
+    var v=vm[c.id];
+    if(!v)return '<div class="ccard"><div class="grow"><b>'+esc(c.name)+'</b><div class="sub">'+esc(c.phone||c.address||'')+'</div></div><button class="go" data-a="checkin" data-id="'+c.id+'">'+t('Check in')+'</button></div>';
+    if(!v.finished)return '<div class="ccard prog"><div class="grow"><b>'+esc(c.name)+'</b><div class="sub">'+t('Visit in progress')+'</div></div><button class="btn sm" data-a="open-visit" data-id="'+v.id+'">'+t('Continue')+'</button></div>';
+    return '<div class="ccard done"><div class="grow"><b>'+esc(c.name)+'</b><div class="sub">'+t('Checked in at {0}',fmtTime(v.checked_in_at))+'</div></div><span class="pass" style="font-size:22px">\u2713</span></div>';
+  }).join('');
+}
+function viewVisit(){
+  var v=S.visits.filter(function(x){return x.id===S.visit})[0],c=v&&custMap()[v.customer_id];
+  if(!v||!c){S.visit=null;return isOwner()?viewOwnerHome():viewRepHome()}
+  return '<button class="lnk" data-a="back" style="margin:0 0 8px">\u2039 '+t('Back')+'</button><h1>'+esc(c.name)+'</h1><div class="card"><p><b class="pass">\u2713</b> '+t('Checked in at {0}',fmtTime(v.checked_in_at))+'</p><p>'+(v.far?'<span class="badge bad">'+t('{0} m from the saved location',v.distance_m)+'</span>':'<span class="badge ok">'+t('GPS location saved')+'</span>')+'</p>'+
+    (v.finished?'<p class="pass"><b>'+t('Visit finished')+'</b></p>':'<form data-form="finish"><label>'+t('Note (optional)')+'<textarea name="note" rows="3"></textarea></label><button class="btn go"'+(S.busy?' disabled':'')+'>'+t('Finish visit')+'</button></form>')+'</div>';
+}
+
+/* ---------- sheets ---------- */
+function sheetHTML(){
+  var s=S.sheet;if(!s)return '';var d=s.data||{},h='';
+  if(s.type==='customer'){
+    var c=d.id?custMap()[d.id]:null;
+    h='<h2>'+t(c?'Edit customer':'Add customer')+'</h2><form data-form="customer">'+
+      '<label>'+t('Name')+'<input name="name" value="'+esc(c?c.name:'')+'" required></label><label>'+t('Phone')+'<input name="phone" type="tel" value="'+esc(c?c.phone:'')+'"></label><label>'+t('Address')+'<input name="address" value="'+esc(c?c.address:'')+'"></label>'+
+      (isOwner()?'<label>'+t('Assigned to')+'<select name="assigned_to"><option value="">'+t('Unassigned')+'</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(c&&c.assigned_to===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select></label>'+
+      '<label style="display:flex;gap:10px;align-items:center"><input type="checkbox" name="active"'+(!c||c.active?' checked':'')+'>'+t('Active customer')+'</label>':'')+
+      '<button class="btn">'+t('Save')+'</button></form><button class="btn alt" data-a="close-sheet" style="margin-top:8px">'+t('Cancel')+'</button>';
+  }else if(s.type==='target'){
+    h='<h2>'+t('Change target')+'</h2><p class="sub">'+t('The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.')+'</p><form data-form="target"><label>'+t('Unique customers per day')+'<input name="value" type="number" min="1" max="1000" value="'+esc(S.progress?S.progress.target:35)+'" required></label><label>'+t('Effective from')+'<input name="from" type="date" min="'+cairoToday()+'" value="'+cairoToday()+'" required></label><button class="btn">'+t('Save')+'</button></form><button class="btn alt" data-a="close-sheet" style="margin-top:8px">'+t('Cancel')+'</button>';
+  }
+  return '<div class="shade" data-a="close-sheet"></div><div class="sheet" role="dialog">'+h+'</div>';
+}
+
+/* ---------- security check ---------- */
+function viewCheck(){
+  return '<h1>'+t('Security check')+'</h1><div class="card"><p class="sub">'+t('Runs real tests on your cloud database to prove the rules work for the account you are signed in with.')+'</p>'+
+    (S.checks?S.checks.list.map(function(c){return '<div class="chk"><span class="'+(c.ok?'pass':'fail')+'">'+(c.ok?'\u2713':'\u2717')+'</span><span>'+t(c.name)+'</span></div>'}).join('')+'<div class="note '+(S.checks.ok?'ok':'bad')+'" style="margin-top:10px">'+t(S.checks.ok?'Everything passed.':'Something failed. Do not use this for real data yet, and send me a screenshot.')+'</div>':'')+
+    '<button class="btn" data-a="check"'+(S.busy?' disabled':'')+'>'+t('Run the check')+'</button></div>';
+}
+async function runChecks(){
+  S.busy=true;S.checks=null;render();
+  var list=[],owner=isOwner(),uid=S.profile.id;
+  function add(n,ok){list.push({name:n,ok:!!ok})}
+  var rls=function(e){return !!e&&/row-level security/i.test(e.message||'')};
+  var own=await sb.from('profiles').select('*').eq('id',uid).maybeSingle();add('Your own profile can be read',!own.error&&own.data&&own.data.id===uid);
+  var oo=await sb.from('owner_only_test').select('*');var n1=oo.error?0:(oo.data||[]).length;add('Owner-only data is visible to the owner only',owner?n1>=1:n1===0);
+  var tt=await sb.from('team_test').select('*');add('Shared team data is visible to approved members',!tt.error&&(tt.data||[]).length>=1);
+  var cu=await sb.from('customers').select('*');
+  add('Customers: you only see what the rules allow',!cu.error&&(owner||(cu.data||[]).every(function(c){return c.assigned_to===uid})));
+  var pg=await sb.rpc('progress_today');add('The company progress totals can be read',!pg.error&&pg.data&&typeof pg.data.target==='number');
+  if(!owner){
+    var up=await sb.from('profiles').update({full_name:S.profile.full_name}).eq('id',uid).select();
+    add('You cannot edit your own record (so nobody can make themselves owner)',!!up.error||(up.data||[]).length===0);
+    var iv=await sb.from('visits').insert({visit_date:cairoToday(),customer_id:-1,rep_id:uid,lat:0,lng:0});
+    add('Visits cannot be written directly, only by checking in',rls(iv.error));
+    var it=await sb.from('target_history').insert({effective_from:'1900-01-01',value:1});
+    add('Only the owner can change the company target',rls(it.error));
+    var uc=await sb.from('customers').update({name:'x'}).eq('id',-1).select();
+    add('You cannot edit customers owned by the owner',!!uc.error||(uc.data||[]).length===0);
+  }
+  var anon=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  var none=function(r){return !!r.error||(r.data||[]).length===0},res=[],tbs=['owner_only_test','team_test','profiles','customers','visits','target_history'];
+  for(var i=0;i<tbs.length;i++)res.push(none(await anon.from(tbs[i]).select('*')));
+  var ap=await anon.rpc('progress_today');res.push(!!ap.error);
+  add('Someone who is not signed in cannot read anything',res.every(Boolean));
+  S.checks={list:list,ok:list.every(function(c){return c.ok})};S.busy=false;render();
+}
+
+/* ---------- render ---------- */
+function tabs(){
+  var items=isOwner()?[['home','Home'],['customers','Customers'],['team','Team'],['check','Check']]:[['home','Today'],['check','Check']];
+  return '<div class="tabs">'+items.map(function(i){return '<button data-a="tab" data-t="'+i[0]+'"'+(S.tab===i[0]&&!S.visit?' aria-current="page"':'')+'>'+t(i[1])+'</button>'}).join('')+'</div>';
+}
+function body(){
+  switch(S.view){
+    case 'boot':return '<p class="muted">'+t('Loading...')+'</p>';
+    case 'login':return viewLogin();case 'signup':return viewSignup();case 'pending':return viewPending();
+    case 'noprofile':return '<div class="note bad">'+t('No profile was found for this login. Ask the owner to check the setup.')+'</div>';
+  }
+  var who='<p style="margin:0 0 8px"><b>'+esc(nameOf(S.profile))+'</b> <span class="badge '+(isOwner()?'owner':'ok')+'">'+t(isOwner()?'Owner':'Salesperson')+'</span></p>';
+  var main;
+  if(S.visit)main=viewVisit();
+  else if(S.tab==='check')main=viewCheck();
+  else if(isOwner())main=S.tab==='customers'?viewOwnerCustomers():S.tab==='team'?viewOwnerTeam():viewOwnerHome();
+  else main=viewRepHome();
+  return who+main+'<p class="sub" style="margin-top:18px">'+t('Stage 2 test version. Sales, stock and money come in the next stages.')+'</p>';
 }
 function render(){
   document.documentElement.lang=L;document.documentElement.dir=L==='ar'?'rtl':'ltr';
-  var v=S.view,body=v==='boot'?'<p class="muted">'+t('Loading...')+'</p>':v==='login'?viewLogin():v==='signup'?viewSignup():v==='pending'?viewPending():v==='noprofile'?viewNoProfile():viewHome();
-  app.innerHTML='<div class="wrap">'+top()+note()+body+'</div>';
+  app.innerHTML='<div class="wrap">'+top()+note()+body()+'</div>'+(S.view==='app'?tabs():'')+sheetHTML();
 }
 
-async function loadTeam(){
-  if(!S.profile||S.profile.role!=='owner'){S.team=[];return}
-  var r=await sb.from('profiles').select('*').order('created_at');
-  S.team=r.error?[]:(r.data||[]);
-  if(r.error)S.err=r.error.message;
+/* ---------- data ---------- */
+async function loadAll(){
+  var d=cairoToday(),owner=isOwner();
+  var jobs=[sb.rpc('progress_today'),sb.from('customers').select('*').order('name'),sb.from('visits').select('*').eq('visit_date',d).order('checked_in_at')];
+  if(owner)jobs.push(sb.from('profiles').select('*').order('created_at'));
+  var r=await Promise.all(jobs),bad=r.filter(function(x){return x.error})[0];
+  if(bad){S.err=/does not exist|schema cache|Could not find/i.test(bad.error.message||'')?t('The Stage 2 database setup has not been run yet. Run ledgerline-cloud-setup-2 in Supabase.'):bad.error.message}
+  S.progress=r[0].error?null:r[0].data;S.customers=r[1].error?[]:r[1].data;S.visits=r[2].error?[]:r[2].data;
+  if(owner&&!r[3].error)S.team=r[3].data;
 }
 async function refresh(){
   try{
     var r=await sb.auth.getSession();S.session=r.data&&r.data.session;
-    if(!S.session){S.profile=null;S.team=[];S.checks=null;if(S.view!=='signup')S.view='login';render();return}
+    if(!S.session){S.profile=null;S.checks=null;if(S.view!=='signup')S.view='login';render();return}
     var p=await sb.from('profiles').select('*').eq('id',S.session.user.id).maybeSingle();
     if(p.error){S.err=p.error.message;S.view='noprofile';render();return}
     S.profile=p.data;
-    if(!S.profile)S.view='noprofile';
-    else if(!S.profile.active)S.view='pending';
-    else{S.view='home';await loadTeam()}
+    if(!S.profile)S.view='noprofile';else if(!S.profile.active)S.view='pending';else{S.view='app';S.err='';await loadAll()}
   }catch(e){S.err=String(e&&e.message||e)}
   render();
 }
 var rt;function queue(){clearTimeout(rt);rt=setTimeout(refresh,60)}
+function getPos(){return new Promise(function(res,rej){
+  if(!navigator.geolocation)return rej(new Error(t('GPS is not available on this device.')));
+  navigator.geolocation.getCurrentPosition(function(p){if(p.coords.accuracy>200)return rej(new Error(t('GPS signal is weak. Move to open sky and try again.')));res(p.coords)},
+    function(e){rej(new Error(e.code===1?t('Location access is blocked. Allow location for this website in Safari settings, then try again.'):t('Your location could not be determined. Try again.')))},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+})}
 
-async function runChecks(){
-  S.busy=true;S.checks=null;render();
-  var list=[],owner=S.profile.role==='owner';
-  function add(name,ok){list.push({name:name,ok:!!ok})}
-  var own=await sb.from('profiles').select('*').eq('id',S.profile.id).maybeSingle();
-  add('Your own profile can be read',!own.error&&own.data&&own.data.id===S.profile.id);
-  var oo=await sb.from('owner_only_test').select('*');var ooN=oo.error?0:(oo.data||[]).length;
-  add('Owner-only data is visible to the owner only',owner?ooN>=1:ooN===0);
-  var tt=await sb.from('team_test').select('*');add('Shared team data is visible to approved members',!tt.error&&(tt.data||[]).length>=1);
-  if(!owner){
-    var up=await sb.from('profiles').update({full_name:S.profile.full_name}).eq('id',S.profile.id).select();
-    add('You cannot edit your own record (so nobody can make themselves owner)',!!up.error||(up.data||[]).length===0);
-  }
-  var anon=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
-  var a1=await anon.from('owner_only_test').select('*'),a2=await anon.from('team_test').select('*'),a3=await anon.from('profiles').select('*');
-  var none=function(r){return !!r.error||(r.data||[]).length===0};
-  add('Someone who is not signed in cannot read anything',none(a1)&&none(a2)&&none(a3));
-  S.checks={list:list,ok:list.every(function(c){return c.ok})};S.busy=false;render();
-}
-
+/* ---------- events ---------- */
 document.addEventListener('submit',async function(e){
   e.preventDefault();var f=e.target,k=f.dataset.form,fd=new FormData(f);S.err='';S.msg='';
-  S.draft={};['full_name','phone','email'].forEach(function(n){if(fd.get(n)!=null)S.draft[n]=String(fd.get(n))});
+  if(k==='login'||k==='signup'){S.draft={};['full_name','phone','email'].forEach(function(n){if(fd.get(n)!=null)S.draft[n]=String(fd.get(n))})}
   try{
     if(k==='login'){
-      S.busy=true;render();
-      var r=await sb.auth.signInWithPassword({email:String(fd.get('email')).trim(),password:String(fd.get('password'))});
-      S.busy=false;if(r.error){S.err=r.error.message;render();return}
-      S.draft={};await refresh();
+      S.busy=true;render();var r=await sb.auth.signInWithPassword({email:String(fd.get('email')).trim(),password:String(fd.get('password'))});
+      S.busy=false;if(r.error){S.err=r.error.message;render();return}S.draft={};await refresh();
     }else if(k==='signup'){
       var name=String(fd.get('full_name')).trim(),phone=String(fd.get('phone')).trim(),email=String(fd.get('email')).trim(),pw=String(fd.get('password'));
       if(!name||!phone||!email){S.err=t('Enter your name, phone and email.');render();return}
       if(pw.length<8){S.err=t('Use at least 8 characters for the password.');render();return}
-      S.busy=true;render();
-      var s=await sb.auth.signUp({email:email,password:pw,options:{data:{full_name:name,phone:phone}}});
+      S.busy=true;render();var s=await sb.auth.signUp({email:email,password:pw,options:{data:{full_name:name,phone:phone}}});
       S.busy=false;if(s.error){S.err=s.error.message;render();return}
-      S.draft={};if(s.data&&s.data.session){await refresh()}else{S.msg=t('Account created. If you were asked to confirm your email, do that first. Then wait for the owner to approve you.');S.view='login';render()}
+      S.draft={};
+      if(s.data&&s.data.session){await refresh()}else{var li=await sb.auth.signInWithPassword({email:email,password:pw});
+        if(li.error){S.msg=t('Account created, but you cannot sign in yet. Ask the owner to finish the setup.')+' ('+li.error.message+')';S.view='login';render()}else{await refresh()}}
+    }else if(k==='customer'){
+      var d=(S.sheet&&S.sheet.data)||{},nm=String(fd.get('name')).trim();if(!nm){S.err=t('Name is required.');render();return}
+      var row={name:nm,phone:String(fd.get('phone')||'').trim(),address:String(fd.get('address')||'').trim()},res;
+      if(isOwner()){row.assigned_to=fd.get('assigned_to')||null;row.active=fd.get('active')==='on'}
+      if(d.id)res=await sb.from('customers').update(row).eq('id',d.id).select();
+      else{if(!isOwner()){row.assigned_to=S.profile.id;row.created_by=S.profile.id}res=await sb.from('customers').insert(row).select()}
+      if(res.error){S.err=res.error.message;render();return}
+      S.sheet=null;await loadAll();S.msg=t('Customer saved');render();
+    }else if(k==='target'){
+      var val=parseInt(fd.get('value'),10),from=String(fd.get('from'));
+      if(!(val>=1&&val<=1000)){S.err=t('Enter a target between 1 and 1000.');render();return}
+      if(from<cairoToday()){S.err=t('The new target must start today or later.');render();return}
+      var up=await sb.from('target_history').upsert({effective_from:from,value:val},{onConflict:'effective_from'});
+      if(up.error){S.err=up.error.message;render();return}
+      S.sheet=null;await loadAll();S.msg=t('Target saved');render();
+    }else if(k==='finish'){
+      S.busy=true;render();var fr=await sb.rpc('finish_visit',{p_visit:S.visit,p_note:String(fd.get('note')||'')});S.busy=false;
+      if(fr.error){S.err=fr.error.message;render();return}
+      await loadAll();S.msg=t('Visit finished');S.visit=null;render();
     }
   }catch(x){S.busy=false;S.err=String(x&&x.message||x);render()}
 });
@@ -180,16 +358,52 @@ document.addEventListener('click',async function(e){
     if(a==='lang'){L=L==='ar'?'en':'ar';try{localStorage.setItem('ll_lang',L)}catch(x){}render()}
     else if(a==='to-signup'){S.view='signup';S.draft={};render()}
     else if(a==='to-login'){S.view='login';S.draft={};render()}
-    else if(a==='signout'){await sb.auth.signOut();S.view='login';S.profile=null;S.session=null;S.team=[];S.checks=null;render()}
+    else if(a==='signout'){await sb.auth.signOut();S.view='login';S.profile=null;S.session=null;S.team=[];S.customers=[];S.visits=[];S.checks=null;S.visit=null;S.sheet=null;S.tab='home';render()}
     else if(a==='refresh'){await refresh()}
+    else if(a==='tab'){S.tab=b.dataset.t;S.visit=null;S.checks=null;render();window.scrollTo(0,0)}
     else if(a==='check'){await runChecks()}
     else if(a==='toggle'){
       var on=b.dataset.on==='1',r=await sb.from('profiles').update({active:on}).eq('id',b.dataset.id).select();
-      if(r.error){S.err=r.error.message}else{S.msg=t(on?'Approved':'Updated')}
-      await loadTeam();render();
+      if(r.error)S.err=r.error.message;else S.msg=t(on?'Approved':'Updated');await loadAll();render();
+    }
+    else if(a==='add-cust'){S.sheet={type:'customer',data:{}};render()}
+    else if(a==='edit-cust'){S.sheet={type:'customer',data:{id:+b.dataset.id}};render()}
+    else if(a==='open-target'){S.sheet={type:'target'};render()}
+    else if(a==='close-sheet'){S.sheet=null;render()}
+    else if(a==='assign-clear'){S.sel={};render()}
+    else if(a==='assign-apply'){
+      var ids=Object.keys(S.sel).filter(function(k){return S.sel[k]}).map(Number);
+      if(!ids.length){S.err=t('Select at least one customer.');render();return}
+      var ur=await sb.from('customers').update({assigned_to:S.arep||null}).in('id',ids).select();
+      if(ur.error){S.err=ur.error.message;render();return}
+      S.sel={};await loadAll();S.msg=t('Assigned');render();
+    }
+    else if(a==='back'){S.visit=null;render()}
+    else if(a==='open-visit'){S.visit=+b.dataset.id;render();window.scrollTo(0,0)}
+    else if(a==='checkin'){
+      b.disabled=true;b.textContent=t('Getting location...');
+      try{
+        var pos=await getPos();
+        var cr=await sb.rpc('check_in',{p_customer:+b.dataset.id,p_lat:pos.latitude,p_lng:pos.longitude,p_acc:pos.accuracy});
+        if(cr.error)throw new Error(cr.error.message);
+        await loadAll();S.visit=cr.data.id;render();window.scrollTo(0,0);
+      }catch(x){S.err=x.message;render()}
     }
   }catch(x){S.err=String(x&&x.message||x);render()}
 });
+document.addEventListener('input',function(e){
+  if(e.target&&e.target.id==='q'){S.q=e.target.value;$('clist').innerHTML=custRows()}
+});
+document.addEventListener('change',function(e){
+  var el=e.target;if(!el)return;
+  if(el.id==='fil'){S.filter=el.value;$('clist').innerHTML=custRows()}
+  else if(el.id==='arep'){S.arep=el.value}
+  else if(el.dataset&&el.dataset.k==='sel'){S.sel[el.dataset.id]=el.checked;$('selbar').innerHTML=selbar()}
+});
+/* the owner's dashboard refreshes by itself every 30 seconds */
+setInterval(async function(){
+  if(S.view==='app'&&isOwner()&&S.tab==='home'&&!S.sheet&&!S.visit&&!document.hidden){try{await loadAll();render()}catch(e){}}
+},30000);
 
 if(!window.supabase||!window.supabase.createClient){S.view='login';S.err=t('Could not load the app. Check your internet connection and refresh.');render();return}
 sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
