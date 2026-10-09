@@ -5,295 +5,591 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Ledgerline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#F1F4F1;--card:#fff;--ink:#16221E;--muted:#5C6A64;--line:#D8DFDA;--soft:#E7ECE8;--accent:#2848A8;--on-accent:#fff;--pos:#1B7548;--on-pos:#fff;--neg:#B0392D;--pos-bg:#DDF0E5;--neg-bg:#F7DEDA;--acc-bg:#DFE6F7;--warn-bg:#F6E8C8;--warn:#8F6209;--r1:#2848A8;--r2:#1F7A6B;--r3:#A35A12;--r4:#8A3F8F;--r5:#5E7F1D}
-@media (prefers-color-scheme:dark){:root{--paper:#111916;--card:#19231F;--ink:#E6EEE9;--muted:#93A29B;--line:#2A3732;--soft:#222E29;--accent:#8AA4F2;--on-accent:#0E1A3A;--pos:#5CC48E;--on-pos:#0B2217;--neg:#F28576;--pos-bg:#1B3A2B;--neg-bg:#42231F;--acc-bg:#1F2A4A;--warn-bg:#3F3216;--warn:#E3B650;--r1:#8AA4F2;--r2:#5FC1AE;--r3:#E3A55C;--r4:#D08AD6;--r5:#A3C760}}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--paper);color:var(--ink);font:16px/1.45 -apple-system,'Segoe UI',Roboto,'IBM Plex Sans Arabic',Tahoma,sans-serif;padding-top:env(safe-area-inset-top)}
-.wrap{max-width:560px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.brand{font-weight:600;font-size:18px;color:var(--accent)}
-.lnk{background:none;border:0;color:var(--accent);font:inherit;font-size:14px;font-weight:500;padding:6px 0;margin-inline-start:14px}
-h1{font-size:24px;margin:6px 0 12px;letter-spacing:-.01em}
-h2{font-size:16px;margin:0 0 10px}
-h3{font-size:16px;margin:18px 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
-label{display:block;margin-bottom:12px;font-size:14px;color:var(--muted)}
-input,select,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:4px}
-input[type=checkbox]{width:22px;height:22px;margin:0}
-button.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font:inherit;font-size:17px;font-weight:600}
-button.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
-button.btn.go{background:var(--pos);color:var(--on-pos)}
-button.btn.sm{width:auto;min-height:40px;padding:0 14px;font-size:15px}
-button:disabled{opacity:.5}
-.note{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:15px}
-.note.bad{background:var(--neg-bg);color:var(--neg)}.note.ok{background:var(--pos-bg);color:var(--pos)}
-.muted{color:var(--muted)}.sub{font-size:13px;color:var(--muted)}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--soft)}
+:root{
+  --paper:#F1F4F1;--card:#FFFFFF;--ink:#16221E;--muted:#5C6A64;--line:#D8DFDA;--soft:#E7ECE8;
+  --accent:#2848A8;--on-accent:#FFFFFF;--pos:#1B7548;--neg:#B0392D;--warn:#8F6209;
+  --pos-bg:#DDF0E5;--neg-bg:#F7DEDA;--warn-bg:#F6E8C8;--acc-bg:#DFE6F7;
+  --s1:#2848A8;--s2:#6A86D3;--s3:#A9BBEA;--t1:#1F6F62;--t2:#58A394;--t3:#A4D0C7;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111916;--card:#19231F;--ink:#E6EEE9;--muted:#93A29B;--line:#2A3732;--soft:#222E29;
+    --accent:#8AA4F2;--on-accent:#0E1A3A;--pos:#5CC48E;--neg:#F28576;--warn:#E3B650;
+    --pos-bg:#1B3A2B;--neg-bg:#42231F;--warn-bg:#3F3216;--acc-bg:#1F2A4A;
+    --s1:#8AA4F2;--s2:#5F7CCB;--s3:#3C5195;--t1:#5FC1AE;--t2:#3E8F80;--t3:#2A6157;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111916;--card:#19231F;--ink:#E6EEE9;--muted:#93A29B;--line:#2A3732;--soft:#222E29;
+  --accent:#8AA4F2;--on-accent:#0E1A3A;--pos:#5CC48E;--neg:#F28576;--warn:#E3B650;
+  --pos-bg:#1B3A2B;--neg-bg:#42231F;--warn-bg:#3F3216;--acc-bg:#1F2A4A;
+  --s1:#8AA4F2;--s2:#5F7CCB;--s3:#3C5195;--t1:#5FC1AE;--t2:#3E8F80;--t3:#2A6157;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{min-height:100%;margin:0;background:var(--paper);color:var(--ink);
+  font:15px/1.45 'IBM Plex Sans','IBM Plex Sans Arabic',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  -webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+b,strong{font-weight:600}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* shell */
+#nav{position:fixed;inset-inline:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(var(--n,6),1fr);
+  background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+#nav .brand{display:none}
+#nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:6px 0;font-size:11px;color:var(--muted);border-radius:8px}
+#nav button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#nav button[aria-current="page"]{color:var(--accent);font-weight:600}
+main{max-width:980px;margin:0 auto;padding:16px 14px calc(96px + env(safe-area-inset-bottom,0px))}
+#top{margin-bottom:14px}
+#top h1{font-size:22px;line-height:1.2;margin:0;font-weight:600;letter-spacing:-.01em}
+#top .date{font-size:13px;color:var(--muted)}
+@media (min-width:900px){
+  #nav{top:0;inset-inline-end:auto;width:208px;grid-template-columns:1fr;align-content:start;gap:2px;
+    border-top:0;border-inline-end:1px solid var(--line);padding:20px 12px}
+  #nav .brand{display:block;font-weight:600;font-size:18px;padding:4px 10px 18px;letter-spacing:-.01em}
+  #nav button{flex-direction:row;gap:12px;font-size:14px;padding:10px;justify-content:flex-start}
+  main{margin-inline-start:208px;max-width:none;padding:28px 36px 48px}
+  .wrap{max-width:900px}
+}
+
+/* controls */
+.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:9px 14px;font-weight:500;line-height:1.2}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;border-style:dashed;color:var(--accent);margin:4px 0 12px}
+.btn.danger{color:var(--neg);border-color:var(--neg);background:transparent}
+.btn.wide{width:100%;padding:12px}
+.btn.sm{padding:6px 10px;font-size:13px}
+.seg{display:flex;background:var(--soft);border-radius:9px;padding:3px;margin-bottom:14px;gap:2px}
+.seg button{flex:1;border:0;background:none;padding:8px 6px;border-radius:7px;color:var(--muted);font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.search{width:100%;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:10px 12px;margin-bottom:12px}
+
+/* content blocks */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px}
+.panel h2{font-size:16px;margin:0 0 10px;font-weight:600}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media (min-width:700px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi .v{font-size:21px;font-weight:600;margin-top:2px;letter-spacing:-.01em}
+.list{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.row{display:flex;gap:12px;align-items:center;justify-content:space-between;width:100%;text-align:start;
+  background:none;border:0;border-bottom:1px solid var(--line);padding:12px 14px}
 .row:last-child{border-bottom:0}
-.grow{flex:1;min-width:0}
-.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--soft);color:var(--muted)}
-.badge.owner{background:var(--acc-bg);color:var(--accent)}.badge.ok{background:var(--pos-bg);color:var(--pos)}.badge.wait{background:var(--warn-bg);color:var(--warn)}.badge.bad{background:var(--neg-bg);color:var(--neg)}
+button.row:hover{background:var(--soft)}
+.row .grow{min-width:0;flex:1}
+.row .end{text-align:end;flex:none;max-width:55%}
+.sub{font-size:13px;color:var(--muted)}
+.badge{display:inline-block;font-size:12px;font-weight:500;padding:1px 7px;border-radius:4px;margin-top:2px}
+.badge.ok{background:var(--pos-bg);color:var(--pos)}
+.badge.bad{background:var(--neg-bg);color:var(--neg)}
+.badge.warn{background:var(--warn-bg);color:var(--warn)}
+.badge.info{background:var(--acc-bg);color:var(--accent)}
+.badge.mute{background:var(--soft);color:var(--muted)}
+.empty{padding:26px 16px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:10px;margin-bottom:14px}
+.empty b{display:block;color:var(--ink);margin-bottom:4px}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{font-weight:500;color:var(--muted);text-align:start;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
+.tbl td{padding:7px 0;border-bottom:1px solid var(--soft)}
+.tbl .r{text-align:end}
+.tbl tr.total td{font-weight:600;border-top:1px solid var(--line);border-bottom:0}
+.tbl tr.group td{padding-top:12px;color:var(--muted);font-size:13px;border-bottom:0}
+.scroll{overflow-x:auto}
+
+/* balance strip */
+.bars{display:grid;gap:10px;margin:6px 0 12px}
+.bar{display:flex;height:34px;border-radius:6px;overflow:hidden;background:var(--soft)}
+.bar i{display:block;height:100%}
+.barlab{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:13px}
+.legend div{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;flex:none}
+.legend span:last-child{margin-inline-start:auto}
+.legend .grp{grid-column:1/-1}
+.status{font-size:13px;margin-top:8px}
+
+/* alerts */
+.alert{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--soft);background:none;border-inline:0;border-top:0;width:100%;text-align:start;color:inherit}
+.alert:last-child{border-bottom:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* sheet */
+#scrim{position:fixed;inset:0;background:rgba(10,18,15,.5);z-index:40}
+#sheet{position:fixed;z-index:50;left:0;right:0;bottom:0;max-height:92%;overflow:auto;background:var(--card);
+  border-radius:16px 16px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));
+  box-shadow:0 -8px 30px rgba(0,0,0,.25);animation:up .18s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){#sheet{animation:none}}
+@media (min-width:700px){
+  #sheet{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:520px;max-height:88%;border-radius:14px;animation:none}
+}
+#sheet[hidden],#scrim[hidden]{display:none}
+.shead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.shead h2{margin:0;font-size:18px;font-weight:600}
+.shead button{border:0;background:var(--soft);width:32px;height:32px;border-radius:50%;font-size:18px;line-height:1;flex:none}
+.fld{display:block;margin-bottom:12px}
+.fld>span{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+.fld input,.fld select,.line input,.line select{width:100%;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:10px;min-width:0}
+.fld.chk{display:flex;gap:8px;align-items:center}
+.fld.chk input{width:auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lh,.line{display:grid;grid-template-columns:1fr 70px 88px 32px;gap:6px;align-items:center}
+.lh{font-size:13px;color:var(--muted);margin-bottom:4px}
+.line{margin-bottom:8px}
+.line .x{border:0;background:var(--soft);height:36px;border-radius:8px;font-size:18px}
+.tot{display:flex;justify-content:space-between;font-size:17px;padding:10px 0 14px;border-top:1px solid var(--line);margin-top:4px}
+.note{font-size:13px;color:var(--muted);margin:0 0 12px}
+.sum{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:10px 0 14px}
+.sum .big{font-weight:600;font-size:16px}
+hr.sep{border:0;border-top:1px solid var(--line);margin:14px 0}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:60;
+  background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;font-size:14px;max-width:90%;text-align:center}
+#toast[hidden]{display:none}
+#toast.err{background:var(--neg);color:#fff}
+@media (min-width:900px){#toast{bottom:28px}}
+.jentry{padding:12px 14px;border-bottom:1px solid var(--line)}
+.jentry:last-child{border-bottom:0}
+.jhead{display:flex;justify-content:space-between;gap:10px;margin-bottom:4px}
+.badge+.badge{margin-inline-start:4px}
+.sh{font-size:16px;font-weight:600;margin:20px 0 10px}
+.goal{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.gnum{font-size:46px;font-weight:600;line-height:1;letter-spacing:-.03em}
+.gof{color:var(--muted);font-size:15px}
+.pbar{display:flex;height:24px;border-radius:5px;overflow:hidden;background:var(--soft);margin:14px 0 10px}
+.pbar i{display:block;height:100%;border-right:2px solid var(--card)}
+.plegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px}
+.plegend span{display:inline-flex;align-items:center;gap:5px}
+.plegend i,.dot{width:10px;height:10px;border-radius:2px;display:inline-block;flex:none}
+.pstat{margin-top:10px;font-weight:600}
+.rep{background:var(--card);border:1px solid var(--line);border-inline-start-width:5px;border-radius:10px;padding:12px;margin-bottom:10px}
+.rep .rh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rg .l{font-size:12px;color:var(--muted)}
+.rg .v{font-weight:600;font-size:15px}
+@media (min-width:700px){.rg{grid-template-columns:repeat(6,1fr)}}
+.datebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.datebar input{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 10px}
+:root{--r1:#2848A8;--r2:#1F7A6B;--r3:#A35A12;--r4:#8A3F8F;--r5:#5E7F1D}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--r1:#8AA4F2;--r2:#5FC1AE;--r3:#E3A55C;--r4:#D08AD6;--r5:#A3C760}}
+:root[data-theme="dark"]{--r1:#8AA4F2;--r2:#5FC1AE;--r3:#E3A55C;--r4:#D08AD6;--r5:#A3C760}
+:root{--on-pos:#FFFFFF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--on-pos:#0B2217}}
+:root[data-theme="dark"]{--on-pos:#0B2217}
+[dir="rtl"] .flip{transform:scaleX(-1)}
+.trow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.util{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.util .push{margin-inline-start:auto}
+.lnk{background:none;border:0;color:var(--accent);padding:6px 0;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hi{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:0 0 2px}
+.date{font-size:13px;color:var(--muted)}
+body.picker #nav,body.picker #top{display:none}
+body.picker main,body.role-rep main{max-width:560px;margin-inline:auto}
+.pick{padding-top:6px}
+.pick h1{font-size:26px;margin:6px 0 20px;letter-spacing:-.01em}
+.brand2{font-weight:600;font-size:15px;color:var(--accent)}
+.bigbtn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;width:100%;font-size:18px;font-weight:600;border-radius:14px;border:1px solid var(--line);background:var(--card);padding:12px 16px}
+.bigbtn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.bigbtn.pos{background:var(--pos);border-color:var(--pos);color:var(--on-pos)}
+.bigbtn:disabled{opacity:.45}
+.bigbtn.who{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;margin-bottom:10px;text-align:start}
+.bigbtn.who .sub{font-weight:400}
+body.role-rep{font-size:16px}
+body.role-rep main{padding:12px 14px calc(96px + env(safe-area-inset-bottom,0px))}
+@media (min-width:900px){
+  body.role-rep #nav{top:auto;inset-inline:0;width:auto;grid-template-columns:repeat(2,1fr);border-inline-end:0;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+  body.role-rep #nav button{flex-direction:column;justify-content:center;font-size:12px}
+  body.role-rep main,body.picker main{margin-inline-start:auto;max-width:560px;padding:20px 14px 96px}
+}
+body.role-rep #nav button{font-size:13px;padding:8px 0}
+.rprog{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+.pbar.one{margin:12px 0 8px}
+.rp2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--soft)}
+.rp2 .l{font-size:13px;color:var(--muted)}.rp2 .v{font-size:22px;font-weight:600}
+.ccard{display:flex;align-items:center;gap:12px;width:100%;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;padding-inline-start:16px;margin-bottom:10px;text-align:start;color:inherit}
+.ccard .ci{flex:1;min-width:0}.ccard .ci b{font-size:17px}
+.go{flex:none;min-width:116px;min-height:54px;border-radius:12px;border:0;background:var(--pos);color:var(--on-pos);font-size:17px;font-weight:600;padding:0 14px}
+.go.sm{min-width:0;min-height:42px;display:inline-flex;align-items:center;background:var(--accent);color:var(--on-accent);font-size:15px}
+.ccard.prog{border:2px solid var(--accent)}
+.ccard.done{background:var(--soft)}
+.tick{color:var(--pos);font-size:24px}
+.vh{margin:8px 0 14px}
+.vstep{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.sn{flex:none;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-weight:600}
+.sbody{flex:1;min-width:0}.sbody h2{font-size:17px;margin:4px 0 12px;font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.okline{font-weight:600;margin-bottom:6px}.ok{color:var(--pos)}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--soft)}
+.step{display:flex;align-items:center;gap:8px;flex:none}
+.stepbtn{width:46px;height:46px;border-radius:12px;border:1px solid var(--line);background:var(--paper);font-size:24px;line-height:1}
+.stepbtn:disabled{opacity:.35}
+.qn{min-width:30px;text-align:center;font-size:19px;font-weight:600}
+.chart{margin-top:4px}
+.plot{position:relative;height:150px;border-bottom:1px solid var(--line);margin-top:22px}
+.bars{display:flex;height:100%}
+.col{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%}
+.b{position:relative;width:36%;max-width:24px;border-radius:3px 3px 0 0;min-height:1px}
+.b em{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-style:normal;font-size:11px;color:var(--muted);white-space:nowrap}
+.tline{position:absolute;inset-inline:0;border-top:2px dashed var(--accent)}
+.tline span{position:absolute;inset-inline-end:0;bottom:2px;font-size:11px;color:var(--accent);background:var(--card);padding:0 4px}
+.lbls{display:flex}.lbls span{flex:1;text-align:center;font-size:11px;color:var(--muted);margin-top:6px}
+.perf{padding:12px 0;border-bottom:1px solid var(--soft)}.perf:first-child{padding-top:0}
+.ph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.pb{height:8px;border-radius:4px;background:var(--soft);overflow:hidden}.pb i{display:block;height:100%}
+.ps{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}.ps b{color:var(--ink);font-weight:600}
+.panel>.btn.sm{margin-top:12px}
+.notice{border-color:var(--accent);background:var(--acc-bg)}
+.notice p{margin:6px 0 10px}
+.logo{height:28px;width:auto;max-width:120px;object-fit:contain;border-radius:6px;vertical-align:middle;margin-inline-end:8px}
+.logo.lg{height:72px;max-width:200px;margin:0}
+.logoedit{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.logoph{width:72px;height:72px;border:1px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);text-align:center}
+.sh2{font-size:15px;font-weight:600;margin:6px 0 10px}
+.brandsm{display:inline-flex;align-items:center;font-weight:600;font-size:14px}
+@media (min-width:900px){.brandsm:not(.always){display:none}}
+.brand{display:flex;align-items:center}
+.atools{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:8px}
+.atools .search{margin:0}
+.atools select{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:10px;max-width:150px}
+.arow{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-bottom:1px solid var(--line)}
+.arow:last-child{border-bottom:0}
+.chkbox{display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none}
+.chkbox input{width:20px;height:20px}
+.selbtn{flex:1;min-width:0;background:none;border:0;text-align:start;padding:8px 4px;color:inherit}
+.arow .end{flex:none;max-width:42%;text-align:end;font-size:14px}
+.selbar{position:sticky;bottom:calc(84px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:10px;margin-top:12px;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.selbar select{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:8px;flex:1;min-width:120px}
+@media (min-width:900px){.selbar{bottom:16px}}
+
 .chk{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--soft)}.chk:last-child{border-bottom:0}
 .pass{color:var(--pos);font-weight:700}.fail{color:var(--neg);font-weight:700}
-.goal{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.gnum{font-size:46px;font-weight:600;line-height:1;letter-spacing:-.03em}.gof{color:var(--muted)}
-.pbar{display:flex;height:22px;border-radius:5px;overflow:hidden;background:var(--soft);margin:12px 0 8px}
-.pbar i{display:block;height:100%;border-inline-end:2px solid var(--card)}
-.dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-inline-end:6px}
-.ccard{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;padding-inline-start:16px;margin-bottom:10px}
-.ccard .go{flex:none;min-width:116px;min-height:54px;border-radius:12px;border:0;background:var(--pos);color:var(--on-pos);font:inherit;font-size:17px;font-weight:600;padding:0 14px}
-.ccard.prog{border:2px solid var(--accent)}.ccard.done{background:var(--soft)}
-.tabs{position:fixed;inset-inline:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:20}
-.tabs button{flex:1;background:none;border:0;font:inherit;font-size:13px;color:var(--muted);padding:10px 4px;border-radius:8px}
-.tabs button[aria-current=page]{color:var(--accent);font-weight:600}
-.shade{position:fixed;inset:0;background:rgba(10,18,15,.5);z-index:40}
-.sheet{position:fixed;inset-inline:0;bottom:0;z-index:50;max-height:92%;overflow:auto;background:var(--card);border-radius:16px 16px 0 0;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
-.sheet h2{font-size:18px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.selbar{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:10px;margin-top:12px;box-shadow:0 4px 18px rgba(0,0,0,.18)}
-.selbar select{flex:1;min-width:120px;margin:0}
-.arow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--soft)}
-.arow:last-child{border-bottom:0}
-.arow input[type=checkbox]{flex:none}
-.arow .nm{flex:1;min-width:0;background:none;border:0;text-align:start;font:inherit;color:inherit;padding:6px 0}
-.perf{padding:10px 0;border-bottom:1px solid var(--soft)}.perf:last-child{border-bottom:0}
-.pb{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;margin:6px 0}.pb i{display:block;height:100%}
+.note.pos{background:var(--pos-bg);color:var(--pos)}.note.neg{background:var(--neg-bg);color:var(--neg)}
+.pick .panel{margin-bottom:12px}.pick .bigbtn{margin-bottom:10px}
+.search{width:100%}
 </style>
 </head>
-<body>
-<div id="app"></div>
+<body class="picker">
+<div id="app"><nav id="nav" aria-label="Modules"></nav><main><div class="wrap"><div id="top"></div><div id="view"></div></div></main></div>
+<div id="scrim" hidden data-a="close-sheet"></div>
+<div id="sheet" role="dialog" aria-modal="true" tabindex="-1" hidden></div>
+<div id="toast" role="status" hidden></div>
 <noscript>This app needs JavaScript.</noscript>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
 'use strict';
-/* The project address and the PUBLIC key. Both are meant to be public. Never put a secret key here. */
+/* Project address and PUBLIC key (both are meant to be public). Never put a secret key here. */
 var SUPABASE_URL='https://zxmrzbtoflibnkavqjlm.supabase.co';
 var SUPABASE_KEY='sb_publishable_FyUAzUIW4Q_Ao8MSH9Ahpg_mGZkUIME';
 var COLORS=['var(--r1)','var(--r2)','var(--r3)','var(--r4)','var(--r5)'];
 
 var L='en';try{L=localStorage.getItem('ll_lang')||'en'}catch(e){}
-var AR={
-'Sign in':'تسجيل الدخول','Create an account':'إنشاء حساب','Create account':'إنشاء الحساب','Email':'البريد الإلكتروني','Password':'كلمة المرور','Full name':'الاسم الكامل','Phone':'الهاتف','Address':'العنوان','Name':'الاسم',
-'Sign out':'تسجيل الخروج','Loading...':'جارٍ التحميل...','I already have an account':'لدي حساب بالفعل','Save':'حفظ','Cancel':'إلغاء',
-'Waiting for owner approval':'بانتظار موافقة المالك','The owner must approve your account before you can use the app. Ask the owner, then tap Check again.':'يجب أن يوافق المالك على حسابك قبل أن تتمكن من استخدام التطبيق. اسأل المالك ثم اضغط «تحقق مرة أخرى».',
-'Check again':'تحقق مرة أخرى','Account created, but you cannot sign in yet. Ask the owner to finish the setup.':'تم إنشاء الحساب، لكن لا يمكنك تسجيل الدخول بعد. اطلب من المالك إكمال الإعداد.',
-'Use at least 8 characters for the password.':'استخدم 8 أحرف على الأقل لكلمة المرور.','Enter your name, phone and email.':'أدخل اسمك وهاتفك وبريدك الإلكتروني.',
-'Owner':'المالك','Salesperson':'مندوب مبيعات','Approvals':'الموافقات','Nobody is waiting for approval.':'لا أحد بانتظار الموافقة.','Approve':'موافقة','Team':'الفريق','Active':'نشط','Waiting':'بانتظار الموافقة','Turn off':'إيقاف','You':'أنت','Approved':'تمت الموافقة','Updated':'تم التحديث',
-'Home':'الرئيسية','Customers':'العملاء','Today':'اليوم','Check':'فحص',
-'Company target today':'هدف الشركة اليوم','of {0} unique customers visited':'من أصل {0} عميل مختلف تمت زيارتهم','{0} more needed to reach {1}':'يلزم {0} أخرى للوصول إلى {1}','Target of {0} reached':'تم تحقيق هدف {0}','Change target':'تغيير الهدف','Unique customers per day':'عدد العملاء المختلفين يوميًا','Effective from':'ساري اعتبارًا من',
-'The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.':'الهدف للشركة كلها. لا توجد حصة شخصية. تحتفظ الأيام السابقة بالهدف الذي كان ساريًا.','Target saved':'تم حفظ الهدف','The new target must start today or later.':'يجب أن يبدأ الهدف الجديد من اليوم أو بعده.','Enter a target between 1 and 1000.':'أدخل هدفًا بين 1 و1000.',
-'Salespeople today':'المندوبون اليوم','{0} visits':'{0} زيارات','{0} counted':'{0} محتسبة','Not visited yet':'لم تتم زيارتهم بعد','No visits yet today.':'لا توجد زيارات اليوم بعد.','Everyone assigned has been visited.':'تمت زيارة كل العملاء المخصصين.','Unassigned':'غير مخصص',
-'Your visits':'زياراتك','My customers':'عملائي','No customers are assigned to you yet. Ask the owner, or add your own customer.':'لا يوجد عملاء مخصصون لك بعد. اسأل المالك أو أضف عميلًا.','Add customer':'إضافة عميل','Edit customer':'تعديل العميل','Search customers':'ابحث عن العملاء',
-'Check in':'تسجيل الوصول','Getting location...':'جارٍ تحديد الموقع...','Continue':'متابعة','Visit in progress':'زيارة جارية','Checked in at {0}':'تم تسجيل الوصول عند {0}','GPS location saved':'تم حفظ موقع GPS','{0} m from the saved location':'على بعد {0} م من الموقع المحفوظ',
-'Note (optional)':'ملاحظة (اختياري)','Finish visit':'إنهاء الزيارة','Visit finished':'تم إنهاء الزيارة','Back':'رجوع',
-'GPS is not available on this device.':'GPS غير متاح على هذا الجهاز.','GPS signal is weak. Move to open sky and try again.':'إشارة GPS ضعيفة. انتقل إلى مكان مكشوف وحاول مرة أخرى.','Location access is blocked. Allow location for this website in Safari settings, then try again.':'الوصول إلى الموقع محظور. اسمح بالموقع لهذا الموقع من إعدادات Safari ثم حاول مرة أخرى.','Your location could not be determined. Try again.':'تعذّر تحديد موقعك. حاول مرة أخرى.',
-'Assigned to':'مخصص لـ','Assign to':'تخصيص إلى','Assign':'تخصيص','Clear':'مسح','selected':'محدد','All customers':'كل العملاء','Select at least one customer.':'حدّد عميلًا واحدًا على الأقل.','Customer saved':'تم حفظ العميل','Assigned':'تم التخصيص','Active customer':'عميل نشط','Inactive':'غير نشط','No customers yet.':'لا يوجد عملاء بعد.','Tick customers, choose a salesperson, then tap Assign.':'حدّد العملاء واختر مندوبًا ثم اضغط «تخصيص».',
-'Security check':'فحص الأمان','Runs real tests on your cloud database to prove the rules work for the account you are signed in with.':'يُجري اختبارات حقيقية على قاعدة البيانات السحابية لإثبات أن القواعد تعمل مع الحساب الذي سجّلت به.','Run the check':'تشغيل الفحص',
-'Your own profile can be read':'يمكن قراءة ملفك الشخصي','Owner-only data is visible to the owner only':'بيانات المالك ظاهرة للمالك فقط','Shared team data is visible to approved members':'بيانات الفريق المشتركة ظاهرة للأعضاء المعتمدين','You cannot edit your own record (so nobody can make themselves owner)':'لا يمكنك تعديل سجلك بنفسك (فلا يستطيع أحد أن يجعل نفسه مالكًا)','Someone who is not signed in cannot read anything':'من لم يسجّل الدخول لا يستطيع قراءة أي شيء',
-'Customers: you only see what the rules allow':'العملاء: ترى فقط ما تسمح به القواعد','Visits cannot be written directly, only by checking in':'لا يمكن كتابة الزيارات مباشرة، فقط بتسجيل الوصول','Only the owner can change the company target':'المالك وحده يستطيع تغيير هدف الشركة','You cannot edit customers owned by the owner':'لا يمكنك تعديل بيانات العملاء','The company progress totals can be read':'يمكن قراءة إجماليات تقدم الشركة',
-'Everything passed.':'نجحت كل الفحوصات.','Something failed. Do not use this for real data yet, and send me a screenshot.':'فشل شيء ما. لا تستخدمه لبيانات حقيقية بعد، وأرسل لي لقطة شاشة.',
-'No profile was found for this login. Ask the owner to check the setup.':'لم يُعثر على ملف لهذا الحساب. اطلب من المالك مراجعة الإعداد.','Could not load the app. Check your internet connection and refresh.':'تعذّر تحميل التطبيق. تحقق من الإنترنت وحدّث الصفحة.',
-'The Stage 2 database setup has not been run yet. Run ledgerline-cloud-setup-2 in Supabase.':'لم يتم تشغيل إعداد قاعدة البيانات للمرحلة الثانية بعد. شغّل ledgerline-cloud-setup-2 في Supabase.',
-'Stage 2 test version. Sales, stock and money come in the next stages.':'نسخة اختبار المرحلة الثانية. المبيعات والمخزون والمال في المراحل التالية.','Name is required.':'الاسم مطلوب.'
-};
-function t(k){var s=(L==='ar'&&AR[k])||k;for(var i=1;i<arguments.length;i++)s=s.replace('{'+(i-1)+'}',arguments[i]);return s}
+var AR={"Home": "الرئيسية", "Visits": "الزيارات", "Sales": "المبيعات", "Stock": "المخزون", "Money": "المالية", "Team": "الفريق", "Dashboard": "لوحة المتابعة", "Field visits": "الزيارات الميدانية", "Stock and orders": "المخزون والطلبات", "Team and payroll": "الفريق والرواتب", "Today": "اليوم", "My day": "يومي", "Ledgerline": "Ledgerline", "English": "English", "Who is using Ledgerline?": "من يستخدم Ledgerline؟", "Owner": "المالك", "Dashboard, stock, money and team": "لوحة المتابعة والمخزون والمالية والفريق", "Salesperson": "مندوب المبيعات", "Switch user": "تبديل المستخدم", "Back": "رجوع", "Close": "إغلاق", "Customers": "العملاء", "Your visits": "زياراتك", "Left on your list": "المتبقي في قائمتك", "Target reached": "تم تحقيق الهدف", "Search any customer": "ابحث عن أي عميل", "Search customers": "ابحث عن العملاء", "No matches": "لا توجد نتائج", "Try another name.": "جرّب اسمًا آخر.", "No customers assigned to you yet": "لا يوجد عملاء مخصصون لك بعد", "Ask the owner to assign customers to you.": "اطلب من المالك تخصيص عملاء لك.", "Visit in progress": "زيارة جارية", "Finish this visit": "أنهِ هذه الزيارة", "Continue": "متابعة", "To visit": "للزيارة", "Done": "تمت", "Check in": "تسجيل الوصول", "Not assigned": "غير مخصص", "Sale": "بيع", "No sale": "بدون بيع", "Getting location...": "جارٍ تحديد الموقع...", "Visits done": "الزيارات المنجزة", "Customers left": "العملاء المتبقون", "Collected": "المحصّل", "My visits today": "زياراتي اليوم", "No visits yet": "لا توجد زيارات بعد", "Check in at a customer to start.": "سجّل وصولك عند عميل لتبدأ.", "In progress": "قيد التنفيذ", "Sale or no sale?": "بيع أم بدون بيع؟", "Change to sale": "غيّر إلى بيع", "Money collected": "المبلغ المحصّل", "They owe nothing": "لا يوجد مبلغ مستحق عليهم", "Collect payment": "تحصيل دفعة", "Finish": "إنهاء", "Finish visit": "إنهاء الزيارة", "Visit finished": "تم إنهاء الزيارة", "Back to my customers": "العودة إلى عملائي", "Choose sale or no sale first": "اختر بيع أو بدون بيع أولًا", "GPS location saved": "تم حفظ موقع GPS", "Record sale": "تسجيل البيع", "Less": "أقل", "More": "أكثر", "Save sale": "حفظ البيع", "Total": "الإجمالي", "They owe": "عليهم", "Amount collected": "المبلغ المحصّل", "Save payment": "حفظ الدفعة", "Payment saved": "تم حفظ الدفعة", "Marked as no sale": "تم تسجيله كبدون بيع", "Company target today": "هدف الشركة اليوم", "Sales today": "مبيعات اليوم", "Collected today": "تحصيلات اليوم", "Profit this month": "ربح هذا الشهر", "Stock value": "قيمة المخزون", "All products stocked": "جميع المنتجات متوفرة", "Needs your attention": "يحتاج إلى انتباهك", "Nothing needs your attention.": "لا شيء يحتاج إلى انتباهك.", "Customers not visited yet": "عملاء لم تتم زيارتهم بعد", "Visits still needed for the target": "زيارات مطلوبة لتحقيق الهدف", "Products low on stock": "منتجات منخفضة المخزون", "Overdue invoices": "فواتير متأخرة", "Supplier bills to pay": "فواتير موردين مستحقة الدفع", "Payroll for this month has not run": "لم يتم تشغيل رواتب هذا الشهر", "Run": "تشغيل", "Salesperson performance today": "أداء مندوبي المبيعات اليوم", "No salespeople yet": "لا يوجد مندوبو مبيعات بعد", "Open Team, edit an employee and turn on Salesperson.": "افتح «الفريق» وعدّل موظفًا ثم فعّل «مندوب المبيعات».", "Open Team, edit an employee and turn on Salesperson to track field visits.": "افتح «الفريق» وعدّل موظفًا ثم فعّل «مندوب المبيعات» لمتابعة الزيارات الميدانية.", "visits": "زيارات", "Missed": "الفائتة", "Full visit report": "تقرير الزيارات الكامل", "Visits per day": "الزيارات اليومية", "Sales and collections": "المبيعات والتحصيلات", "Quick actions": "إجراءات سريعة", "New invoice": "فاتورة جديدة", "New order": "طلب جديد", "Run payroll": "تشغيل الرواتب", "Reports": "التقارير", "Change daily target": "تغيير الهدف اليومي", "Your data is saved in this browser only.": "بياناتك محفوظة في هذا المتصفح فقط.", "Reset demo data": "إعادة ضبط البيانات التجريبية", "Last 7 days": "آخر 7 أيام", "Progress": "التقدم", "Visit log": "سجل الزيارات", "Not reached": "لم تتم زيارتهم", "Report date": "تاريخ التقرير", "Back to today": "العودة إلى اليوم", "Target settings": "إعدادات الهدف", "Visits remaining": "الزيارات المتبقية", "Visited and bought": "تمت زيارتهم واشتروا", "Visited, did not buy": "تمت زيارتهم ولم يشتروا", "Not reached so far": "لم تتم زيارتهم حتى الآن", "Total sales": "إجمالي المبيعات", "Collections": "التحصيلات", "By salesperson": "حسب المندوب", "Counted for target": "محتسبة للهدف", "Also seen by others": "زارها آخرون أيضًا", "Bought / did not": "اشترى / لم يشترِ", "Missed so far": "الفائتة حتى الآن", "Missed so far (assigned)": "الفائتة حتى الآن (المخصصة)", "Missed (assigned)": "الفائتة (المخصصة)", "A visited customer counts as bought when they have an invoice dated that day.": "يُحتسب العميل الذي تمت زيارته مشتريًا إذا كانت له فاتورة بتاريخ ذلك اليوم.", "No purchases yet": "لا توجد مشتريات بعد", "Customers who buy after a visit appear here.": "العملاء الذين يشترون بعد الزيارة يظهرون هنا.", "Nobody here": "لا أحد هنا", "Every visited customer bought something.": "كل عميل تمت زيارته اشترى شيئًا.", "Target met": "تحقق الهدف", "No visits recorded": "لا توجد زيارات مسجلة", "Each check-in is saved with its GPS location and the time of the visit.": "يُحفظ كل تسجيل وصول مع موقع GPS ووقت الزيارة.", "Counted": "محتسبة", "Repeat, counted once": "مكررة، تُحتسب مرة واحدة", "Sample GPS": "GPS تجريبي", "Test GPS": "GPS اختباري", "Every customer was visited": "تمت زيارة جميع العملاء", "Nobody was missed on this day.": "لم يفُت أحد في هذا اليوم.", "Unassigned": "غير مخصص", "Location saved": "الموقع محفوظ", "No location saved yet": "لم يتم حفظ موقع بعد", "Everyone was visited": "تمت زيارة الجميع", "Every customer has had a visit today.": "كل عميل حظي بزيارة اليوم.", "Invoices": "الفواتير", "Outstanding": "المستحق", "Overdue": "متأخر", "Paid": "مدفوعة", "Unpaid": "غير مدفوعة", "Part paid": "مدفوعة جزئيًا", "Settled": "مسدّد", "owed": "مستحق", "No invoices yet": "لا توجد فواتير بعد", "Create an invoice and stock, receivables and revenue update together.": "أنشئ فاتورة ويتحدّث المخزون والذمم والإيرادات معًا.", "No customers yet": "لا يوجد عملاء بعد", "Add a customer to start invoicing.": "أضف عميلًا لتبدأ الفوترة.", "Products": "المنتجات", "Orders": "الطلبات", "Suppliers": "الموردون", "Low stock": "مخزون منخفض", "on hand": "متوفر", "Units on hand": "الوحدات المتوفرة", "Low on stock": "منخفض المخزون", "Search by name or SKU": "ابحث بالاسم أو الرمز", "Search products": "ابحث عن المنتجات", "No products yet": "لا توجد منتجات بعد", "Add your first product to start tracking stock.": "أضف أول منتج لبدء تتبّع المخزون.", "Try a different name or SKU.": "جرّب اسمًا أو رمزًا آخر.", "On order": "قيد الطلب", "Bills to pay": "فواتير مستحقة الدفع", "Bill due": "فاتورة مستحقة", "Cancelled": "ملغى", "No purchase orders yet": "لا توجد أوامر شراء بعد", "Order stock from a supplier, then receive it to update inventory and payables.": "اطلب بضاعة من مورّد ثم استلمها لتحديث المخزون والذمم الدائنة.", "you owe": "مستحق عليك", "No suppliers yet": "لا يوجد موردون بعد", "Add a supplier to start ordering.": "أضف موردًا لتبدأ الطلب.", "Journal": "اليومية", "Accounts": "الحسابات", "Books are balanced: debits equal credits.": "الدفاتر متوازنة: المدين يساوي الدائن.", "Books are out of balance.": "الدفاتر غير متوازنة.", "Profit and loss": "الأرباح والخسائر", "Revenue": "الإيرادات", "Total revenue": "إجمالي الإيرادات", "Expenses": "المصروفات", "Total expenses": "إجمالي المصروفات", "Net profit": "صافي الربح", "Balance sheet": "الميزانية العمومية", "Assets": "الأصول", "Total assets": "إجمالي الأصول", "Liabilities": "الالتزامات", "Total liabilities": "إجمالي الالتزامات", "Equity": "حقوق الملكية", "Current year profit": "ربح السنة الحالية", "Total equity": "إجمالي حقوق الملكية", "Liabilities plus equity": "الالتزامات وحقوق الملكية", "Trial balance": "ميزان المراجعة", "Account": "الحساب", "Debit": "مدين", "Credit": "دائن", "Totals": "الإجماليات", "Balance": "الرصيد", "Cash": "النقد", "Accounts receivable": "الذمم المدينة", "Inventory": "المخزون", "Accounts payable": "الذمم الدائنة", "Payroll tax payable": "ضريبة الرواتب المستحقة", "Owner&#39;s equity": "حقوق المالك", "Sales revenue": "إيرادات المبيعات", "Cost of goods sold": "تكلفة البضاعة المباعة", "Salaries": "الرواتب", "Rent and utilities": "الإيجار والمرافق", "Other expenses": "مصروفات أخرى", "Latest 60 entries. Debits are listed first, credits are indented, with debits in the middle column and credits on the right.": "آخر 60 قيدًا. يُذكر المدين أولًا ثم الدائن بإزاحة، والمدين في العمود الأوسط والدائن في العمود الأخير.", "Owner capital, opening balance": "رأس مال المالك، الرصيد الافتتاحي", "Office rent and utilities": "إيجار المكتب والمرافق", "Employees": "الموظفون", "Payroll runs": "دورات الرواتب", "Active employees": "الموظفون النشطون", "Monthly gross payroll": "إجمالي الرواتب الشهرية", "per month": "شهريًا", "Inactive": "غير نشط", "Tax paid": "الضريبة مدفوعة", "Tax due": "الضريبة مستحقة", "No employees yet": "لا يوجد موظفون بعد", "Add your team to run payroll.": "أضف فريقك لتشغيل الرواتب.", "No payroll runs yet": "لا توجد دورات رواتب بعد", "Run payroll to pay your team and book the withholding.": "شغّل الرواتب لدفع أجور فريقك وتسجيل الضريبة المقتطعة.", "Operations lead": "قائد العمليات", "Sales associate": "مساعد مبيعات", "Field sales": "مبيعات ميدانية", "Warehouse": "المستودع", "Add product": "إضافة منتج", "Edit product": "تعديل المنتج", "Name": "الاسم", "SKU": "رمز المنتج", "Unit cost": "تكلفة الوحدة", "Sell price": "سعر البيع", "Opening stock": "مخزون افتتاحي", "Reorder at": "حد إعادة الطلب", "On hand": "المتوفر", "Save changes": "حفظ التغييرات", "Count stock": "جرد المخزون", "Counted quantity": "الكمية المعدودة", "Reason (optional)": "السبب (اختياري)", "Update stock": "تحديث المخزون", "Damaged, found in storage, miscount": "تالف، وُجد في المخزن، خطأ في العد", ". Enter what you actually counted. Any difference is booked at cost to cost of goods sold.": ". أدخل الكمية التي عددتها فعليًا. يُسجَّل أي فرق بالتكلفة ضمن تكلفة البضاعة المباعة.", "Add supplier": "إضافة مورّد", "Add customer": "إضافة عميل", "Edit customer": "تعديل العميل", "Email": "البريد الإلكتروني", "Assigned salesperson": "المندوب المخصص", "Clear saved location (the next check-in saves a new one)": "مسح الموقع المحفوظ (سيحفظ تسجيل الوصول التالي موقعًا جديدًا)", "No salesperson": "بدون مندوب", "Invoice date": "تاريخ الفاتورة", "Item": "الصنف", "Qty": "الكمية", "Price": "السعر", "Quantity": "الكمية", "Product": "المنتج", "Add item": "إضافة صنف", "Total (due in 30 days)": "الإجمالي (يستحق خلال 30 يومًا)", "Create invoice": "إنشاء الفاتورة", "Customer": "العميل", "Remove line": "حذف السطر", "Record payment": "تسجيل الدفعة", "Collected by": "حصّلها", "Office, no salesperson": "المكتب، بدون مندوب", "Payment received": "الدفعة المستلمة", "New purchase order": "أمر شراء جديد", "Supplier": "المورّد", "Order date": "تاريخ الطلب", "Cost": "التكلفة", "Place order": "تقديم الطلب", "Order total": "إجمالي الطلب", "Receiving adds the items to stock, updates their average cost and records the bill in accounts payable.": "الاستلام يضيف الأصناف إلى المخزون ويحدّث متوسط تكلفتها ويسجّل الفاتورة في الذمم الدائنة.", "Receive goods": "استلام البضاعة", "Cancel order": "إلغاء الطلب", "Payment to supplier": "دفعة للمورّد", "Pay bill": "دفع الفاتورة", "New journal entry": "قيد يومية جديد", "New entry": "قيد جديد", "Description": "الوصف", "Date": "التاريخ", "Add line": "إضافة سطر", "Post entry": "ترحيل القيد", "Insurance premium": "قسط التأمين", "For costs and adjustments that do not come from an invoice or order. Debits must equal credits.": "للتكاليف والتسويات التي لا تأتي من فاتورة أو طلب. يجب أن يتساوى المدين مع الدائن.", "Add employee": "إضافة موظف", "Edit employee": "تعديل الموظف", "Role": "الوظيفة", "Monthly gross pay": "الراتب الشهري الإجمالي", "Salesperson, makes customer visits": "مندوب مبيعات، يقوم بزيارات العملاء", "Active, included in payroll": "نشط، يدخل في الرواتب", "Pay period": "فترة الدفع", "Income tax withholding (%)": "ضريبة الدخل المقتطعة (%)", "Gross pay": "الراتب الإجمالي", "Books salaries expense, pays employees from cash and holds the withholding as payroll tax payable until you remit it.": "يسجّل مصروف الرواتب، ويدفع للموظفين من النقد، ويحتفظ بالضريبة المقتطعة كضريبة رواتب مستحقة حتى تسدّدها.", "Gross": "الإجمالي", "Tax": "الضريبة", "Net": "الصافي", "Withholding paid": "تم دفع الضريبة المقتطعة", "Employee": "الموظف", "One target for the whole company, however many salespeople you have. Past days keep the target that applied then.": "هدف واحد للشركة كلها مهما كان عدد المندوبين. تحتفظ الأيام السابقة بالهدف الذي كان ساريًا حينها.", "Unique customers per day": "عدد العملاء المختلفين يوميًا", "Effective from": "ساري اعتبارًا من", "Simulate GPS (testing only, no phone needed)": "محاكاة GPS (للاختبار فقط، لا حاجة إلى هاتف)", "Save settings": "حفظ الإعدادات", "Target history": "سجل الأهداف", "Original target": "الهدف الأصلي", "Reset everything": "إعادة ضبط كل شيء", "Keep my data": "الاحتفاظ ببياناتي", "This deletes everything you entered and restores the sample company. It cannot be undone.": "سيؤدي هذا إلى حذف كل ما أدخلته واستعادة الشركة التجريبية. لا يمكن التراجع عن ذلك.", "Demo data restored": "تمت استعادة البيانات التجريبية", "Product updated": "تم تحديث المنتج", "Product added": "تمت إضافة المنتج", "Customer updated": "تم تحديث العميل", "Customer added": "تمت إضافة العميل", "Supplier added": "تمت إضافة المورّد", "Payment recorded": "تم تسجيل الدفعة", "Bill payment recorded": "تم تسجيل دفع الفاتورة", "Entry posted": "تم ترحيل القيد", "Employee updated": "تم تحديث الموظف", "Employee added": "تمت إضافة الموظف", "Goods received, stock updated": "تم استلام البضاعة وتحديث المخزون", "Count matches, no change": "العد مطابق، لا تغيير", "Choose a customer": "اختر عميلًا", "Price cannot be negative": "لا يمكن أن يكون السعر سالبًا", "Add at least one item with a quantity": "أضف صنفًا واحدًا على الأقل مع كمية", "Enter an amount above zero": "أدخل مبلغًا أكبر من الصفر", "The target must be between 1 and 1000 customers": "يجب أن يكون الهدف بين 1 و1000 عميل", "The new target must start today or later": "يجب أن يبدأ الهدف الجديد من اليوم أو بعده", "Choose an active salesperson": "اختر مندوبًا نشطًا", "A GPS location is required to check in": "موقع GPS مطلوب لتسجيل الوصول", "GPS is not available on this device. Check-in needs location access.": "GPS غير متاح على هذا الجهاز. تسجيل الوصول يحتاج إلى الوصول إلى الموقع.", "Visit not found": "الزيارة غير موجودة", "A sale is already recorded for this visit": "تم تسجيل بيع لهذه الزيارة بالفعل", "Add at least one item": "أضف صنفًا واحدًا على الأقل", "Choose a supplier": "اختر مورّدًا", "Cost cannot be negative": "لا يمكن أن تكون التكلفة سالبة", "This order is not waiting for delivery": "هذا الطلب ليس بانتظار التسليم", "Receive the goods before paying the bill": "استلم البضاعة قبل دفع الفاتورة", "Enter a count of zero or more": "أدخل عددًا يساوي صفرًا أو أكثر", "Choose a pay period": "اختر فترة الدفع", "No active employees to pay": "لا يوجد موظفون نشطون للدفع لهم", "Withholding rate must be between 0 and 60": "يجب أن تكون نسبة الاقتطاع بين 0 و60", "Withholding is already paid": "تم دفع الضريبة المقتطعة بالفعل", "Name is required": "الاسم مطلوب", "Add a description": "أضف وصفًا", "An entry needs at least two lines": "يحتاج القيد إلى سطرين على الأقل", "A line cannot have both a debit and a credit": "لا يمكن أن يحتوي السطر على مدين ودائن معًا", "No active salespeople": "لا يوجد مندوبو مبيعات نشطون", "Location access is blocked. Allow location for this page, then try again. For testing only, the owner can turn on simulated GPS in Target settings.": "الوصول إلى الموقع محظور. اسمح بالموقع لهذه الصفحة ثم حاول مرة أخرى. للاختبار فقط، يمكن للمالك تفعيل محاكاة GPS من إعدادات الهدف.", "Getting your location timed out. Try again with a clearer GPS signal.": "انتهت مهلة تحديد موقعك. حاول مرة أخرى مع إشارة GPS أوضح.", "Your location could not be determined. Try again.": "تعذّر تحديد موقعك. حاول مرة أخرى.", "1000 Cash": "1000 النقد", "1100 Accounts receivable": "1100 الذمم المدينة", "1200 Inventory": "1200 المخزون", "2000 Accounts payable": "2000 الذمم الدائنة", "2100 Payroll tax payable": "2100 ضريبة الرواتب المستحقة", "3000 Owner&#39;s equity": "3000 حقوق المالك", "4000 Sales revenue": "4000 إيرادات المبيعات", "5000 Cost of goods sold": "5000 تكلفة البضاعة المباعة", "6000 Salaries": "6000 الرواتب", "6100 Rent and utilities": "6100 الإيجار والمرافق", "6200 Other expenses": "6200 مصروفات أخرى", "Currency changed to EGP": "تم تغيير العملة إلى الجنيه المصري (EGP)", "Your existing amounts are sample data that were entered in US dollars. They have not been converted and now show as EGP.": "مبالغك الحالية بيانات تجريبية أُدخلت بالدولار الأمريكي. لم يتم تحويلها وتظهر الآن بالجنيه المصري.", "Some existing amounts may be real transactions entered in US dollars. They have not been converted and now show as EGP. Check them before relying on reports.": "قد تكون بعض المبالغ الحالية معاملات حقيقية أُدخلت بالدولار الأمريكي. لم يتم تحويلها وتظهر الآن بالجنيه المصري. راجعها قبل الاعتماد على التقارير.", "We could not tell whether your existing amounts are sample data or real transactions. They were entered in US dollars, have not been converted, and now show as EGP.": "تعذّر تحديد ما إذا كانت مبالغك الحالية بيانات تجريبية أم معاملات حقيقية. أُدخلت بالدولار الأمريكي ولم يتم تحويلها وتظهر الآن بالجنيه المصري.", "See details": "عرض التفاصيل", "Keep amounts unchanged": "إبقاء المبالغ كما هي", "Existing amounts": "المبالغ الحالية", "Sample data only": "بيانات تجريبية فقط", "Sample data plus transactions you entered": "بيانات تجريبية بالإضافة إلى معاملات أدخلتها", "Could not tell": "تعذّر التحديد", "Purchase orders": "أوامر الشراء", "Journal entries": "قيود اليومية", "Nothing has been converted. No amounts were changed. The numbers you entered earlier are kept exactly as they were and are now shown as EGP.": "لم يتم تحويل أي شيء ولم تتغير أي مبالغ. الأرقام التي أدخلتها سابقًا محفوظة كما هي وتظهر الآن بالجنيه المصري.", "Converting existing amounts to EGP is a one-time change. It needs an exchange rate and your approval, so it has not been done.": "تحويل المبالغ الحالية إلى الجنيه المصري تغيير لمرة واحدة. يحتاج إلى سعر صرف وموافقتك، لذلك لم يتم تنفيذه.", "Noted. Existing amounts were kept unchanged": "تم التسجيل. بقيت المبالغ الحالية كما هي", "Company settings": "إعدادات الشركة", "Country": "الدولة", "Egypt": "مصر", "Currency": "العملة", "Egyptian pound (EGP)": "الجنيه المصري (EGP)", "Time zone": "المنطقة الزمنية", "Africa/Cairo (Cairo time)": "إفريقيا/القاهرة (توقيت القاهرة)", "Current time in Cairo": "الوقت الحالي في القاهرة", "These are the defaults for all new transactions.": "هذه هي الإعدادات الافتراضية لجميع المعاملات الجديدة.", "Profile": "الملف الشخصي", "Company": "الشركة", "Company name": "اسم الشركة", "Address": "العنوان", "Phone": "الهاتف", "Owner name": "اسم المالك", "Personal details": "بيانات شخصية", "No logo": "لا يوجد شعار", "Choose logo": "اختيار شعار", "Change logo": "تغيير الشعار", "Remove logo": "إزالة الشعار", "Save profile": "حفظ الملف", "Profile saved": "تم حفظ الملف", "Choose an image file": "اختر ملف صورة", "Image is too large (max 5 MB)": "الصورة كبيرة جدًا (الحد الأقصى 5 ميجابايت)", "Could not read that image": "تعذّرت قراءة الصورة", "Enter a valid email address": "أدخل عنوان بريد إلكتروني صحيحًا", "Remove employee": "حذف الموظف", "Employee removed": "تم حذف الموظف", "Employee not found": "الموظف غير موجود", "Cancel": "إلغاء", "Deactivate instead": "تعطيله بدلًا من ذلك", "Remove permanently": "حذف نهائيًا", "Removing keeps their past visits, sales and payroll history under their name.": "الحذف يُبقي زياراته ومبيعاته وسجل رواتبه السابق باسمه.", "Customers assigned (they will become unassigned)": "العملاء المخصصون (سيصبحون بدون مندوب)", "You decide who visits each customer. Tick customers, choose a salesperson, then tap Assign.": "أنت من يقرر من يزور كل عميل. حدّد العملاء واختر مندوبًا ثم اضغط «تخصيص».", "selected": "محدد", "Assign to": "تخصيص إلى", "Assign": "تخصيص", "Clear": "مسح", "Select all shown": "تحديد كل المعروض", "Select": "تحديد", "Show": "عرض", "All customers": "كل العملاء", "Try another name or filter.": "جرّب اسمًا أو عامل تصفية آخر.", "Select at least one customer": "حدّد عميلًا واحدًا على الأقل", "Active": "نشط", "Salespeople": "مندوبو المبيعات", "Add your salespeople and team here.": "أضف مندوبي المبيعات وفريقك هنا.", "Removing keeps their past visits and sales under their name.": "الحذف يُبقي زياراته ومبيعاته السابقة باسمه.", "Settings": "الإعدادات", "Team management": "إدارة الفريق", "Edit company details": "تعديل بيانات الشركة", "Edit owner profile": "تعديل ملف المالك", "Not set": "غير محدد", "Daily visit target": "هدف الزيارات اليومي", "unique customers per day for the whole company": "عميل مختلف يوميًا للشركة كلها", "No salesperson has a personal quota. Past days keep the target they had.": "لا توجد حصة شخصية لأي مندوب. تحتفظ الأيام السابقة بالهدف الذي كان ساريًا.", "Change target": "تغيير الهدف", "Add, edit, deactivate or remove employees and salespeople.": "أضف الموظفين والمندوبين أو عدّلهم أو عطّلهم أو احذفهم.", "Expense categories": "فئات المصروفات", "Add category": "إضافة فئة", "Edit category": "تعديل الفئة", "Category name": "اسم الفئة", "Category": "الفئة", "Category added": "تمت إضافة الفئة", "Category updated": "تم تحديث الفئة", "Saving and backup": "الحفظ والنسخ الاحتياطي", "Saved in this browser": "محفوظ في هذا المتصفح", "Saving is not working in this viewer": "الحفظ لا يعمل في هذا العارض", "Your changes will be lost when you close the app. Open Settings and download a backup.": "ستضيع تغييراتك عند إغلاق التطبيق. افتح الإعدادات ونزّل نسخة احتياطية.", "Your data is kept in this browser on this device. Download a backup regularly. If the browser data is cleared or you open the app on another device, the data will not be there.": "بياناتك محفوظة في هذا المتصفح على هذا الجهاز. نزّل نسخة احتياطية بانتظام. إذا مُسحت بيانات المتصفح أو فتحت التطبيق على جهاز آخر فلن تجد البيانات.", "Download backup": "تنزيل نسخة احتياطية", "Restore from backup": "استعادة من نسخة احتياطية", "Backup ready": "النسخة الاحتياطية جاهزة", "Backup cancelled": "تم إلغاء النسخ الاحتياطي", "Downloads are not available here": "التنزيل غير متاح هنا", "Could not save the backup": "تعذّر حفظ النسخة الاحتياطية", "This file is not a Ledgerline backup": "هذا الملف ليس نسخة احتياطية من Ledgerline", "Could not read that file": "تعذّرت قراءة الملف", "Restore backup": "استعادة النسخة الاحتياطية", "Backup date": "تاريخ النسخة", "Replace my data with this backup": "استبدال بياناتي بهذه النسخة", "Backup restored": "تمت استعادة النسخة الاحتياطية", "Restoring replaces everything now in the app with the contents of this backup. Download a backup of your current data first if you want to keep it.": "الاستعادة تستبدل كل ما في التطبيق الآن بمحتوى هذه النسخة. نزّل نسخة من بياناتك الحالية أولًا إذا أردت الاحتفاظ بها.", "Expenses this month": "مصروفات هذا الشهر", "Categories": "الفئات", "Add expense": "إضافة مصروف", "Edit expense": "تعديل المصروف", "Save expense": "حفظ المصروف", "Void expense": "إلغاء المصروف", "Voided": "ملغى", "Amount": "المبلغ", "Paid from cash.": "مدفوع من النقد.", "No expenses yet": "لا توجد مصروفات بعد", "Record rent, transport, supplies and other business costs here.": "سجّل هنا الإيجار والنقل والمستلزمات وتكاليف العمل الأخرى.", "Rent for October": "إيجار أكتوبر", "Editing or voiding never deletes history: the old entry stays in the journal with a reversal.": "التعديل أو الإلغاء لا يحذف السجل: يبقى القيد القديم في اليومية مع قيد عكسي.", "This expense is voided. Its entries and the reversal stay in the journal.": "تم إلغاء هذا المصروف. قيوده والقيد العكسي باقية في اليومية.", "Voiding posts a reversal. Nothing is deleted.": "الإلغاء يرحّل قيدًا عكسيًا. لا يُحذف شيء.", "Expense updated": "تم تحديث المصروف", "Expense saved": "تم حفظ المصروف", "Expense voided": "تم إلغاء المصروف", "Expense not found": "المصروف غير موجود", "Choose an expense category": "اختر فئة مصروف", "Choose a date": "اختر تاريخًا", "That category already exists": "هذه الفئة موجودة بالفعل", "Only categories you added can be renamed": "يمكن إعادة تسمية الفئات التي أضفتها فقط", "This expense is voided": "تم إلغاء هذا المصروف", "Edit supplier": "تعديل المورّد", "Supplier updated": "تم تحديث المورّد"},ARP=[["Hello, {0}", "مرحبًا، {0}"], ["of {0} customers visited today", "من أصل {0} عميل تمت زيارتهم اليوم"], ["{0} more to reach the target", "متبقي {0} للوصول إلى الهدف"], ["Customers: {0}", "العملاء: {0}"], ["{0} customers", "{0} عملاء"], ["{0} customer", "{0} عميل"], ["Owes {0}", "عليه {0}"], ["Seen today by {0}", "زاره اليوم {0}"], ["Assigned to {0}", "مخصص لـ {0}"], ["Visited by {0}", "تمت زيارته بواسطة {0}"], ["Collected {0}", "تم تحصيل {0}"], ["Collected: {0}", "المحصّل: {0}"], ["Sale recorded: {0}", "تم تسجيل البيع: {0}"], ["They owe {0}", "عليهم {0}"], ["Checked in at {0}", "تم تسجيل الوصول عند {0}"], ["Checked in at {0}. {1} already visited today, so it counts once for the company", "تم تسجيل الوصول عند {0}. زار {1} هذا العميل اليوم، لذا يُحتسب مرة واحدة للشركة"], ["Checked in at {0}. Warning: {1} m from the saved location", "تم تسجيل الوصول عند {0}. تنبيه: على بعد {1} م من الموقع المحفوظ"], ["Checked in at {0}. {1} already visited today, so it counts once for the company. Warning: {2} m from the saved location", "تم تسجيل الوصول عند {0}. زار {1} هذا العميل اليوم، لذا يُحتسب مرة واحدة للشركة. تنبيه: على بعد {2} م من الموقع المحفوظ"], ["{0} m from saved location", "على بعد {0} م من الموقع المحفوظ"], ["{0} m from the saved location", "على بعد {0} م من الموقع المحفوظ"], ["each, {0} left", "للوحدة، المتبقي {0}"], ["{0} each", "{0} للوحدة"], ["Sale saved: {0}", "تم حفظ البيع: {0}"], ["of {0} unique customers visited", "من أصل {0} عميل مختلف تمت زيارتهم"], ["{0} more unique customers needed to reach {1}", "يلزم {0} عملاء مختلفين آخرين للوصول إلى {1}"], ["{0} more unique customer needed to reach {1}", "يلزم {0} عميل مختلف آخر للوصول إلى {1}"], ["Target of {0} reached", "تم تحقيق هدف {0}"], ["Target of {0} reached, {1} over", "تم تحقيق هدف {0} وبزيادة {1}"], ["{0} repeat visits to a customer another salesperson had already seen. Each customer counts once.", "{0} زيارات مكررة لعميل زاره مندوب آخر. يُحتسب كل عميل مرة واحدة."], ["{0} repeat visit to a customer another salesperson had already seen. Each customer counts once.", "زيارة مكررة واحدة لعميل زاره مندوب آخر. يُحتسب كل عميل مرة واحدة."], ["Invoices today: {0}", "فواتير اليوم: {0}"], ["Customers owe: {0}", "مستحق من العملاء: {0}"], ["Sales this month: {0}", "مبيعات الشهر: {0}"], ["Low on stock: {0}", "منخفض المخزون: {0}"], ["Last 7 days: sales {0}, collected {1}", "آخر 7 أيام: المبيعات {0}، المحصّل {1}"], ["Target {0}", "الهدف {0}"], ["Company target, {0}", "هدف الشركة، {0}"], ["{0} of {1}", "{0} من {1}"], ["{0} of {1} unique customers", "{0} من {1} عميل مختلف"], ["Visited and bought ({0})", "تمت زيارتهم واشتروا ({0})"], ["Visited, did not buy ({0})", "تمت زيارتهم ولم يشتروا ({0})"], ["Short by {0}", "ناقص {0}"], ["Bought {0}", "اشترى بقيمة {0}"], ["GPS ±{0} m", "GPS ±{0} م"], ["Assign {0} unassigned customers evenly", "وزّع {0} عملاء غير مخصصين بالتساوي"], ["Assign {0} unassigned customer evenly", "وزّع عميلًا غير مخصص بالتساوي"], ["Salesperson: {0}", "المندوب: {0}"], ["{0} employees, gross {1}", "{0} موظفين، الإجمالي {1}"], ["{0} employee, gross {1}", "موظف واحد، الإجمالي {1}"], ["{0} in stock", "{0} في المخزون"], ["{0} ({1} in stock)", "{0} (المخزون {1})"], ["{0}: the system shows", "{0}: النظام يعرض"], ["{0} visits recorded, location saved from the first check-in.", "{0} زيارات مسجلة، تم حفظ الموقع من أول تسجيل وصول."], ["{0} visit recorded, location saved from the first check-in.", "زيارة واحدة مسجلة، تم حفظ الموقع من أول تسجيل وصول."], ["{0} visits recorded.", "{0} زيارات مسجلة."], ["{0} visit recorded.", "{0} زيارة مسجلة."], ["{0}, sold by {1}", "{0}، بواسطة {1}"], ["Issued {0}, due {1}", "صدرت في {0}، تستحق في {1}"], ["Payments: {0}", "الدفعات: {0}"], ["{0} x {1}", "{0} × {1}"], ["Ordered {0}", "تاريخ الطلب {0}"], ["Ordered {0}, received {1}", "تاريخ الطلب {0}، تاريخ الاستلام {1}"], ["Debits {0} / Credits {1}", "المدين {0} / الدائن {1}"], ["Debits {0} / Credits {1}  Balanced", "المدين {0} / الدائن {1}  متوازن"], ["Debits {0} / Credits {1}  Difference {2}", "المدين {0} / الدائن {1}  الفرق {2}"], ["Withholding rate {0}%, run on {1}.", "نسبة الاقتطاع {0}%، تم التشغيل في {1}."], ["Pay {0} withholding", "دفع {0} ضريبة مقتطعة"], ["From {0}", "اعتبارًا من {0}"], ["Payroll {0}", "رواتب {0}"], ["Withholding paid {0}", "سداد الضريبة المقتطعة {0}"], ["Invoice {0} to {1}", "فاتورة {0} إلى {1}"], ["Payment for {0}", "دفعة للفاتورة {0}"], ["Goods received {0} from {1}", "استلام بضاعة {0} من {1}"], ["Paid bill {0}", "دفع فاتورة {0}"], ["Opening stock: {0}", "مخزون افتتاحي: {0}"], ["Stock count: {0}", "جرد المخزون: {0}"], ["Stock count: {0} ({1})", "جرد المخزون: {0} ({1})"], ["{0}, asset", "{0}، أصل"], ["{0}, liability", "{0}، التزام"], ["{0}, equity", "{0}، حقوق ملكية"], ["{0}, revenue", "{0}، إيراد"], ["{0}, expense", "{0}، مصروف"], ["{0}, cost {1}", "{0}، التكلفة {1}"], ["Only {0} of {1} in stock", "المتوفر {0} فقط من {1}"], ["Payment is more than the {0} still owed", "الدفعة أكبر من المبلغ المتبقي {0}"], ["They only owe {0}", "عليهم {0} فقط"], ["Entry is out of balance: debits {0}, credits {1}", "القيد غير متوازن: المدين {0}، الدائن {1}"], ["GPS signal is weak (accurate to {0} m). Move to open sky and try again.", "إشارة GPS ضعيفة (الدقة {0} م). انتقل إلى مكان مكشوف وحاول مرة أخرى."], ["Payroll for {0} has already run", "تم تشغيل رواتب {0} بالفعل"], ["Target is {0} unique customers per day", "الهدف هو {0} عميل مختلف يوميًا"], ["Paid {0} net for {1}", "تم دفع صافي {0} لشهر {1}"], ["{0} created for {1}", "تم إنشاء {0} بقيمة {1}"], ["{0} placed for {1}", "تم تقديم {0} بقيمة {1}"], ["{0} cancelled", "تم إلغاء {0}"], ["{0} customers assigned", "تم تخصيص {0} عملاء"], ["{0} customer assigned", "تم تخصيص عميل واحد"], ["Stock changed by {0}", "تغيّر المخزون بمقدار {0}"], ["{0} already checked in at {1} at {2}", "{0} سجّل وصوله عند {1} في {2}"], ["{0} already visited today, so it counts once for the company", "زار {0} هذا العميل اليوم، لذا يُحتسب مرة واحدة للشركة"], ["Records tagged as entered in US dollars: {0}", "السجلات المسجلة على أنها أُدخلت بالدولار الأمريكي: {0}"], ["Added since the sample data: invoices {0}, orders {1}, journal entries {2}", "أُضيف بعد البيانات التجريبية: فواتير {0}، أوامر {1}، قيود يومية {2}"], ["Customers assigned to this person: {0}", "العملاء المخصصون لهذا الشخص: {0}"], ["{0} (inactive)", "{0} (غير نشط)"], ["{0} customers unassigned", "تم إلغاء تخصيص {0} عملاء"], ["Expense: {0}", "مصروف: {0}"], ["Reversal: {0}", "عكس: {0}"], ["Last saved {0}", "آخر حفظ {0}"], ["{0}, {1}", "{0}، {1}"]],ARPC=null,MISS={};
+Object.assign(AR,{"(You)": "(أنت)", "Approvals": "الموافقات", "Assigned to": "مخصص لـ", "Create an account": "إنشاء حساب", "Create account": "إنشاء الحساب", "I already have an account": "لدي حساب بالفعل", "Full name": "الاسم الكامل", "Password": "كلمة المرور", "Sign in": "تسجيل الدخول", "Sign out": "تسجيل الخروج", "Save": "حفظ", "Customers visited": "العملاء الذين تمت زيارتهم", "Everything passed.": "نجحت كل الفحوصات.", "Something failed. Do not use this for real data yet, and send me a screenshot.": "فشل شيء ما. لا تستخدمه لبيانات حقيقية بعد، وأرسل لي لقطة شاشة.", "New sign-ups appear here until you approve them.": "تظهر هنا التسجيلات الجديدة إلى أن توافق عليها.", "Nobody is waiting for approval.": "لا أحد بانتظار الموافقة.", "Waiting for approval": "بانتظار الموافقة", "People waiting for your approval": "أشخاص بانتظار موافقتك", "Waiting for owner approval": "بانتظار موافقة المالك", "The owner must approve your account before you can use the app. Ask the owner, then tap Check again.": "يجب أن يوافق المالك على حسابك قبل أن تتمكن من استخدام التطبيق. اسأل المالك ثم اضغط «تحقق مرة أخرى».", "Check again": "تحقق مرة أخرى", "Turn off": "إيقاف", "Region": "المنطقة", "Security check": "فحص الأمان", "Run the check": "تشغيل الفحص", "Runs real tests on your cloud database to prove the rules work for the account you are signed in with.": "يُجري اختبارات حقيقية على قاعدة البيانات السحابية لإثبات أن القواعد تعمل مع الحساب الذي سجّلت به.", "Your own profile can be read": "يمكن قراءة ملفك الشخصي", "Owner-only data is visible to the owner only": "بيانات المالك ظاهرة للمالك فقط", "Shared team data is visible to approved members": "بيانات الفريق المشتركة ظاهرة للأعضاء المعتمدين", "You cannot edit your own record (so nobody can make themselves owner)": "لا يمكنك تعديل سجلك بنفسك (فلا يستطيع أحد أن يجعل نفسه مالكًا)", "Someone who is not signed in cannot read anything": "من لم يسجّل الدخول لا يستطيع قراءة أي شيء", "Customers: you only see what the rules allow": "العملاء: ترى فقط ما تسمح به القواعد", "Visits cannot be written directly, only by checking in": "لا يمكن كتابة الزيارات مباشرة، فقط بتسجيل الوصول", "Only the owner can change the company target": "المالك وحده يستطيع تغيير هدف الشركة", "You cannot edit customers owned by the owner": "لا يمكنك تعديل بيانات العملاء", "The company progress totals can be read": "يمكن قراءة إجماليات تقدم الشركة", "The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.": "الهدف للشركة كلها. لا توجد حصة شخصية. تحتفظ الأيام السابقة بالهدف الذي كان ساريًا.", "Your full ERP screens for this move over to the cloud one stage at a time. Nothing is lost: your current ERP keeps working meanwhile.": "تنتقل شاشات نظامك الكامل هذه إلى السحابة مرحلة بعد أخرى. لا يضيع شيء: نظامك الحالي يواصل العمل في هذه الأثناء.", "Stage 3": "المرحلة 3", "Stage 4": "المرحلة 4", "Approve your salespeople in the Team tab.": "وافق على مندوبي المبيعات في تبويب الفريق.", "Tap Add customer to create your first one.": "اضغط «إضافة عميل» لإنشاء أول عميل.", "Company name, logo and owner profile move to the cloud in a later stage.": "اسم الشركة والشعار وملف المالك تنتقل إلى السحابة في مرحلة لاحقة.", "Finish the visit": "إنهاء الزيارة", "Ask the owner to assign customers to you, or add your own.": "اطلب من المالك تخصيص عملاء لك، أو أضف عملاءك بنفسك.", "Enter your name, phone and email.": "أدخل اسمك وهاتفك وبريدك الإلكتروني.", "Use at least 8 characters for the password.": "استخدم 8 أحرف على الأقل لكلمة المرور.", "Account created, but you cannot sign in yet. Ask the owner to finish the setup.": "تم إنشاء الحساب، لكن لا يمكنك تسجيل الدخول بعد. اطلب من المالك إكمال الإعداد.", "Name is required": "الاسم مطلوب", "Customer saved": "تم حفظ العميل", "Target saved": "تم حفظ الهدف", "Assigned": "تم التخصيص", "Select at least one customer.": "حدّد عميلًا واحدًا على الأقل.", "Enter a target between 1 and 1000.": "أدخل هدفًا بين 1 و1000.", "The new target must start today or later.": "يجب أن يبدأ الهدف الجديد من اليوم أو بعده.", "The Stage 2 database setup has not been run yet. Run ledgerline-cloud-setup-2 in Supabase.": "لم يتم تشغيل إعداد قاعدة البيانات للمرحلة الثانية بعد. شغّل ledgerline-cloud-setup-2 في Supabase.", "No profile was found for this login. Ask the owner to check the setup.": "لم يُعثر على ملف لهذا الحساب. اطلب من المالك مراجعة الإعداد.", "Could not load the app. Check your internet connection and refresh.": "تعذّر تحميل التطبيق. تحقق من الإنترنت وحدّث الصفحة.", "Loading...": "جارٍ التحميل...", "GPS is not available on this device.": "GPS غير متاح على هذا الجهاز.", "GPS signal is weak. Move to open sky and try again.": "إشارة GPS ضعيفة. انتقل إلى مكان مكشوف وحاول مرة أخرى.", "Location access is blocked. Allow location for this website in Safari settings, then try again.": "الوصول إلى الموقع محظور. اسمح بالموقع لهذا الموقع من إعدادات Safari ثم حاول مرة أخرى.", "Your location could not be determined. Try again.": "تعذّر تحديد موقعك. حاول مرة أخرى.", "Getting location...": "جارٍ تحديد الموقع...", "Customers not visited yet": "عملاء لم تتم زيارتهم بعد"});
+ARP.push.apply(ARP,[["{0} is coming in {1}", "{0} قادم في {1}"]]);
+/* ---- translation: screens are written in English and translated at the last moment ---- */
+function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+function compileP(){ARPC=ARP.map(function(p){var parts=p[0].split(/\{\d\}/);return {re:new RegExp('^'+parts.map(escRe).join('(.+?)')+'$'),out:p[1],len:p[0].length}}).sort(function(a,b){return b.len-a.len})}
+function trIn(c){
+  if(Object.prototype.hasOwnProperty.call(AR,c))return AR[c];
+  if(!ARPC)compileP();
+  for(var i=0;i<ARPC.length;i++){var m=c.match(ARPC[i].re);if(m)return ARPC[i].out.replace(/\{(\d)\}/g,function(x,n){var r=trIn(m[+n+1]);return r===null?m[+n+1]:r})}
+  return null;
+}
+function trText(s){
+  if(L!=='ar'||!s)return s;
+  var m=s.match(/^(\s*)([\s\S]*?)(\s*)$/);if(!m[2])return s;
+  var r=trIn(m[2]);
+  if(r===null){if(/[A-Za-z]{3,}/.test(m[2]))MISS[m[2]]=1;return s}
+  return m[1]+r+m[3];
+}
+function tr(h){
+  if(L!=='ar')return h;
+  h=h.replace(/>([^<>]+)</g,function(x,s){return '>'+trText(s)+'<'});
+  return h.replace(/\b(placeholder|aria-label|title|label)="([^"]*)"/g,function(x,a,v){return a+'="'+trText(v)+'"'});
+}
+function setHTML(el,h){el.innerHTML=tr(h)}
+
+/* ---- helpers ---- */
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function $(id){return document.getElementById(id)}
-function cairoToday(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo'}).format(new Date())}
-function fmtTime(iso){return new Date(iso).toLocaleTimeString(L==='ar'?'ar-u-nu-latn':'en-US',{timeZone:'Africa/Cairo',hour:'numeric',minute:'2-digit'})}
+function LOC(){return L==='ar'?'ar-u-nu-latn':'en-US'}
+function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo'}).format(new Date())}
+function addDays(iso,n){var d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+function fdate(iso){var d=new Date(iso+'T12:00:00Z');return d.toLocaleDateString(LOC(),{timeZone:'UTC',month:'short',day:'numeric',year:iso.slice(0,4)===today().slice(0,4)?undefined:'numeric'})}
+function dayShort(iso){return new Date(iso+'T12:00:00Z').toLocaleDateString(LOC(),{timeZone:'UTC',weekday:'short'})}
+function ftime(iso){return new Date(iso).toLocaleTimeString(LOC(),{timeZone:'Africa/Cairo',hour:'numeric',minute:'2-digit'})}
+function nameOf(p){return p?(p.full_name||p.email||'?'):''}
 
-var app=$('app'),sb=null;
-var S={view:'boot',tab:'home',session:null,profile:null,team:[],customers:[],visits:[],progress:null,checks:null,msg:'',err:'',busy:false,draft:{},sheet:null,visit:null,sel:{},q:'',filter:'all',arep:''};
-
+var sb=null;
+var S={view:'boot',tab:'home',sub:'progress',vd:null,session:null,profile:null,team:[],customers:[],visits:[],hist:[],targets:[],progress:null,checks:null,
+  err:'',busy:false,draft:{},sheet:null,visit:null,sel:{},q:'',filter:'all',arep:'',vq:''};
 function isOwner(){return !!(S.profile&&S.profile.role==='owner')}
+function curDate(){return S.vd||today()}
 function teamMap(){var m={};S.team.forEach(function(p){m[p.id]=p});return m}
 function custMap(){var m={};S.customers.forEach(function(c){m[c.id]=c});return m}
 function staff(){return S.team.filter(function(p){return p.active})}
-function nameOf(p){return p?(p.full_name||p.email||'?'):''}
+function colorOf(id){var ids=S.team.map(function(p){return p.id}).sort();var i=ids.indexOf(id);return COLORS[(i<0?0:i)%5]}
+function targetFor(d){var v=35;S.targets.slice().sort(function(a,b){return a.effective_from<b.effective_from?-1:1}).forEach(function(x){if(x.effective_from<=d)v=x.value});return v}
 
-/* ---------- pieces ---------- */
-function top(){return '<div class="top"><div class="brand">Ledgerline</div><div><button class="lnk" data-a="lang">'+(L==='ar'?'English':'العربية')+'</button>'+(S.session?'<button class="lnk" data-a="signout">'+t('Sign out')+'</button>':'')+'</div></div>'}
-function note(){return (S.err?'<div class="note bad">'+esc(S.err)+'</div>':'')+(S.msg?'<div class="note ok">'+esc(S.msg)+'</div>':'')}
-function field(label,name,type,extra){return '<label>'+t(label)+'<input name="'+name+'" type="'+type+'" '+(type==='password'?'':'value="'+esc(S.draft[name]||'')+'" ')+(extra||'')+' required></label>'}
-function bar(parts,total){var tot=Math.max(total,parts.reduce(function(a,p){return a+p.n},0),1);return '<div class="pbar">'+parts.filter(function(p){return p.n>0}).map(function(p){return '<i style="width:'+(p.n/tot*100).toFixed(1)+'%;background:'+p.c+'"></i>'}).join('')+'</div>'}
-
-/* ---------- sign in / up ---------- */
-function viewLogin(){return '<h1>'+t('Sign in')+'</h1><form class="card" data-form="login">'+field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="current-password"')+'<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Sign in')+'</button></form><button class="btn alt" data-a="to-signup">'+t('Create an account')+'</button>'}
-function viewSignup(){return '<h1>'+t('Create an account')+'</h1><form class="card" data-form="signup">'+field('Full name','full_name','text','autocomplete="name"')+field('Phone','phone','tel','autocomplete="tel"')+field('Email','email','email','autocomplete="email" autocapitalize="off"')+field('Password','password','password','autocomplete="new-password"')+'<button class="btn"'+(S.busy?' disabled':'')+'>'+t('Create account')+'</button></form><button class="btn alt" data-a="to-login">'+t('I already have an account')+'</button>'}
-function viewPending(){var p=S.profile||{};return '<h1>'+t('Waiting for owner approval')+'</h1><div class="card"><p>'+t('The owner must approve your account before you can use the app. Ask the owner, then tap Check again.')+'</p><p class="sub">'+esc(p.full_name||'')+' '+esc(p.email||'')+'</p><button class="btn" data-a="refresh">'+t('Check again')+'</button></div>'}
-
-/* ---------- shared: progress ---------- */
-function progressCard(){
-  var p=S.progress;if(!p)return '';
-  var rem=Math.max(0,p.target-p.unique_visited),parts;
-  if(isOwner())parts=ownerStats().reps.map(function(r,i){return {n:r.credited,c:COLORS[i%5]}});else parts=[{n:p.unique_visited,c:'var(--accent)'}];
-  return '<div class="card"><h2>'+t('Company target today')+'</h2><div class="goal"><span class="gnum">'+p.unique_visited+'</span><span class="gof">'+t('of {0} unique customers visited',p.target)+'</span></div>'+bar(parts,p.target)+
-    '<div><b>'+(rem>0?t('{0} more needed to reach {1}',rem,p.target):t('Target of {0} reached',p.target))+'</b></div>'+
-    (isOwner()?'<p class="sub" style="margin:8px 0 10px">'+t('The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.')+'</p><button class="btn sm alt" data-a="open-target">'+t('Change target')+'</button>':'')+'</div>';
+/* ---- numbers for one day ---- */
+function dayStats(){
+  var d=curDate(),tm=teamMap(),vs=S.visits.slice().sort(function(a,b){return a.checked_in_at<b.checked_in_at?-1:1}),first={};
+  vs.forEach(function(v){if(!first[v.customer_id])first[v.customer_id]=v});
+  var unique=Object.keys(first).length,ids={};
+  S.team.forEach(function(p){if(p.active&&p.role!=='owner')ids[p.id]=1});vs.forEach(function(v){ids[v.rep_id]=1});
+  var reps=Object.keys(ids).map(function(rid){
+    var mine=vs.filter(function(v){return v.rep_id===rid}),cred=mine.filter(function(v){return first[v.customer_id]===v}).length;
+    var assigned=S.customers.filter(function(c){return c.assigned_to===rid&&c.active});
+    return {id:rid,name:nameOf(tm[rid]),visits:mine.length,credited:cred,shared:mine.length-cred,assigned:assigned.length,missed:assigned.filter(function(c){return !first[c.id]}).length};
+  }).sort(function(a,b){return a.name<b.name?-1:1});
+  return {date:d,target:targetFor(d),unique:unique,repeat:vs.length-unique,reps:reps,first:first,
+    visits:vs.map(function(v){return Object.assign({},v,{credited:first[v.customer_id]===v})}),
+    notReached:S.customers.filter(function(c){return c.active&&!first[c.id]})};
 }
 
-/* ---------- owner ---------- */
-function ownerStats(){
-  var tm=teamMap(),by={},first={},reps=[];
-  S.visits.forEach(function(v){if(!first[v.customer_id])first[v.customer_id]=v.id;(by[v.rep_id]=by[v.rep_id]||[]).push(v)});
-  Object.keys(by).forEach(function(rid){var vs=by[rid];reps.push({id:rid,name:nameOf(tm[rid]),visits:vs.length,credited:vs.filter(function(v){return first[v.customer_id]===v.id}).length})});
-  reps.sort(function(a,b){return a.name<b.name?-1:1});
-  var visited={};S.visits.forEach(function(v){visited[v.customer_id]=1});
-  return {reps:reps,missed:S.customers.filter(function(c){return c.active&&c.assigned_to&&!visited[c.id]})};
+/* ---- small building blocks (same look as the full ERP) ---- */
+function badge(k,txt){return '<span class="badge '+k+'">'+esc(txt)+'</span>'}
+function empty(a,b){return '<div class="empty"><b>'+esc(a)+'</b>'+esc(b)+'</div>'}
+function kpi(l,v,cls,sub){return '<div class="kpi"><div class="l">'+l+'</div><div class="v num '+(cls||'')+'">'+v+'</div>'+(sub?'<div class="sub">'+sub+'</div>':'')+'</div>'}
+function seg(items,cur){return '<div class="seg" role="group">'+items.map(function(i){return '<button data-a="sub" data-s="'+i[0]+'" aria-pressed="'+(cur===i[0])+'">'+i[1]+'</button>'}).join('')+'</div>'}
+function fld(label,name,type,val,extra){return '<label class="fld"><span>'+label+'</span><input name="'+name+'" type="'+(type||'text')+'" value="'+esc(val==null?'':val)+'" '+(extra||'')+'></label>'}
+function alertRow(kind,title,sub,count,go){return '<button class="alert" data-a="goto" data-t="'+go[0]+'" data-s="'+(go[1]||'')+'"><span><b>'+title+'</b>'+(sub?'<div class="sub">'+sub+'</div>':'')+'</span>'+badge(kind,String(count))+'</button>'}
+function barChart(cols,o){
+  var mx=o.target||0;cols.forEach(function(c){c.vals.forEach(function(v){if(v>mx)mx=v})});mx=mx||1;
+  var bars=cols.map(function(c){return '<div class="col">'+c.vals.map(function(v,i){return '<div class="b" style="height:'+(v/mx*100).toFixed(1)+'%;background:'+(c.color||o.colors[i])+'">'+(o.showVals?'<em>'+v+'</em>':'')+'</div>'}).join('')+'</div>'}).join('');
+  return '<div class="chart"><div class="plot">'+(o.target?'<div class="tline" style="bottom:'+(o.target/mx*100).toFixed(1)+'%"><span>'+o.tlabel+' '+o.target+'</span></div>':'')+'<div class="bars">'+bars+'</div></div><div class="lbls">'+cols.map(function(c){return '<span>'+c.label+'</span>'}).join('')+'</div></div>';
 }
-function viewOwnerHome(){
-  var st=ownerStats(),tm=teamMap(),pend=S.team.filter(function(p){return !p.active});
-  var mx=Math.max.apply(null,st.reps.map(function(x){return x.visits}).concat([1]));
-  var h=progressCard();
-  h+='<div class="card"><h2>'+t('Salespeople today')+'</h2>'+(st.reps.length?st.reps.map(function(r,i){
-    return '<div class="perf"><div class="row" style="border:0;padding:0"><b><i class="dot" style="background:'+COLORS[i%5]+'"></i>'+esc(r.name)+'</b><span>'+t('{0} visits',r.visits)+' <span class="sub">'+t('{0} counted',r.credited)+'</span></span></div><div class="pb"><i style="width:'+(r.visits/mx*100)+'%;background:'+COLORS[i%5]+'"></i></div></div>'}).join(''):'<p class="muted">'+t('No visits yet today.')+'</p>')+'</div>';
-  h+='<div class="card"><h2>'+t('Not visited yet')+' <span class="badge '+(st.missed.length?'wait':'ok')+'">'+st.missed.length+'</span></h2>'+(st.missed.length?st.missed.slice(0,12).map(function(c){return '<div class="row"><b>'+esc(c.name)+'</b><span class="sub">'+esc(nameOf(tm[c.assigned_to]))+'</span></div>'}).join('')+(st.missed.length>12?'<p class="sub">+'+(st.missed.length-12)+'</p>':''):'<p class="muted">'+t('Everyone assigned has been visited.')+'</p>')+'</div>';
-  if(pend.length)h+='<div class="card"><h2>'+t('Approvals')+' <span class="badge wait">'+pend.length+'</span></h2>'+pend.map(personRow).join('')+'</div>';
-  return h;
+function utilBar(extra,owner){
+  return '<div class="util">'+(extra||'')+'<span class="push"></span>'+(owner?'<button class="lnk" data-a="goto" data-t="settings">Settings</button>':'')+'<button class="lnk" data-a="lang">'+(L==='ar'?'English':'العربية')+'</button>'+(S.session?'<button class="lnk" data-a="signout">Sign out</button>':'')+'</div>';
 }
-function personRow(p){
-  var me=S.profile&&p.id===S.profile.id;
-  return '<div class="row"><div class="grow"><b>'+esc(nameOf(p))+'</b>'+(me?' <span class="sub">('+t('You')+')</span>':'')+'<div class="sub">'+esc(p.email||'')+(p.phone?' &nbsp; '+esc(p.phone):'')+'</div></div><div>'+
-    (p.role==='owner'?'<span class="badge owner">'+t('Owner')+'</span>':(p.active?'<span class="badge ok">'+t('Active')+'</span>':'<span class="badge wait">'+t('Waiting')+'</span>'))+
-    (!me?' <button class="btn sm '+(p.active?'alt':'')+'" data-a="toggle" data-id="'+esc(p.id)+'" data-on="'+(p.active?'0':'1')+'">'+(p.active?t('Turn off'):t('Approve'))+'</button>':'')+'</div></div>';
+
+/* ---- the progress card (the heart of the company target) ---- */
+function progressPanel(st,isToday){
+  var span=Math.max(st.target,st.unique,1),rem=Math.max(0,st.target-st.unique),over=Math.max(0,st.unique-st.target);
+  var segs=st.reps.filter(function(r){return r.credited>0}).map(function(r){return '<i title="'+esc(r.name)+': '+r.credited+'" style="width:'+(r.credited/span*100)+'%;background:'+colorOf(r.id)+'"></i>'}).join('');
+  var leg=st.reps.map(function(r){return '<span><i style="background:'+colorOf(r.id)+'"></i>'+esc(r.name)+' <b class="num">'+r.credited+'</b></span>'}).join('');
+  var status=rem>0?'<span class="'+(isToday?'':'neg')+'">'+rem+' more unique customers needed to reach '+st.target+'</span>':'<span class="pos">Target of '+st.target+' reached'+(over?', '+over+' over':'')+'</span>';
+  return '<div class="panel"><h2>'+(isToday?'Company target today':'Company target, '+fdate(st.date))+'</h2><div class="goal"><span class="gnum num">'+st.unique+'</span><span class="gof">of '+st.target+' unique customers visited</span></div>'+
+    '<div class="pbar" role="img">'+segs+'</div><div class="plegend">'+leg+'</div><div class="pstat">'+status+'</div>'+
+    (st.repeat?'<div class="sub" style="margin-top:4px">'+st.repeat+' repeat visits to a customer another salesperson had already seen. Each customer counts once.</div>':'')+'</div>';
 }
-function viewOwnerTeam(){
-  var pend=S.team.filter(function(x){return !x.active}),act=S.team.filter(function(x){return x.active});
-  return '<h1>'+t('Team')+'</h1><div class="card"><h2>'+t('Approvals')+'</h2>'+(pend.length?pend.map(personRow).join(''):'<p class="muted">'+t('Nobody is waiting for approval.')+'</p>')+'</div><div class="card"><h2>'+t('Team')+'</h2>'+act.map(personRow).join('')+'</div>';
+function kpisFor(st,isToday){
+  var act=S.team.filter(function(p){return p.active&&p.role!=='owner'}).length;
+  return '<div class="kpis">'+kpi('Visits remaining',Math.max(0,st.target-st.unique),st.unique>=st.target?'pos':'')+kpi('Customers visited',st.unique)+kpi(isToday?'Not reached so far':'Not reached',st.notReached.length)+kpi('Salespeople',act)+'</div>';
 }
+function repCards(st,isToday){
+  if(!st.reps.length)return empty('No salespeople yet','Approve your salespeople in the Team tab.');
+  return st.reps.map(function(r){
+    function cell(l,v){return '<div><div class="l">'+l+'</div><div class="v num">'+v+'</div></div>'}
+    return '<div class="rep" style="border-inline-start-color:'+colorOf(r.id)+'"><div class="rh"><b>'+esc(r.name)+'</b><span class="num"><b>'+r.visits+'</b> visits</span></div><div class="rg">'+
+      cell('Counted for target',r.credited)+cell('Also seen by others',r.shared)+cell(isToday?'Missed so far':'Missed',r.missed+' of '+r.assigned)+'</div></div>'}).join('');
+}
+function historyView(){
+  var rows='',byDay={};S.hist.forEach(function(v){(byDay[v.visit_date]=byDay[v.visit_date]||{})[v.customer_id]=1});
+  var first=S.hist.reduce(function(m,v){return v.visit_date<m?v.visit_date:m},'9999-12-31');
+  for(var n=0;n<7;n++){var d=addDays(curDate(),-n);if(d<first&&d!==today())continue;
+    var u=Object.keys(byDay[d]||{}).length,tg=targetFor(d),met=u>=tg;
+    rows+='<div class="row"><div class="grow"><b>'+fdate(d)+'</b><div class="sub num">'+u+' of '+tg+' unique customers</div></div><div class="end">'+(met?badge('ok','Target met'):(d===today()?badge('info','In progress'):badge('bad','Short by '+(tg-u))))+'</div></div>'}
+  return rows?'<h2 class="sh">Last 7 days</h2><div class="list">'+rows+'</div>':'';
+}
+function logView(st){
+  if(!st.visits.length)return empty('No visits recorded','Each check-in is saved with its GPS location and the time of the visit.');
+  var cm=custMap(),tm=teamMap();
+  return '<div class="list">'+st.visits.slice().reverse().map(function(v){
+    var c=cm[v.customer_id],b=[v.credited?badge('ok','Counted'):badge('mute','Repeat, counted once')];
+    b.push(badge('mute','GPS \u00b1'+Math.round(v.accuracy||0)+' m'));if(v.far)b.push(badge('bad',v.distance_m+' m from saved location'));
+    if(!v.finished)b.push(badge('wait','In progress'));
+    return '<div class="row"><div class="grow"><b>'+esc(c?c.name:'')+'</b><div class="sub num">'+ftime(v.checked_in_at)+', '+esc(nameOf(tm[v.rep_id]))+(v.note?', '+esc(v.note):'')+'</div></div><div class="end">'+b.join(' ')+'</div></div>'}).join('')+'</div>';
+}
+function missedView(st){
+  var nr=st.notReached,tm=teamMap(),un=nr.filter(function(c){return !c.assigned_to}).length;
+  var head='<div class="kpis">'+kpi('Not reached',nr.length)+kpi('Missed (assigned)',nr.length-un)+'</div>';
+  if(!nr.length)return head+empty('Every customer was visited','Nobody was missed on this day.');
+  return head+'<div class="list">'+nr.slice().sort(function(a,b){var x=nameOf(tm[a.assigned_to])+a.name,y=nameOf(tm[b.assigned_to])+b.name;return x<y?-1:1}).map(function(c){
+    return '<div class="row"><div class="grow"><b>'+esc(c.name)+'</b><div class="sub">'+(c.assigned_to?'Assigned to '+esc(nameOf(tm[c.assigned_to])):'Unassigned')+'</div></div></div>'}).join('')+'</div>';
+}
+
+/* ---- customers: assignment by hand ---- */
 function custList(){
   var q=S.q.trim().toLowerCase();
   return S.customers.filter(function(c){
     if(q&&c.name.toLowerCase().indexOf(q)<0&&(c.phone||'').indexOf(q)<0)return false;
     if(S.filter==='all')return true;if(S.filter==='none')return !c.assigned_to;return c.assigned_to===S.filter;
-  });
+  }).sort(function(a,b){return a.name<b.name?-1:1});
 }
 function custRows(){
   var tm=teamMap(),list=custList();
-  if(!list.length)return '<p class="muted">'+t('No customers yet.')+'</p>';
-  return list.map(function(c){var a=c.assigned_to&&tm[c.assigned_to];
-    return '<div class="arow"><input type="checkbox" data-k="sel" data-id="'+c.id+'"'+(S.sel[c.id]?' checked':'')+' aria-label="select"><button class="nm" data-a="edit-cust" data-id="'+c.id+'"><b>'+esc(c.name)+'</b>'+(c.active?'':' <span class="badge">'+t('Inactive')+'</span>')+'<div class="sub">'+esc(c.phone||'')+'</div></button><span class="sub">'+(a?esc(nameOf(a)):'<span class="badge wait">'+t('Unassigned')+'</span>')+'</span></div>'}).join('');
+  if(!list.length)return empty('No customers yet','Tap Add customer to create your first one.');
+  return '<div class="list">'+list.map(function(c){var a=c.assigned_to&&tm[c.assigned_to];
+    return '<div class="arow"><label class="chkbox"><input type="checkbox" data-k="sel" data-id="'+c.id+'"'+(S.sel[c.id]?' checked':'')+' aria-label="Select"></label><button class="selbtn" data-a="edit-cust" data-id="'+c.id+'"><b>'+esc(c.name)+'</b>'+(c.active?'':' '+badge('mute','Inactive'))+'<div class="sub">'+esc(c.phone||'')+(c.lat!=null?'':(c.phone?', ':'')+'No location saved yet')+'</div></button><div class="end">'+(a?'<i class="dot" style="background:'+colorOf(a.id)+'"></i> '+esc(nameOf(a)):badge('wait','Unassigned'))+'</div></div>'}).join('')+'</div>';
 }
-function selbar(){
+function selbarHTML(){
   var n=Object.keys(S.sel).filter(function(k){return S.sel[k]}).length;if(!n)return '';
-  return '<div class="selbar"><span><b>'+n+'</b> '+t('selected')+'</span><select id="arep" aria-label="'+t('Assign to')+'"><option value="">'+t('Unassigned')+'</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(S.arep===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select><button class="btn sm" data-a="assign-apply">'+t('Assign')+'</button><button class="btn sm alt" data-a="assign-clear">'+t('Clear')+'</button></div>';
+  return '<div class="selbar"><span><b class="num">'+n+'</b> selected</span><select id="arep" aria-label="Assign to"><option value="">Unassigned</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(S.arep===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select><button class="btn primary sm" data-a="assign-apply">Assign</button><button class="btn sm" data-a="assign-clear">Clear</button></div>';
 }
-function viewOwnerCustomers(){
-  return '<h1>'+t('Customers')+'</h1><button class="btn" data-a="add-cust" style="margin-bottom:12px">'+t('Add customer')+'</button>'+
-    '<div class="two"><input id="q" type="search" placeholder="'+t('Search customers')+'" value="'+esc(S.q)+'"><select id="fil"><option value="all">'+t('All customers')+'</option><option value="none"'+(S.filter==='none'?' selected':'')+'>'+t('Unassigned')+'</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(S.filter===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select></div>'+
-    '<p class="sub" style="margin:10px 0">'+t('Tick customers, choose a salesperson, then tap Assign.')+'</p><div class="card" id="clist">'+custRows()+'</div><div id="selbar">'+selbar()+'</div>';
+function assignView(){
+  var reps=staff(),summary=reps.map(function(r){return '<div class="row"><div class="grow"><i class="dot" style="background:'+colorOf(r.id)+'"></i> <b>'+esc(nameOf(r))+'</b></div><div class="end num">'+S.customers.filter(function(c){return c.assigned_to===r.id}).length+' customers</div></div>'}).join('')+
+    (S.customers.filter(function(c){return !c.assigned_to}).length?'<div class="row"><div class="grow"><b>Unassigned</b></div><div class="end num">'+S.customers.filter(function(c){return !c.assigned_to}).length+' customers</div></div>':'');
+  return '<div class="list">'+summary+'</div><p class="note">You decide who visits each customer. Tick customers, choose a salesperson, then tap Assign.</p>'+
+    '<div class="atools"><input class="search" id="q" type="search" placeholder="Search customers" value="'+esc(S.q)+'" aria-label="Search customers"><select id="fil" aria-label="Show"><option value="all">All customers</option><option value="none"'+(S.filter==='none'?' selected':'')+'>Unassigned</option>'+reps.map(function(p){return '<option value="'+esc(p.id)+'"'+(S.filter===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select></div>'+
+    '<div class="actions" style="margin-bottom:10px"><button class="btn sm" data-a="sel-all">Select all shown</button></div><div id="clist">'+custRows()+'</div><div id="selbar">'+selbarHTML()+'</div>';
 }
 
-/* ---------- salesperson ---------- */
-function viewRepHome(){
+/* ---- owner screens ---- */
+function viewHome(){
+  var st=dayStats(),pend=S.team.filter(function(p){return !p.active}),A=[];
+  var missed=st.notReached.filter(function(c){return c.assigned_to}).length;
+  if(missed)A.push(alertRow('warn','Customers not visited yet',st.reps.filter(function(r){return r.missed>0}).map(function(r){return esc(r.name)+' '+r.missed}).join(', '),missed,['visits','missed']));
+  if(pend.length)A.push(alertRow('info','People waiting for your approval','',pend.length,['people','']));
+  var rem=Math.max(0,st.target-st.unique);if(rem)A.push(alertRow(new Date().getUTCHours()>=12?'bad':'info','Visits still needed for the target','',rem,['visits','progress']));
+  var mx=Math.max.apply(null,st.reps.map(function(r){return r.visits}).concat([1]));
+  var days=[];for(var i=6;i>=0;i--)days.push(addDays(today(),-i));
+  var byDay={};S.hist.forEach(function(v){(byDay[v.visit_date]=byDay[v.visit_date]||{})[v.customer_id]=1});
+  var cols=days.map(function(d){var u=Object.keys(byDay[d]||{}).length;return {label:d===today()?'Today':dayShort(d),vals:[u],color:u>=targetFor(d)?'var(--pos)':'var(--accent)'}});
+  return progressPanel(st,true)+kpisFor(st,true)+
+    '<h2 class="sh">Needs your attention</h2><div class="panel">'+(A.length?A.join(''):'<div class="muted">Nothing needs your attention.</div>')+'</div>'+
+    '<h2 class="sh">Salesperson performance today</h2><div class="panel">'+(st.reps.length?st.reps.map(function(r){return '<div class="perf"><div class="ph"><span><i class="dot" style="background:'+colorOf(r.id)+'"></i> <b>'+esc(r.name)+'</b></span><span class="num"><b>'+r.visits+'</b> visits</span></div><div class="pb"><i style="width:'+(r.visits/mx*100).toFixed(1)+'%;background:'+colorOf(r.id)+'"></i></div><div class="ps"><span>Counted <b class="num">'+r.credited+'</b></span><span>Missed <b class="num">'+r.missed+'</b></span></div></div>'}).join('')+'<button class="btn sm" data-a="goto" data-t="visits" data-s="progress">Full visit report</button>':'<div class="muted">No visits yet today.</div>')+'</div>'+
+    '<h2 class="sh">Visits per day</h2><div class="panel">'+barChart(cols,{target:st.target,tlabel:'Target',showVals:true})+'</div>'+
+    '<h2 class="sh">Quick actions</h2><div class="actions"><button class="btn primary" data-a="add-cust">Add customer</button><button class="btn" data-a="open-target">Change daily target</button><button class="btn" data-a="goto" data-t="people">Team management</button></div>';
+}
+function viewVisits(){
+  var st=dayStats(),d=curDate(),isToday=d===today(),h=seg([['progress','Progress'],['log','Visit log'],['missed','Not reached'],['assign','Customers']],S.sub);
+  var bar='<div class="datebar"><input type="date" id="vdate" value="'+d+'" max="'+today()+'" aria-label="Report date">'+(isToday?'':'<button class="btn sm" data-a="vtoday">Back to today</button>')+'<button class="btn sm" data-a="open-target">Target settings</button></div>';
+  if(S.sub==='assign')return h+assignView();
+  if(S.sub==='log')return h+bar+logView(st);
+  if(S.sub==='missed')return h+bar+missedView(st);
+  return h+bar+progressPanel(st,isToday)+kpisFor(st,isToday)+'<h2 class="sh">By salesperson</h2>'+repCards(st,isToday)+historyView();
+}
+function personRow(p){
+  var me=S.profile&&p.id===S.profile.id;
+  return '<div class="row"><div class="grow"><b>'+esc(nameOf(p))+'</b>'+(me?' <span class="sub">(You)</span>':'')+'<div class="sub">'+esc(p.email||'')+'</div>'+(p.phone?'<div class="sub num">'+esc(p.phone)+'</div>':'')+'</div><div class="end">'+
+    (p.role==='owner'?badge('info','Owner'):(p.active?badge('ok','Active'):badge('wait','Waiting')))+
+    (!me?' <button class="btn sm '+(p.active?'':'primary')+'" data-a="toggle" data-id="'+esc(p.id)+'" data-on="'+(p.active?'0':'1')+'">'+(p.active?'Turn off':'Approve')+'</button>':'')+'</div></div>';
+}
+function viewTeam(){
+  var pend=S.team.filter(function(x){return !x.active}),act=S.team.filter(function(x){return x.active});
+  return '<div class="kpis">'+kpi('Active employees',act.length)+kpi('Waiting for approval',pend.length,pend.length?'neg':'')+'</div>'+
+    '<h2 class="sh">Approvals</h2>'+(pend.length?'<div class="list">'+pend.map(personRow).join('')+'</div>':empty('Nobody is waiting for approval.','New sign-ups appear here until you approve them.'))+
+    '<h2 class="sh">Team</h2><div class="list">'+act.map(personRow).join('')+'</div>';
+}
+function viewSoon(what,stage){return empty(what+' is coming in '+stage,'Your full ERP screens for this move over to the cloud one stage at a time. Nothing is lost: your current ERP keeps working meanwhile.')}
+function checkPanel(){
+  return '<div class="panel"><h2>Security check</h2><p class="sub">Runs real tests on your cloud database to prove the rules work for the account you are signed in with.</p>'+
+    (S.checks?S.checks.list.map(function(c){return '<div class="chk"><span class="'+(c.ok?'pass':'fail')+'">'+(c.ok?'\u2713':'\u2717')+'</span><span>'+c.name+'</span></div>'}).join('')+'<div class="note '+(S.checks.ok?'pos':'neg')+'" style="margin-top:10px">'+(S.checks.ok?'Everything passed.':'Something failed. Do not use this for real data yet, and send me a screenshot.')+'</div>':'')+
+    '<button class="btn primary" data-a="check"'+(S.busy?' disabled':'')+'>Run the check</button></div>';
+}
+function viewSettings(){
+  var tg=targetFor(today());
+  return '<div class="panel"><h2>Daily visit target</h2><div class="goal"><span class="gnum num">'+tg+'</span><span class="gof">unique customers per day for the whole company</span></div><p class="note" style="margin-top:8px">No salesperson has a personal quota. Past days keep the target they had.</p><button class="btn sm" data-a="open-target">Change target</button></div>'+
+    '<div class="panel"><h2>Company</h2><p class="note">Company name, logo and owner profile move to the cloud in a later stage.</p></div>'+
+    '<div class="panel"><h2>Region</h2><table class="tbl"><tbody><tr><td>Country</td><td class="r">Egypt</td></tr><tr><td>Currency</td><td class="r">Egyptian pound (EGP)</td></tr><tr><td>Time zone</td><td class="r">Africa/Cairo (Cairo time)</td></tr></tbody></table></div>'+checkPanel();
+}
+
+/* ---- salesperson screens ---- */
+function repGreeting(){return '<h1 class="hi">Hello, '+esc((S.profile.full_name||S.profile.email||'').split(' ')[0])+'</h1><div class="date">'+new Date().toLocaleDateString(LOC(),{timeZone:'Africa/Cairo',weekday:'long',month:'long',day:'numeric'})+'</div>'}
+function repProgress(){
+  var p=S.progress||{target:35,unique_visited:0,my_visits:0},rem=Math.max(0,p.target-p.unique_visited),left=repLeft();
+  return '<div class="rprog"><div class="goal"><span class="gnum num">'+p.unique_visited+'</span><span class="gof">of '+p.target+' customers visited today</span></div><div class="pbar one"><i style="width:'+Math.min(100,p.unique_visited/p.target*100).toFixed(1)+'%;background:var(--accent)"></i></div>'+
+    '<div class="pstat">'+(rem?'<span>'+rem+' more to reach the target</span>':'<span class="pos">Target reached</span>')+'</div><div class="rp2"><div><div class="l">Your visits</div><div class="v num">'+p.my_visits+'</div></div><div><div class="l">Left on your list</div><div class="v num">'+left+'</div></div></div></div>';
+}
+function repLeft(){var vm={};S.visits.forEach(function(v){vm[v.customer_id]=1});return S.customers.filter(function(c){return c.active&&!vm[c.id]}).length}
+function viewRepToday(){
   var vm={};S.visits.forEach(function(v){vm[v.customer_id]=v});
-  var list=S.customers.filter(function(c){return c.active}),p=S.progress,h=progressCard();
-  if(p)h+='<div class="card"><div class="row" style="border:0;padding:0"><span>'+t('Your visits')+'</span><b>'+p.my_visits+'</b></div></div>';
-  h+='<h3>'+t('My customers')+'</h3><button class="btn alt" data-a="add-cust" style="margin-bottom:12px">'+t('Add customer')+'</button>';
-  if(!list.length)return h+'<p class="muted">'+t('No customers are assigned to you yet. Ask the owner, or add your own customer.')+'</p>';
-  var order=function(c){var v=vm[c.id];return !v?0:(v.finished?2:1)};
-  list.sort(function(a,b){return order(a)-order(b)||(a.name<b.name?-1:1)});
-  return h+list.map(function(c){
-    var v=vm[c.id];
-    if(!v)return '<div class="ccard"><div class="grow"><b>'+esc(c.name)+'</b><div class="sub">'+esc(c.phone||c.address||'')+'</div></div><button class="go" data-a="checkin" data-id="'+c.id+'">'+t('Check in')+'</button></div>';
-    if(!v.finished)return '<div class="ccard prog"><div class="grow"><b>'+esc(c.name)+'</b><div class="sub">'+t('Visit in progress')+'</div></div><button class="btn sm" data-a="open-visit" data-id="'+v.id+'">'+t('Continue')+'</button></div>';
-    return '<div class="ccard done"><div class="grow"><b>'+esc(c.name)+'</b><div class="sub">'+t('Checked in at {0}',fmtTime(v.checked_in_at))+'</div></div><span class="pass" style="font-size:22px">\u2713</span></div>';
-  }).join('');
+  var q=S.vq.trim().toLowerCase(),list=S.customers.filter(function(c){return c.active&&(!q||c.name.toLowerCase().indexOf(q)>-1)});
+  var prog=list.filter(function(c){return vm[c.id]&&!vm[c.id].finished}),todo=list.filter(function(c){return !vm[c.id]}),done=list.filter(function(c){return vm[c.id]&&vm[c.id].finished}),out='';
+  if(prog.length)out+='<h2 class="sh">Visit in progress</h2>'+prog.map(function(c){return '<button class="ccard prog" data-a="open-visit" data-id="'+vm[c.id].id+'"><div class="ci"><b>'+esc(c.name)+'</b><div class="sub">Finish this visit</div></div><span class="go sm">Continue</span></button>'}).join('');
+  if(todo.length)out+='<h2 class="sh">To visit <span class="muted num">'+todo.length+'</span></h2>'+todo.map(function(c){return '<div class="ccard"><div class="ci"><b>'+esc(c.name)+'</b><div class="sub">'+esc(c.phone||c.address||'')+'</div></div><button class="go" data-a="checkin" data-id="'+c.id+'">Check in</button></div>'}).join('');
+  if(done.length)out+='<h2 class="sh">Done <span class="muted num">'+done.length+'</span></h2>'+done.map(function(c){return '<button class="ccard done" data-a="open-visit" data-id="'+vm[c.id].id+'"><div class="ci"><b>'+esc(c.name)+'</b><div class="sub num">'+ftime(vm[c.id].checked_in_at)+'</div></div><span class="tick">\u2713</span></button>'}).join('');
+  if(!list.length)out=q?empty('No matches','Try another name.'):empty('No customers assigned to you yet','Ask the owner to assign customers to you, or add your own.');
+  return repProgress()+'<button class="btn" data-a="add-cust" style="margin:0 0 12px;background:var(--card);color:var(--ink);border:1px solid var(--line)">Add customer</button><input class="search" id="vq" type="search" placeholder="Search any customer" value="'+esc(S.vq)+'" aria-label="Search customers"><div id="rlist">'+out+'</div>';
+}
+function viewRepDay(){
+  var cm=custMap(),mine=S.visits.slice().reverse();
+  return repProgress()+'<div class="kpis">'+kpi('Visits done',S.visits.length)+kpi('Customers left',repLeft())+'</div><h2 class="sh">My visits today</h2>'+
+    (mine.length?'<div class="list">'+mine.map(function(v){return '<button class="row" data-a="open-visit" data-id="'+v.id+'"><div class="grow"><b>'+esc((cm[v.customer_id]||{}).name||'')+'</b><div class="sub num">'+ftime(v.checked_in_at)+'</div></div><div class="end">'+(v.finished?badge('ok','Done'):badge('wait','In progress'))+'</div></button>'}).join('')+'</div>':empty('No visits yet','Check in at a customer to start.'))+checkPanel();
 }
 function viewVisit(){
   var v=S.visits.filter(function(x){return x.id===S.visit})[0],c=v&&custMap()[v.customer_id];
-  if(!v||!c){S.visit=null;return isOwner()?viewOwnerHome():viewRepHome()}
-  return '<button class="lnk" data-a="back" style="margin:0 0 8px">\u2039 '+t('Back')+'</button><h1>'+esc(c.name)+'</h1><div class="card"><p><b class="pass">\u2713</b> '+t('Checked in at {0}',fmtTime(v.checked_in_at))+'</p><p>'+(v.far?'<span class="badge bad">'+t('{0} m from the saved location',v.distance_m)+'</span>':'<span class="badge ok">'+t('GPS location saved')+'</span>')+'</p>'+
-    (v.finished?'<p class="pass"><b>'+t('Visit finished')+'</b></p>':'<form data-form="finish"><label>'+t('Note (optional)')+'<textarea name="note" rows="3"></textarea></label><button class="btn go"'+(S.busy?' disabled':'')+'>'+t('Finish visit')+'</button></form>')+'</div>';
+  if(!v||!c){S.visit=null;return viewRepToday()}
+  return '<h1 class="hi">'+esc(c.name)+'</h1><div class="vh"><div class="okline"><span class="ok">\u2713</span> Checked in at '+ftime(v.checked_in_at)+'</div>'+(v.far?badge('bad',v.distance_m+' m from saved location'):badge('ok','GPS location saved'))+'</div>'+
+    (v.finished?'<div class="vstep"><div class="sn">\u2713</div><div class="sbody"><h2>Visit finished</h2><button class="bigbtn primary" data-a="back">Back to my customers</button></div></div>':
+    '<form class="vstep" data-form="finish"><div class="sn">1</div><div class="sbody"><h2>Finish the visit</h2><label class="fld"><span>Note (optional)</span><input name="note"></label><button class="bigbtn primary"'+(S.busy?' disabled':'')+'>Finish visit</button></div></form>');
 }
 
-/* ---------- sheets ---------- */
-function sheetHTML(){
-  var s=S.sheet;if(!s)return '';var d=s.data||{},h='';
+/* ---- sign in / sign up / waiting (centred screens) ---- */
+function viewLogin(){return '<div class="pick"><div class="brand2">Ledgerline</div><h1>Sign in</h1><form class="panel" data-form="login">'+fld('Email','email','email',S.draft.email,'autocomplete="email" autocapitalize="off" required')+fld('Password','password','password','','autocomplete="current-password" required')+'<button class="bigbtn primary"'+(S.busy?' disabled':'')+'>Sign in</button></form><button class="bigbtn" data-a="to-signup">Create an account</button></div>'}
+function viewSignup(){return '<div class="pick"><div class="brand2">Ledgerline</div><h1>Create an account</h1><form class="panel" data-form="signup">'+fld('Full name','full_name','text',S.draft.full_name,'autocomplete="name" required')+fld('Phone','phone','tel',S.draft.phone,'autocomplete="tel" required')+fld('Email','email','email',S.draft.email,'autocomplete="email" autocapitalize="off" required')+fld('Password','password','password','','autocomplete="new-password" required')+'<button class="bigbtn primary"'+(S.busy?' disabled':'')+'>Create account</button></form><button class="bigbtn" data-a="to-login">I already have an account</button></div>'}
+function viewPending(){var p=S.profile||{};return '<div class="pick"><div class="brand2">Ledgerline</div><h1>Waiting for owner approval</h1><div class="panel"><p>The owner must approve your account before you can use the app. Ask the owner, then tap Check again.</p><p class="sub">'+esc(p.full_name||'')+' '+esc(p.email||'')+'</p><button class="bigbtn primary" data-a="refresh">Check again</button></div></div>'}
+
+/* ---- sheets ---- */
+function sheetBody(){
+  var s=S.sheet,d=s.data||{};
   if(s.type==='customer'){
     var c=d.id?custMap()[d.id]:null;
-    h='<h2>'+t(c?'Edit customer':'Add customer')+'</h2><form data-form="customer">'+
-      '<label>'+t('Name')+'<input name="name" value="'+esc(c?c.name:'')+'" required></label><label>'+t('Phone')+'<input name="phone" type="tel" value="'+esc(c?c.phone:'')+'"></label><label>'+t('Address')+'<input name="address" value="'+esc(c?c.address:'')+'"></label>'+
-      (isOwner()?'<label>'+t('Assigned to')+'<select name="assigned_to"><option value="">'+t('Unassigned')+'</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(c&&c.assigned_to===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select></label>'+
-      '<label style="display:flex;gap:10px;align-items:center"><input type="checkbox" name="active"'+(!c||c.active?' checked':'')+'>'+t('Active customer')+'</label>':'')+
-      '<button class="btn">'+t('Save')+'</button></form><button class="btn alt" data-a="close-sheet" style="margin-top:8px">'+t('Cancel')+'</button>';
-  }else if(s.type==='target'){
-    h='<h2>'+t('Change target')+'</h2><p class="sub">'+t('The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.')+'</p><form data-form="target"><label>'+t('Unique customers per day')+'<input name="value" type="number" min="1" max="1000" value="'+esc(S.progress?S.progress.target:35)+'" required></label><label>'+t('Effective from')+'<input name="from" type="date" min="'+cairoToday()+'" value="'+cairoToday()+'" required></label><button class="btn">'+t('Save')+'</button></form><button class="btn alt" data-a="close-sheet" style="margin-top:8px">'+t('Cancel')+'</button>';
+    return [c?'Edit customer':'Add customer','<form data-form="customer">'+fld('Name','name','text',c?c.name:'','required')+fld('Phone','phone','tel',c?c.phone:'')+fld('Address','address','text',c?c.address:'')+
+      (isOwner()?'<label class="fld"><span>Assigned to</span><select name="assigned_to"><option value="">Unassigned</option>'+staff().map(function(p){return '<option value="'+esc(p.id)+'"'+(c&&c.assigned_to===p.id?' selected':'')+'>'+esc(nameOf(p))+'</option>'}).join('')+'</select></label><label class="fld chk"><input type="checkbox" name="active"'+(!c||c.active?' checked':'')+'><span style="margin:0">Active customer</span></label>':'')+
+      '<button class="btn primary wide">Save</button></form>'];
   }
-  return '<div class="shade" data-a="close-sheet"></div><div class="sheet" role="dialog">'+h+'</div>';
+  return ['Change target','<p class="note">The target is for the whole company. Nobody has a personal quota. Past days keep the target they had.</p><form data-form="target">'+fld('Unique customers per day','value','number',S.progress?S.progress.target:35,'min="1" max="1000" required')+fld('Effective from','from','date',today(),'min="'+today()+'" required')+'<button class="btn primary wide">Save</button></form>'];
+}
+function renderSheet(){
+  var sh=$('sheet'),sc=$('scrim');
+  if(!S.sheet){sh.hidden=true;sc.hidden=true;sh.innerHTML='';return}
+  var b=sheetBody();setHTML(sh,'<div class="shead"><h2>'+b[0]+'</h2><button data-a="close-sheet" aria-label="Close">&times;</button></div>'+b[1]);sh.hidden=false;sc.hidden=false;
 }
 
-/* ---------- security check ---------- */
-function viewCheck(){
-  return '<h1>'+t('Security check')+'</h1><div class="card"><p class="sub">'+t('Runs real tests on your cloud database to prove the rules work for the account you are signed in with.')+'</p>'+
-    (S.checks?S.checks.list.map(function(c){return '<div class="chk"><span class="'+(c.ok?'pass':'fail')+'">'+(c.ok?'\u2713':'\u2717')+'</span><span>'+t(c.name)+'</span></div>'}).join('')+'<div class="note '+(S.checks.ok?'ok':'bad')+'" style="margin-top:10px">'+t(S.checks.ok?'Everything passed.':'Something failed. Do not use this for real data yet, and send me a screenshot.')+'</div>':'')+
-    '<button class="btn" data-a="check"'+(S.busy?' disabled':'')+'>'+t('Run the check')+'</button></div>';
-}
-async function runChecks(){
-  S.busy=true;S.checks=null;render();
-  var list=[],owner=isOwner(),uid=S.profile.id;
-  function add(n,ok){list.push({name:n,ok:!!ok})}
-  var rls=function(e){return !!e&&/row-level security/i.test(e.message||'')};
-  var own=await sb.from('profiles').select('*').eq('id',uid).maybeSingle();add('Your own profile can be read',!own.error&&own.data&&own.data.id===uid);
-  var oo=await sb.from('owner_only_test').select('*');var n1=oo.error?0:(oo.data||[]).length;add('Owner-only data is visible to the owner only',owner?n1>=1:n1===0);
-  var tt=await sb.from('team_test').select('*');add('Shared team data is visible to approved members',!tt.error&&(tt.data||[]).length>=1);
-  var cu=await sb.from('customers').select('*');
-  add('Customers: you only see what the rules allow',!cu.error&&(owner||(cu.data||[]).every(function(c){return c.assigned_to===uid})));
-  var pg=await sb.rpc('progress_today');add('The company progress totals can be read',!pg.error&&pg.data&&typeof pg.data.target==='number');
-  if(!owner){
-    var up=await sb.from('profiles').update({full_name:S.profile.full_name}).eq('id',uid).select();
-    add('You cannot edit your own record (so nobody can make themselves owner)',!!up.error||(up.data||[]).length===0);
-    var iv=await sb.from('visits').insert({visit_date:cairoToday(),customer_id:-1,rep_id:uid,lat:0,lng:0});
-    add('Visits cannot be written directly, only by checking in',rls(iv.error));
-    var it=await sb.from('target_history').insert({effective_from:'1900-01-01',value:1});
-    add('Only the owner can change the company target',rls(it.error));
-    var uc=await sb.from('customers').update({name:'x'}).eq('id',-1).select();
-    add('You cannot edit customers owned by the owner',!!uc.error||(uc.data||[]).length===0);
-  }
-  var anon=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
-  var none=function(r){return !!r.error||(r.data||[]).length===0},res=[],tbs=['owner_only_test','team_test','profiles','customers','visits','target_history'];
-  for(var i=0;i<tbs.length;i++)res.push(none(await anon.from(tbs[i]).select('*')));
-  var ap=await anon.rpc('progress_today');res.push(!!ap.error);
-  add('Someone who is not signed in cannot read anything',res.every(Boolean));
-  S.checks={list:list,ok:list.every(function(c){return c.ok})};S.busy=false;render();
-}
-
-/* ---------- render ---------- */
-function tabs(){
-  var items=isOwner()?[['home','Home'],['customers','Customers'],['team','Team'],['check','Check']]:[['home','Today'],['check','Check']];
-  return '<div class="tabs">'+items.map(function(i){return '<button data-a="tab" data-t="'+i[0]+'"'+(S.tab===i[0]&&!S.visit?' aria-current="page"':'')+'>'+t(i[1])+'</button>'}).join('')+'</div>';
-}
-function body(){
-  switch(S.view){
-    case 'boot':return '<p class="muted">'+t('Loading...')+'</p>';
-    case 'login':return viewLogin();case 'signup':return viewSignup();case 'pending':return viewPending();
-    case 'noprofile':return '<div class="note bad">'+t('No profile was found for this login. Ask the owner to check the setup.')+'</div>';
-  }
-  var who='<p style="margin:0 0 8px"><b>'+esc(nameOf(S.profile))+'</b> <span class="badge '+(isOwner()?'owner':'ok')+'">'+t(isOwner()?'Owner':'Salesperson')+'</span></p>';
-  var main;
-  if(S.visit)main=viewVisit();
-  else if(S.tab==='check')main=viewCheck();
-  else if(isOwner())main=S.tab==='customers'?viewOwnerCustomers():S.tab==='team'?viewOwnerTeam():viewOwnerHome();
-  else main=viewRepHome();
-  return who+main+'<p class="sub" style="margin-top:18px">'+t('Stage 2 test version. Sales, stock and money come in the next stages.')+'</p>';
-}
+/* ---- screen assembly ---- */
+var ICON={home:'<path d="M3 11l9-8 9 8M5 10v10h14V10"/>',pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3zM9 8h6M9 12h6"/>',box:'<path d="M3 7l9-4 9 4v10l-9 4-9-4V7zM3 7l9 4 9-4M12 11v10"/>',book:'<path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4zM5 17a3 3 0 013-3h11"/>',users:'<circle cx="9" cy="7" r="4"/><path d="M2 21v-1a6 6 0 0112 0v1M17 4a4 4 0 010 7M22 21v-1a6 6 0 00-4-5.6"/>',list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'};
+var OTABS=[['home','Home','home'],['visits','Visits','pin'],['sales','Sales','receipt'],['stock','Stock','box'],['books','Money','book'],['people','Team','users']];
+var TITLES={home:'Dashboard',visits:'Field visits',sales:'Sales',stock:'Stock and orders',books:'Money',people:'Team management',settings:'Settings'};
+function navHTML(items,cur){return '<div class="brand">Ledgerline</div>'+items.map(function(t){return '<button data-a="tab" data-t="'+t[0]+'"'+(cur===t[0]?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+ICON[t[2]]+'</svg><span>'+t[1]+'</span></button>'}).join('')}
 function render(){
   document.documentElement.lang=L;document.documentElement.dir=L==='ar'?'rtl':'ltr';
-  app.innerHTML='<div class="wrap">'+top()+note()+body()+'</div>'+(S.view==='app'?tabs():'')+sheetHTML();
+  var nav=$('nav'),top=$('top'),view=$('view'),err=S.err?'<div class="note neg">'+esc(S.err)+'</div>':'';
+  if(S.view!=='app'){
+    document.body.className='picker';nav.style.display='none';setHTML(top,'<div class="util"><span class="push"></span><button class="lnk" data-a="lang">'+(L==='ar'?'English':'العربية')+'</button></div>');
+    setHTML(view,err+(S.view==='boot'?'<p class="muted">Loading...</p>':S.view==='login'?viewLogin():S.view==='signup'?viewSignup():S.view==='pending'?viewPending():'<div class="note neg">No profile was found for this login. Ask the owner to check the setup.</div>'));
+    renderSheet();return;
+  }
+  var own=isOwner();document.body.className=own?'role-owner':'role-rep';
+  if(own){
+    nav.style.setProperty('--n',6);nav.style.display='';setHTML(nav,navHTML(OTABS,S.tab));
+    var act=S.tab==='visits'&&S.sub==='assign'?'<button class="btn primary" data-a="add-cust">Add customer</button>':'';
+    setHTML(top,utilBar('<span class="brandsm">Ledgerline</span>',true)+'<div class="trow"><div><h1>'+TITLES[S.tab]+'</h1></div>'+act+'</div>');
+    var v=S.tab==='home'?viewHome():S.tab==='visits'?viewVisits():S.tab==='people'?viewTeam():S.tab==='settings'?viewSettings():viewSoon(TITLES[S.tab],S.tab==='sales'?'Stage 3':S.tab==='stock'?'Stage 3':'Stage 4');
+    setHTML(view,err+v);
+  }else{
+    var items=[['today','Today','list'],['day','My day','chart']];nav.style.setProperty('--n',2);nav.style.display=S.visit?'none':'';setHTML(nav,S.visit?'':navHTML(items,S.tab==='day'?'day':'today'));
+    setHTML(top,utilBar(S.visit?'<button class="lnk" data-a="back">\u2039 Back</button>':'',false)+(S.visit?'':repGreeting()));
+    setHTML(view,err+(S.visit?viewVisit():S.tab==='day'?viewRepDay():viewRepToday()));
+  }
+  renderSheet();
 }
+var toastT;function toast(m,bad){var t=$('toast');t.textContent=trText(m);t.className=bad?'err':'';t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},bad?4200:2400)}
 
-/* ---------- data ---------- */
+/* ---- data ---- */
 async function loadAll(){
-  var d=cairoToday(),owner=isOwner();
-  var jobs=[sb.rpc('progress_today'),sb.from('customers').select('*').order('name'),sb.from('visits').select('*').eq('visit_date',d).order('checked_in_at')];
-  if(owner)jobs.push(sb.from('profiles').select('*').order('created_at'));
+  var d=curDate(),owner=isOwner(),jobs=[sb.rpc('progress_today'),sb.from('customers').select('*').order('name'),sb.from('visits').select('*').eq('visit_date',d).order('checked_in_at')];
+  if(owner){jobs.push(sb.from('profiles').select('*').order('created_at'));jobs.push(sb.from('target_history').select('*'));jobs.push(sb.from('visits').select('visit_date,customer_id,rep_id').gte('visit_date',addDays(d,-6)).lte('visit_date',d))}
   var r=await Promise.all(jobs),bad=r.filter(function(x){return x.error})[0];
-  if(bad){S.err=/does not exist|schema cache|Could not find/i.test(bad.error.message||'')?t('The Stage 2 database setup has not been run yet. Run ledgerline-cloud-setup-2 in Supabase.'):bad.error.message}
+  if(bad){S.err=/does not exist|schema cache|Could not find/i.test(bad.error.message||'')?'The Stage 2 database setup has not been run yet. Run ledgerline-cloud-setup-2 in Supabase.':bad.error.message}
   S.progress=r[0].error?null:r[0].data;S.customers=r[1].error?[]:r[1].data;S.visits=r[2].error?[]:r[2].data;
-  if(owner&&!r[3].error)S.team=r[3].data;
+  if(owner){if(!r[3].error)S.team=r[3].data;if(!r[4].error)S.targets=r[4].data;if(!r[5].error)S.hist=r[5].data}
 }
 async function refresh(){
   try{
@@ -302,20 +598,44 @@ async function refresh(){
     var p=await sb.from('profiles').select('*').eq('id',S.session.user.id).maybeSingle();
     if(p.error){S.err=p.error.message;S.view='noprofile';render();return}
     S.profile=p.data;
-    if(!S.profile)S.view='noprofile';else if(!S.profile.active)S.view='pending';else{S.view='app';S.err='';await loadAll()}
+    if(!S.profile)S.view='noprofile';else if(!S.profile.active)S.view='pending';else{S.view='app';S.err='';if(isOwner()&&S.tab==='today')S.tab='home';if(!isOwner()&&!/^(today|day)$/.test(S.tab))S.tab='today';await loadAll()}
   }catch(e){S.err=String(e&&e.message||e)}
   render();
 }
 var rt;function queue(){clearTimeout(rt);rt=setTimeout(refresh,60)}
 function getPos(){return new Promise(function(res,rej){
-  if(!navigator.geolocation)return rej(new Error(t('GPS is not available on this device.')));
-  navigator.geolocation.getCurrentPosition(function(p){if(p.coords.accuracy>200)return rej(new Error(t('GPS signal is weak. Move to open sky and try again.')));res(p.coords)},
-    function(e){rej(new Error(e.code===1?t('Location access is blocked. Allow location for this website in Safari settings, then try again.'):t('Your location could not be determined. Try again.')))},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+  if(!navigator.geolocation)return rej(new Error('GPS is not available on this device.'));
+  navigator.geolocation.getCurrentPosition(function(p){if(p.coords.accuracy>200)return rej(new Error('GPS signal is weak. Move to open sky and try again.'));res(p.coords)},
+    function(e){rej(new Error(e.code===1?'Location access is blocked. Allow location for this website in Safari settings, then try again.':'Your location could not be determined. Try again.'))},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
 })}
 
-/* ---------- events ---------- */
+/* ---- security check ---- */
+async function runChecks(){
+  S.busy=true;S.checks=null;render();
+  var list=[],owner=isOwner(),uid=S.profile.id;
+  function add(n,ok){list.push({name:n,ok:!!ok})}
+  var rls=function(e){return !!e&&/row-level security/i.test(e.message||'')};
+  var own=await sb.from('profiles').select('*').eq('id',uid).maybeSingle();add('Your own profile can be read',!own.error&&own.data&&own.data.id===uid);
+  var oo=await sb.from('owner_only_test').select('*');var n1=oo.error?0:(oo.data||[]).length;add('Owner-only data is visible to the owner only',owner?n1>=1:n1===0);
+  var tt=await sb.from('team_test').select('*');add('Shared team data is visible to approved members',!tt.error&&(tt.data||[]).length>=1);
+  var cu=await sb.from('customers').select('*');add('Customers: you only see what the rules allow',!cu.error&&(owner||(cu.data||[]).every(function(c){return c.assigned_to===uid})));
+  var pg=await sb.rpc('progress_today');add('The company progress totals can be read',!pg.error&&pg.data&&typeof pg.data.target==='number');
+  if(!owner){
+    var up=await sb.from('profiles').update({full_name:S.profile.full_name}).eq('id',uid).select();add('You cannot edit your own record (so nobody can make themselves owner)',!!up.error||(up.data||[]).length===0);
+    var iv=await sb.from('visits').insert({visit_date:today(),customer_id:-1,rep_id:uid,lat:0,lng:0});add('Visits cannot be written directly, only by checking in',rls(iv.error));
+    var it=await sb.from('target_history').insert({effective_from:'1900-01-01',value:1});add('Only the owner can change the company target',rls(it.error));
+    var uc=await sb.from('customers').update({name:'x'}).eq('id',-1).select();add('You cannot edit customers owned by the owner',!!uc.error||(uc.data||[]).length===0);
+  }
+  var anon=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  var none=function(r){return !!r.error||(r.data||[]).length===0},res=[],tbs=['owner_only_test','team_test','profiles','customers','visits','target_history'];
+  for(var i=0;i<tbs.length;i++)res.push(none(await anon.from(tbs[i]).select('*')));
+  var ap=await anon.rpc('progress_today');res.push(!!ap.error);add('Someone who is not signed in cannot read anything',res.every(Boolean));
+  S.checks={list:list,ok:list.every(function(c){return c.ok})};S.busy=false;render();
+}
+
+/* ---- events ---- */
 document.addEventListener('submit',async function(e){
-  e.preventDefault();var f=e.target,k=f.dataset.form,fd=new FormData(f);S.err='';S.msg='';
+  e.preventDefault();var f=e.target,k=f.dataset.form,fd=new FormData(f);S.err='';
   if(k==='login'||k==='signup'){S.draft={};['full_name','phone','email'].forEach(function(n){if(fd.get(n)!=null)S.draft[n]=String(fd.get(n))})}
   try{
     if(k==='login'){
@@ -323,93 +643,90 @@ document.addEventListener('submit',async function(e){
       S.busy=false;if(r.error){S.err=r.error.message;render();return}S.draft={};await refresh();
     }else if(k==='signup'){
       var name=String(fd.get('full_name')).trim(),phone=String(fd.get('phone')).trim(),email=String(fd.get('email')).trim(),pw=String(fd.get('password'));
-      if(!name||!phone||!email){S.err=t('Enter your name, phone and email.');render();return}
-      if(pw.length<8){S.err=t('Use at least 8 characters for the password.');render();return}
+      if(!name||!phone||!email){S.err=trText('Enter your name, phone and email.');render();return}
+      if(pw.length<8){S.err=trText('Use at least 8 characters for the password.');render();return}
       S.busy=true;render();var s=await sb.auth.signUp({email:email,password:pw,options:{data:{full_name:name,phone:phone}}});
-      S.busy=false;if(s.error){S.err=s.error.message;render();return}
-      S.draft={};
+      S.busy=false;if(s.error){S.err=s.error.message;render();return}S.draft={};
       if(s.data&&s.data.session){await refresh()}else{var li=await sb.auth.signInWithPassword({email:email,password:pw});
-        if(li.error){S.msg=t('Account created, but you cannot sign in yet. Ask the owner to finish the setup.')+' ('+li.error.message+')';S.view='login';render()}else{await refresh()}}
+        if(li.error){S.err=trText('Account created, but you cannot sign in yet. Ask the owner to finish the setup.')+' ('+li.error.message+')';S.view='login';render()}else{await refresh()}}
     }else if(k==='customer'){
-      var d=(S.sheet&&S.sheet.data)||{},nm=String(fd.get('name')).trim();if(!nm){S.err=t('Name is required.');render();return}
+      var d=(S.sheet&&S.sheet.data)||{},nm=String(fd.get('name')).trim();if(!nm){toast('Name is required',true);return}
       var row={name:nm,phone:String(fd.get('phone')||'').trim(),address:String(fd.get('address')||'').trim()},res;
       if(isOwner()){row.assigned_to=fd.get('assigned_to')||null;row.active=fd.get('active')==='on'}
       if(d.id)res=await sb.from('customers').update(row).eq('id',d.id).select();
       else{if(!isOwner()){row.assigned_to=S.profile.id;row.created_by=S.profile.id}res=await sb.from('customers').insert(row).select()}
-      if(res.error){S.err=res.error.message;render();return}
-      S.sheet=null;await loadAll();S.msg=t('Customer saved');render();
+      if(res.error){toast(res.error.message,true);return}
+      S.sheet=null;await loadAll();render();toast('Customer saved');
     }else if(k==='target'){
       var val=parseInt(fd.get('value'),10),from=String(fd.get('from'));
-      if(!(val>=1&&val<=1000)){S.err=t('Enter a target between 1 and 1000.');render();return}
-      if(from<cairoToday()){S.err=t('The new target must start today or later.');render();return}
+      if(!(val>=1&&val<=1000)){toast('Enter a target between 1 and 1000.',true);return}
+      if(from<today()){toast('The new target must start today or later.',true);return}
       var up=await sb.from('target_history').upsert({effective_from:from,value:val},{onConflict:'effective_from'});
-      if(up.error){S.err=up.error.message;render();return}
-      S.sheet=null;await loadAll();S.msg=t('Target saved');render();
+      if(up.error){toast(up.error.message,true);return}
+      S.sheet=null;await loadAll();render();toast('Target saved');
     }else if(k==='finish'){
       S.busy=true;render();var fr=await sb.rpc('finish_visit',{p_visit:S.visit,p_note:String(fd.get('note')||'')});S.busy=false;
       if(fr.error){S.err=fr.error.message;render();return}
-      await loadAll();S.msg=t('Visit finished');S.visit=null;render();
+      await loadAll();S.visit=null;render();toast('Visit finished');
     }
   }catch(x){S.busy=false;S.err=String(x&&x.message||x);render()}
 });
 document.addEventListener('click',async function(e){
-  var b=e.target.closest('[data-a]');if(!b)return;var a=b.dataset.a;S.err='';S.msg='';
+  var b=e.target.closest('[data-a]');if(!b)return;var a=b.dataset.a;S.err='';
   try{
     if(a==='lang'){L=L==='ar'?'en':'ar';try{localStorage.setItem('ll_lang',L)}catch(x){}render()}
     else if(a==='to-signup'){S.view='signup';S.draft={};render()}
     else if(a==='to-login'){S.view='login';S.draft={};render()}
-    else if(a==='signout'){await sb.auth.signOut();S.view='login';S.profile=null;S.session=null;S.team=[];S.customers=[];S.visits=[];S.checks=null;S.visit=null;S.sheet=null;S.tab='home';render()}
+    else if(a==='signout'){await sb.auth.signOut();S.view='login';S.profile=null;S.session=null;S.team=[];S.customers=[];S.visits=[];S.hist=[];S.checks=null;S.visit=null;S.sheet=null;S.tab='home';S.vd=null;render()}
     else if(a==='refresh'){await refresh()}
     else if(a==='tab'){S.tab=b.dataset.t;S.visit=null;S.checks=null;render();window.scrollTo(0,0)}
+    else if(a==='goto'){S.tab=b.dataset.t;if(b.dataset.s)S.sub=b.dataset.s;S.visit=null;S.checks=null;render();window.scrollTo(0,0)}
+    else if(a==='sub'){S.sub=b.dataset.s;render()}
+    else if(a==='vtoday'){S.vd=null;await loadAll();render()}
     else if(a==='check'){await runChecks()}
-    else if(a==='toggle'){
-      var on=b.dataset.on==='1',r=await sb.from('profiles').update({active:on}).eq('id',b.dataset.id).select();
-      if(r.error)S.err=r.error.message;else S.msg=t(on?'Approved':'Updated');await loadAll();render();
-    }
+    else if(a==='toggle'){var on=b.dataset.on==='1',r=await sb.from('profiles').update({active:on}).eq('id',b.dataset.id).select();if(r.error)toast(r.error.message,true);else toast(on?'Approved':'Updated');await loadAll();render()}
     else if(a==='add-cust'){S.sheet={type:'customer',data:{}};render()}
     else if(a==='edit-cust'){S.sheet={type:'customer',data:{id:+b.dataset.id}};render()}
     else if(a==='open-target'){S.sheet={type:'target'};render()}
     else if(a==='close-sheet'){S.sheet=null;render()}
     else if(a==='assign-clear'){S.sel={};render()}
+    else if(a==='sel-all'){custList().forEach(function(c){S.sel[c.id]=true});setHTML($('clist'),custRows());setHTML($('selbar'),selbarHTML())}
     else if(a==='assign-apply'){
-      var ids=Object.keys(S.sel).filter(function(k){return S.sel[k]}).map(Number);
-      if(!ids.length){S.err=t('Select at least one customer.');render();return}
-      var ur=await sb.from('customers').update({assigned_to:S.arep||null}).in('id',ids).select();
-      if(ur.error){S.err=ur.error.message;render();return}
-      S.sel={};await loadAll();S.msg=t('Assigned');render();
+      var ids=Object.keys(S.sel).filter(function(k){return S.sel[k]}).map(Number);if(!ids.length){toast('Select at least one customer.',true);return}
+      var ur=await sb.from('customers').update({assigned_to:S.arep||null}).in('id',ids).select();if(ur.error){toast(ur.error.message,true);return}
+      S.sel={};await loadAll();render();toast('Assigned');
     }
     else if(a==='back'){S.visit=null;render()}
     else if(a==='open-visit'){S.visit=+b.dataset.id;render();window.scrollTo(0,0)}
     else if(a==='checkin'){
-      b.disabled=true;b.textContent=t('Getting location...');
-      try{
-        var pos=await getPos();
-        var cr=await sb.rpc('check_in',{p_customer:+b.dataset.id,p_lat:pos.latitude,p_lng:pos.longitude,p_acc:pos.accuracy});
-        if(cr.error)throw new Error(cr.error.message);
-        await loadAll();S.visit=cr.data.id;render();window.scrollTo(0,0);
-      }catch(x){S.err=x.message;render()}
+      b.disabled=true;b.textContent=trText('Getting location...');
+      try{var pos=await getPos();var cr=await sb.rpc('check_in',{p_customer:+b.dataset.id,p_lat:pos.latitude,p_lng:pos.longitude,p_acc:pos.accuracy});
+        if(cr.error)throw new Error(cr.error.message);await loadAll();S.visit=cr.data.id;render();window.scrollTo(0,0)}
+      catch(x){S.err=trText(x.message);render()}
     }
   }catch(x){S.err=String(x&&x.message||x);render()}
 });
 document.addEventListener('input',function(e){
-  if(e.target&&e.target.id==='q'){S.q=e.target.value;$('clist').innerHTML=custRows()}
-});
-document.addEventListener('change',function(e){
   var el=e.target;if(!el)return;
-  if(el.id==='fil'){S.filter=el.value;$('clist').innerHTML=custRows()}
-  else if(el.id==='arep'){S.arep=el.value}
-  else if(el.dataset&&el.dataset.k==='sel'){S.sel[el.dataset.id]=el.checked;$('selbar').innerHTML=selbar()}
+  if(el.id==='q'){S.q=el.value;setHTML($('clist'),custRows())}
+  else if(el.id==='vq'){S.vq=el.value;S.vq=el.value;var p=el.selectionStart;render();var n=$('vq');if(n){n.focus();try{n.setSelectionRange(p,p)}catch(x){}}}
 });
-/* the owner's dashboard refreshes by itself every 30 seconds */
-setInterval(async function(){
-  if(S.view==='app'&&isOwner()&&S.tab==='home'&&!S.sheet&&!S.visit&&!document.hidden){try{await loadAll();render()}catch(e){}}
-},30000);
+document.addEventListener('change',async function(e){
+  var el=e.target;if(!el)return;
+  if(el.id==='fil'){S.filter=el.value;setHTML($('clist'),custRows())}
+  else if(el.id==='arep'){S.arep=el.value}
+  else if(el.id==='vdate'){S.vd=(el.value&&el.value!==today())?el.value:null;await loadAll();render()}
+  else if(el.dataset&&el.dataset.k==='sel'){S.sel[el.dataset.id]=el.checked;setHTML($('selbar'),selbarHTML())}
+});
+setInterval(async function(){if(S.view==='app'&&isOwner()&&S.tab==='home'&&!S.sheet&&!document.hidden){try{await loadAll();render()}catch(e){}}},30000);
 
-if(!window.supabase||!window.supabase.createClient){S.view='login';S.err=t('Could not load the app. Check your internet connection and refresh.');render();return}
+if(!window.supabase||!window.supabase.createClient){S.view='login';S.err=trText('Could not load the app. Check your internet connection and refresh.');render();return}
 sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 sb.auth.onAuthStateChange(function(){queue()});
 render();refresh();
+window.__ll={S:S,MISS:MISS,render:render};
 })();
+
 </script>
 </body>
 </html>
